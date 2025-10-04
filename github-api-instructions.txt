@@ -1,0 +1,60 @@
+Instruksi Setup Dashboard Kontribusi GitHub untuk Deployment Vercel
+===================================================================
+
+Dashboard GitHub sekarang menggunakan serverless function di Vercel untuk mengambil data kontribusi secara aman. Token GitHub disimpan sebagai environment variable di Vercel, sehingga dashboard berfungsi otomatis tanpa setup manual di browser.
+
+1. Hasilkan Personal Access Token GitHub (PAT)
+------------------------------------------------
+- Masuk ke akun GitHub Anda di https://github.com
+- Klik pada gambar profil Anda (pojok kanan atas) dan pilih "Settings"
+- Di sidebar kiri, klik pada "Developer settings"
+- Klik pada "Personal access tokens"
+- Klik tombol "Generate new token"
+- Berikan nama deskriptif untuk token, misalnya "Portfolio Dashboard Vercel"
+- Atur tanggal kedaluwarsa sesuai keinginan (disarankan)
+- Di bawah "Select scopes", centang kotak untuk "repo" (untuk kontribusi repo pribadi) atau "public_repo" (untuk data publik saja)
+- Klik "Generate token" di bagian bawah
+- Salin token yang dihasilkan segera (Anda tidak akan melihatnya lagi)
+
+2. Konfigurasi Environment Variables di Vercel
+-----------------------------------------------
+- Masuk ke dashboard Vercel Anda di https://vercel.com
+- Pilih proyek portfolio Anda
+- Pergi ke tab "Settings" > "Environment Variables"
+- Tambahkan variable berikut:
+  - Nama: GITHUB_TOKEN
+    Value: [tempel token yang Anda salin]
+  - Nama: GITHUB_USERNAME
+    Value: [username GitHub Anda, misalnya: nelsen-chandra]
+- Klik "Save"
+
+3. Deploy Ulang Proyek
+----------------------
+- Setelah menambahkan environment variables, deploy ulang proyek Anda di Vercel
+- Dashboard akan secara otomatis mengambil data GitHub menggunakan token yang disimpan
+
+4. Catatan Penggunaan
+---------------------
+- Dashboard sekarang berfungsi otomatis di deployment Vercel
+- Tidak perlu setup manual di browser
+- Token disimpan aman di server Vercel
+- Jika ada error, periksa environment variables di Vercel
+
+5. Pemecahan Masalah
+--------------------
+- Jika kontribusi tidak muncul, periksa environment variables di Vercel
+- Pastikan token memiliki scope yang benar ("repo" atau "public_repo")
+- Jika error 401: Token tidak valid, regenerasi token dan update di Vercel
+- Jika error 404: Username salah, periksa GITHUB_USERNAME di environment variables
+- Jika error 403: Scope tidak cukup, pastikan token memiliki akses yang diperlukan
+- Periksa function logs di Vercel untuk detail error
+- Pastikan proyek di-deploy ulang setelah menambah environment variables
+
+6. Informasi Tambahan
+---------------------
+- Dashboard menggunakan Vercel serverless function untuk API calls
+- Data diambil menggunakan GitHub GraphQL API
+- Untuk info lebih lanjut tentang token GitHub: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+- Untuk info Vercel environment variables: https://vercel.com/docs/concepts/projects/environment-variables
+
+Jika Anda memiliki pertanyaan atau membutuhkan bantuan, silakan hubungi administrator situs.

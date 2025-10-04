@@ -1,0 +1,112 @@
+INSTRUKSI PENGATURAN DATABASE UNTUK GOOGLE AUTH DAN CHAT ROOM
+
+Untuk membuat Google Auth berfungsi dengan baik dan menyimpan pesan user secara persisten, ikuti langkah-langkah berikut:
+
+1. BUAT PROYEK FIREBASE:
+   - Pergi ke https://console.firebase.google.com/
+   - Klik "Create a project" atau "Tambah proyek"
+   - Beri nama proyek (contoh: "nelsen-portfolio-chat")
+   - Aktifkan Google Analytics jika diinginkan
+   - Pilih akun Google untuk billing jika perlu
+
+2. AKTIFKAN AUTHENTICATION:
+   - Di Firebase Console, pilih "Authentication" dari menu kiri
+   - Pergi ke tab "Sign-in method"
+   - Cari "Google" dan klik enable
+   - Isi informasi proyek (nama aplikasi, support email)
+   - Simpan perubahan
+
+3. AKTIFKAN FIRESTORE DATABASE:
+   - Di Firebase Console, pilih "Firestore Database" dari menu kiri
+   - Klik "Create database"
+   - Pilih "Start in test mode" untuk development
+   - Pilih lokasi database (contoh: asia-southeast1 untuk Indonesia)
+   - Klik "Done"
+
+4. DAPATKAN KONFIGURASI FIREBASE:
+   - Klik ikon gear (settings) > "Project settings"
+   - Scroll ke bawah ke bagian "Your apps"
+   - Jika belum ada web app, klik "Add app" > ikon web "</>"
+   - Beri nama app (contoh: "Portfolio Chat")
+   - Copy konfigurasi Firebase SDK (akan terlihat seperti ini):
+     ```
+     const firebaseConfig = {
+       apiKey: "your-api-key",
+       authDomain: "your-project.firebaseapp.com",
+       projectId: "your-project-id",
+       storageBucket: "your-project.appspot.com",
+       messagingSenderId: "123456789",
+       appId: "your-app-id"
+     };
+     ```
+
+5. TAMBAHKAN FIREBASE SDK KE PROYEK:
+   - Tambahkan script berikut ke bagian <head> di index.html:
+     ```
+     <!-- Firebase SDK -->
+     <script type="module">
+       import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+       import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+       import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+       // Konfigurasi Firebase (ganti dengan config Anda)
+       const firebaseConfig = {
+         // ... paste config dari langkah 4
+       };
+
+       // Initialize Firebase
+       const app = initializeApp(firebaseConfig);
+       const auth = getAuth(app);
+       const db = getFirestore(app);
+       const provider = new GoogleAuthProvider();
+
+       // Export untuk digunakan di script.js
+       window.firebaseAuth = auth;
+       window.firebaseDb = db;
+       window.firebaseProvider = provider;
+       window.signInWithPopup = signInWithPopup;
+       window.signOut = signOut;
+       window.onAuthStateChanged = onAuthStateChanged;
+       window.collection = collection;
+       window.addDoc = addDoc;
+       window.onSnapshot = onSnapshot;
+       window.query = query;
+       window.orderBy = orderBy;
+       window.limit = limit;
+     </script>
+     ```
+
+6. UPDATE script.js:
+   - Ganti fungsi simulateGoogleLogin() dengan implementasi Firebase Auth
+   - Ganti penyimpanan localStorage dengan Firestore
+   - Update fungsi untuk menggunakan currentUser dari Firebase
+
+7. ATUR FIRESTORE SECURITY RULES:
+   - Di Firebase Console, pergi ke Firestore > Rules
+   - Update rules untuk mengizinkan authenticated users:
+     ```
+     rules_version = '2';
+     service cloud.firestore {
+       match /databases/{database}/documents {
+         // Allow read/write access to authenticated users
+         match /{document=**} {
+           allow read, write: if request.auth != null;
+         }
+       }
+     }
+     ```
+   - Publish rules
+
+8. TESTING:
+   - Upload file index.html yang sudah diupdate ke hosting
+   - Test login dengan Google
+   - Test pengiriman pesan
+   - Verifikasi bahwa pesan tersimpan dan ditampilkan di device berbeda
+
+CATATAN PENTING:
+- Pastikan domain website Anda ditambahkan ke Authorized domains di Authentication settings
+- Untuk production, ubah Firestore rules menjadi lebih ketat
+- Monitor usage di Firebase Console untuk biaya
+- Backup data penting secara berkala
+
+Dengan setup ini, Google Auth akan berfungsi sesungguhnya dan pesan akan disimpan secara persisten di cloud database.
