@@ -12,6 +12,10 @@
       "dest": "/api/$1"
     },
     {
+      "src": "/(css|js|images)/(.*)",
+      "dest": "/$1/$2"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
