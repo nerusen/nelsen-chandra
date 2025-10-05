@@ -41,7 +41,7 @@ const IntlToggle = () => {
       >
         {/* Sliding Background */}
         <motion.div
-          className="absolute bottom-1 top-1 w-10 rounded-full bg-green-500"
+          className="absolute bottom-1 top-1 w-10 rounded-full bg-blue-300"
           animate={{
             x: slidePosition + currentIndex * 4,
           }}
