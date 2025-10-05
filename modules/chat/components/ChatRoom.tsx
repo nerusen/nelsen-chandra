@@ -52,6 +52,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
     };
     try {
       await axios.post("/api/chat", newMessageData);
+      setMessages((prevMessages) => [...prevMessages, newMessageData]);
       notif("Successfully to send message");
     } catch (error) {
       console.error("Error:", error);
