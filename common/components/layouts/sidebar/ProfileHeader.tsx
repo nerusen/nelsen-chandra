@@ -25,7 +25,7 @@ const ProfileHeader = ({ expandMenu, imageSize }: ProfileHeaderProps) => {
         src={"/images/satria-3.jpg"}
         width={expandMenu ? 80 : imageSize * 0.9}
         height={expandMenu ? 80 : imageSize * 0.9}
-        alt="Nelsen C.W"
+        alt="n31sen.st"
         className="border-2 border-neutral-400 dark:border-neutral-600 lg:hover:scale-105"
         rounded="rounded-full"
       />
@@ -33,7 +33,7 @@ const ProfileHeader = ({ expandMenu, imageSize }: ProfileHeaderProps) => {
       <div className="mt-1 flex items-center gap-2 lg:mt-4">
         <Link href="/" passHref>
           <h2 className="flex-grow text-lg font-medium lg:text-xl">
-            Nelsen C.W
+            n31sen.st
           </h2>
         </Link>
 
