@@ -39,11 +39,11 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
 
   const handleSendMessage = async (message: string) => {
     const messageId = uuidv4();
-    const newMessageData = {
+    const newMessageData: MessageProps = {
       id: messageId,
-      name: session?.user?.name,
-      email: session?.user?.email,
-      image: session?.user?.image,
+      name: session?.user?.name || "",
+      email: session?.user?.email || "",
+      image: session?.user?.image || undefined,
       message,
       is_reply: isReply.is_reply,
       reply_to: isReply.name,
