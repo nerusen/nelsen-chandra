@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { MdAdminPanelSettings as AdminIcon } from "react-icons/md";
 import { FiTrash2 as DeleteIcon } from "react-icons/fi";
 import { BsFillReplyAllFill as ReplyIcon } from "react-icons/bs";
+import { BsPinAngleFill as PinIcon } from "react-icons/bs";
 
 import ChatTime from "./ChatTime";
 
@@ -16,6 +17,7 @@ interface ChatItemProps extends MessageProps {
   isWidget?: boolean;
   onDelete: (id: string) => void;
   onReply: (name: string) => void;
+  onPin: (id: string, is_pinned: boolean) => void;
 }
 
 const ChatItem = ({
@@ -27,9 +29,11 @@ const ChatItem = ({
   created_at,
   reply_to,
   is_reply,
+  is_pinned,
   isWidget,
   onDelete,
   onReply,
+  onPin,
 }: ChatItemProps) => {
   const [isHover, setIsHover] = useState(false);
   const { data: session } = useSession();
@@ -102,22 +106,36 @@ const ChatItem = ({
           </div>
 
           {isHover && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0, transform: "rotate(45deg)" }}
-              animate={{ opacity: 1, scale: 1, transform: "rotate(0deg)" }}
-              transition={{ duration: 0.2 }}
-              onClick={() => onReply(name)}
-            >
-              <Tooltip title="Reply">
-                <ReplyIcon
-                  size={15}
-                  className={clsx(
-                    "transition duration-300 active:scale-90",
-                    condition && "scale-x-[-1] active:scale-x-[-1]",
-                  )}
-                />
-              </Tooltip>
-            </motion.button>
+            <>
+              <motion.button
+                initial={{ opacity: 0, scale: 0, transform: "rotate(45deg)" }}
+                animate={{ opacity: 1, scale: 1, transform: "rotate(0deg)" }}
+                transition={{ duration: 0.2 }}
+                onClick={() => onReply(name)}
+              >
+                <Tooltip title="Reply">
+                  <ReplyIcon
+                    size={15}
+                    className={clsx(
+                      "transition duration-300 active:scale-90",
+                      condition && "scale-x-[-1] active:scale-x-[-1]",
+                    )}
+                  />
+                </Tooltip>
+              </motion.button>
+
+              <motion.button
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => onPin(id, !is_pinned)}
+                className="rounded-md bg-yellow-400 p-2 text-yellow-900 transition duration-100 hover:bg-yellow-300"
+              >
+                <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
+                  <PinIcon size={17} />
+                </Tooltip>
+              </motion.button>
+            </>
           )}
 
           {session?.user?.email === authorEmail && isHover ? (

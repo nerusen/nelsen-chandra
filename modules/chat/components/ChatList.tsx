@@ -9,6 +9,7 @@ import { ChatListProps } from "@/common/types/chat";
 interface ChatListPropsNew extends ChatListProps {
   onDeleteMessage: (id: string) => void;
   onClickReply: (name: string) => void;
+  onPinMessage: (id: string, is_pinned: boolean) => void;
   isWidget?: boolean;
 }
 
@@ -17,6 +18,7 @@ const ChatList = ({
   isWidget,
   onDeleteMessage,
   onClickReply,
+  onPinMessage,
 }: ChatListPropsNew) => {
   const chatListRef = useRef<HTMLDivElement | null>(null);
   const [hasScrolledUp, setHasScrolledUp] = useState(false);
@@ -74,6 +76,7 @@ const ChatList = ({
           key={index}
           onDelete={onDeleteMessage}
           onReply={onClickReply}
+          onPin={onPinMessage}
           isWidget={isWidget}
           {...chat}
         />

@@ -69,6 +69,15 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
     }
   };
 
+  const handlePinMessage = async (id: string, is_pinned: boolean) => {
+    try {
+      await axios.patch("/api/chat", { id, is_pinned });
+      notif(`Message ${is_pinned ? "pinned" : "unpinned"} successfully`);
+    } catch (error) {
+      notif("Failed to toggle pin status");
+    }
+  };
+
   useEffect(() => {
     if (data) setMessages(data);
   }, [data]);
@@ -103,6 +112,21 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
           );
         },
       )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "messages",
+        },
+        (payload) => {
+          setMessages((prevMessages) =>
+            prevMessages.map((msg) =>
+              msg.id === payload.new.id ? (payload.new as MessageProps) : msg,
+            ),
+          );
+        },
+      )
       .subscribe();
 
     return () => {
@@ -119,6 +143,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
           messages={messages}
           onDeleteMessage={handleDeleteMessage}
           onClickReply={handleClickReply}
+          onPinMessage={handlePinMessage}
           isWidget={isWidget}
         />
       )}
