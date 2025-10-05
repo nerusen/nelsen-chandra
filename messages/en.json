@@ -1,0 +1,209 @@
+{
+  "HomePage": {
+    "intro": "Hi, I'm Satria Bahari",
+    "location": "Based in Jambi, Indonesia 🇮🇩",
+    "location_type": "Onsite",
+    "resume": "Experienced and passionate Fullstack Developer specializing in building scalable and efficient digital solutions. On the frontend, I work with Next.js, TypeScript, and Tailwind CSS to craft responsive and accessible user interfaces. On the backend, I develop robust services using Golang, and for mobile, I build native Android apps with Kotlin. I’m a collaborative and detail-oriented engineer committed to delivering well-structured, high-performance applications across platforms.",
+    "skills": {
+      "title": "Skills",
+      "sub_title": "My professional skills."
+    },
+    "bento": {
+      "title": "Featured Sections",
+      "sub_title": "Explore everything I’ve crafted, contributed, and accomplished."
+    }
+  },
+  "AboutPage": {
+    "title": "About",
+    "description": "A brief introduction to who I am.",
+    "resume": {
+      "paragraf_1": "Hello there! Thank you for visiting my personal website. I'm Satria Bahari, a student majoring in Information Systems at the University of Jambi. I'm a Fullstack Developer with a passion for building impactful software products. My stack includes modern frontend technologies like Next.js, TypeScript, and Tailwind CSS, as well as backend development using Golang. For mobile applications, I develop native Android apps using Kotlin.",
+
+      "paragraf_2": "I enjoy creating solutions that are both user-friendly and performant. Whether it's building intuitive interfaces or architecting backend services, I aim to bring efficiency and clarity into every layer of the application. I’m a fast learner who thrives in dynamic environments, and I enjoy solving complex problems collaboratively.",
+
+      "paragraf_3": "I believe that great communication and team synergy are key to success in software development. My experience has shaped my technical and analytical skills, as well as my leadership qualities. I'm always excited to work in teams, learn from others, and contribute to impactful projects.",
+
+      "paragraf_4": "Best regards,"
+    },
+    "career": {
+      "title": "Career",
+      "sub_title": "My professional journey."
+    },
+    "education": {
+      "title": "Education",
+      "sub_title": "My educational journey."
+    },
+    "resume_download_button": "Download Resume",
+    "portfolio_download_button": "Download Portfolio"
+  },
+  "AchievementsPage": {
+    "title": "Achievements",
+    "description": "A curated collection of certificates and badges I’ve earned throughout my professional and academic journey.",
+    "error": "An error occurred on the server.",
+    "no_data": "No data available.",
+    "show_credential": "Show Credentials"
+  },
+  "ProjectsPage": {
+    "title": "Projects",
+    "description": "A showcase of both private and open-source projects I’ve built or contributed to.",
+    "view_project": "View Project",
+    "tech_stack": "Tech Stack",
+    "back_button": "Back",
+    "source_code_text": "Source Code",
+    "live_demo_text": "Live Demo",
+    "error": "An error occurred on the server.",
+    "no_data": "No data available."
+  },
+  "DashboardPage": {
+    "title": "Dashboard",
+    "description": "My personal dashboard built with Next.js API routes, visualizing development statistics and contributions in real-time.",
+    "error": "An error occurred on the server.",
+    "umami": {
+      "title": "Umami",
+      "sub_title": "Monitor real-time traffic and interactions from my portfolio site.",
+      "overview": {
+        "page_views": "Page Views",
+        "visitors": "Visitors",
+        "visits": "Visits",
+        "countries": "Countries",
+        "events": "Events"
+      },
+      "chart": {
+        "title": "Traffic Trends",
+        "sessions": "Sessions",
+        "page_views": "Page Views"
+      },
+      "filter_placeholder": "Filter domain..."
+    },
+    "github": {
+      "title": "GitHub Contributions",
+      "sub_title": "My GitHub activity over the past year.",
+      "title_total_contribution": "Total",
+      "title_total_this_week_contributino": "This week",
+      "title_best_contribution": "Best",
+      "title_average_contribution": "Average",
+      "title_less_contribution": "Less",
+      "title_more_contribution": "More",
+      "unit": "day"
+    },
+    "wakatime": {
+      "title": "WakaTime Stats",
+      "sub_title": "Coding activity over the past 7 days.",
+      "last_update": "Last Update",
+      "start_date": "Start Date",
+      "end_date": "End Date",
+      "daily_average": "Average Daily Coding Time",
+      "total_this_week": "Total This Week",
+      "best_day": "Best Day",
+      "all_time_since_joined": "All-Time Coding Since Joined",
+      "languages": "Top Languages"
+    },
+    "codewars": {
+      "title": "Codewars Progress",
+      "sub_title": "Performance metrics from Codewars challenges.",
+      "title_rank": "Rank",
+      "title_honor": "Honor",
+      "title_completed": "Challenges Completed",
+      "title_leaderboard": "Global Leaderboard",
+      "title_clan": "Clan",
+      "title_skills": "Associated Skills"
+    },
+    "monkeytype": {
+      "title": "Monkeytype Stats",
+      "sub_title": "Typing statistics and performance.",
+      "joined": "Joined",
+      "current_streak": "Current Streak",
+      "unit_days": "days",
+      "title_test_started": "Tests Started",
+      "title_test_completed": "Tests Completed",
+      "title_time_typing": "Total Typing Time",
+      "title_leaderboard": "All-Time English Leaderboard",
+      "unit_seconds": "seconds",
+      "unit_time": "time",
+      "unit_words": "words",
+      "top": "top",
+      "days_ago": "days ago",
+      "xp_until_next_level": "XP to Next Level",
+      "total_xp": "Total XP"
+    }
+  },
+  "ChatRoomPage": {
+    "title": "Chat Room",
+    "description": "Feel free to share your thoughts, suggestions, questions, or anything else!",
+    "placeholder": "Type your message...",
+    "sign_in": {
+      "title": "Please sign in to join the conversation. Don't worry, your data is safe with us.",
+      "label": "Sign in with",
+      "signed_label": "Signed in as",
+      "sign_out_label": "Sign out"
+    },
+    "widget": {
+      "title": "Chat Room",
+      "tooltip_title": "Open Chat Room",
+      "tooltip_minimize": "Minimize",
+      "tooltip_signout": "Sign out"
+    }
+  },
+  "ContactPage": {
+    "title": "Contact",
+    "description": "Let`s get in touch",
+    "social_media": {
+      "title": "Find me on social media",
+      "gmail": {
+        "title": "Stay in Touch",
+        "description": "Reach out via email for inquiries or collaborations."
+      },
+      "instagram": {
+        "title": "Follow My Journey",
+        "description": "Follow my creative journey."
+      },
+      "linkedin": {
+        "title": "Let's Connect",
+        "description": "Connect with me professionally."
+      },
+      "tiktok": {
+        "title": "Join the Fun",
+        "description": "Watch engaging and fun content."
+      },
+      "github": {
+        "title": "Explore the Code",
+        "description": "Explore my open-source work."
+      }
+    },
+    "form": {
+      "title": "Or send me a message",
+      "input_name": "Name",
+      "input_email": "Email",
+      "input_message": "Message",
+      "button": "Send Email"
+    }
+  },
+  "SmartTalkPage": {
+    "title": "Smart Talk",
+    "description": "An AI-powered space for natural, insightful conversations and idea exploration."
+  },
+  "Footer": {
+    "hire": "Hire me.",
+    "copyright_1": "COPYRIGHT © ",
+    "copyright_2": "Satria Bahari. All rights reserved."
+  },
+  "LocaleSwitcher": {
+    "en": "🇺🇸",
+    "id": "🇮🇩",
+    "label": "Language"
+  },
+  "Navigation": {
+    "Home": "Home",
+    "About": "About",
+    "Achievements": "Achievements",
+    "Projects": "Projects",
+    "Dashboard": "Dashboard",
+    "Chat Room": "Chat Room",
+    "Contact": "Contact",
+    "Smart Talk": "Smart Talk"
+  },
+  "NotFoundPage": {
+    "title": "Page not found",
+    "button": "Take me home"
+  }
+}
