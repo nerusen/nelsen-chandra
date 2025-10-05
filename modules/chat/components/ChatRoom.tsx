@@ -39,11 +39,11 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
 
   const handleSendMessage = async (message: string) => {
     const messageId = uuidv4();
-    const newMessageData: MessageProps = {
+    const newMessageData = {
       id: messageId,
-      name: session?.user?.name || "",
-      email: session?.user?.email || "",
-      image: session?.user?.image || undefined,
+      name: session?.user?.name,
+      email: session?.user?.email,
+      image: session?.user?.image,
       message,
       is_reply: isReply.is_reply,
       reply_to: isReply.name,
@@ -52,7 +52,6 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
     };
     try {
       await axios.post("/api/chat", newMessageData);
-      setMessages((prevMessages) => [...prevMessages, newMessageData]);
       notif("Successfully to send message");
     } catch (error) {
       console.error("Error:", error);
