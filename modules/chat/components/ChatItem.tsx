@@ -105,6 +105,10 @@ const ChatItem = ({
             {!is_reply && <>{message}</>}
           </div>
 
+          {is_pinned && (
+            <span className="text-xs text-yellow-500 font-medium">pinned</span>
+          )}
+
           {isHover && (
             <>
               <motion.button
@@ -124,17 +128,19 @@ const ChatItem = ({
                 </Tooltip>
               </motion.button>
 
-              <motion.button
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => onPin(id, !is_pinned)}
-                className="rounded-md bg-yellow-400 p-2 text-yellow-900 transition duration-100 hover:bg-yellow-300"
-              >
-                <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
-                  <PinIcon size={17} />
-                </Tooltip>
-              </motion.button>
+              {session?.user?.email === authorEmail && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => onPin(id, !is_pinned)}
+                  className="rounded-md bg-yellow-400 p-1.5 text-yellow-900 transition duration-100 hover:bg-yellow-300"
+                >
+                  <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
+                    <PinIcon size={15} />
+                  </Tooltip>
+                </motion.button>
+              )}
             </>
           )}
 
@@ -144,9 +150,9 @@ const ChatItem = ({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.1 }}
               onClick={() => onDelete(id)}
-              className="rounded-md bg-red-600 p-2 text-red-50 transition duration-100 hover:bg-red-500"
+              className="rounded-md bg-red-600 p-1.5 text-red-50 transition duration-100 hover:bg-red-500"
             >
-              <DeleteIcon size={17} />
+              <DeleteIcon size={15} />
             </motion.button>
           ) : null}
         </div>
