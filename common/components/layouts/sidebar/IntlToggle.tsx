@@ -85,7 +85,7 @@ const IntlToggle = () => {
       >
         <motion.div
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-300 text-white"
         >
           {locales[(currentIndex + 1) % locales.length].flag}
         </motion.div>
