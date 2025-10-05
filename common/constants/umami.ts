@@ -24,7 +24,7 @@ export const UMAMI_ACCOUNT = {
       domain: "satriabahari.my.id",
       website_id: process.env.UMAMI_WEBSITE_ID_MYID,
       umami_url:
-        "https://cloud.umami.is/share/YBbXz2wWG0lCgSLt/www.satriabahari.my.id",
+        "https://cloud.umami.is/share/BvFG8SxvT8qsY8dC/nelsen-chandra.vercel.app",
     },
   ],
 };
