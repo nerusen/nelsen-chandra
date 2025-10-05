@@ -1,16 +1,16 @@
 export const METADATA = {
-  creator: "Satria Bahari",
-  description: "Personal website, portfolio, blog",
-  keyword: "satria, satria bahari",
+  creator: "Nelsen Chandra",
+  description: "Personal website modern by Nelsen Chandra",
+  keyword: "nelsen, nelsen chandra, porto nelsen, nelsen portofolio, nelsen porto, nelsen design, nerusen, nerusen nelsen, smk ketintang, smk ketintang surabaya, portofolio modern, modern porto, graphic design, keintang",
   authors: {
-    name: "Satria Bahari",
+    name: "Nelsen Chandra",
     url: process.env.DOMAIN,
   },
   openGraph: {
     url: process.env.DOMAIN,
-    siteName: "Satria Bahari",
+    siteName: "Nelsen Chandra",
     locale: "id-ID",
   },
-  exTitle: "| Satria Bahari",
+  exTitle: "| Nelsen Chandra",
   profile: "/images/satria.jpg",
 };
