@@ -41,7 +41,7 @@ const IntlToggle = () => {
       >
         {/* Sliding Background */}
         <motion.div
-          className="absolute bottom-1 top-1 w-10 rounded-full bg-blue-500"
+          className="absolute bottom-1 top-1 w-10 rounded-full bg-neutral-300 dark:bg-neutral-700"
           animate={{
             x: slidePosition + currentIndex * 4,
           }}
@@ -85,7 +85,7 @@ const IntlToggle = () => {
       >
         <motion.div
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-300 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-50"
         >
           {locales[(currentIndex + 1) % locales.length].flag}
         </motion.div>
