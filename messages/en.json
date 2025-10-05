@@ -1,7 +1,7 @@
 {
   "HomePage": {
-    "intro": "Hi, I'm Satria Bahari",
-    "location": "Based in Jambi, Indonesia 🇮🇩",
+    "intro": "Hi, I'm Nelsen Chandra",
+    "location": "Based in Surabaya, Indonesia 🇮🇩",
     "location_type": "Onsite",
     "resume": "Experienced and passionate Fullstack Developer specializing in building scalable and efficient digital solutions. On the frontend, I work with Next.js, TypeScript, and Tailwind CSS to craft responsive and accessible user interfaces. On the backend, I develop robust services using Golang, and for mobile, I build native Android apps with Kotlin. I’m a collaborative and detail-oriented engineer committed to delivering well-structured, high-performance applications across platforms.",
     "skills": {
@@ -185,7 +185,7 @@
   "Footer": {
     "hire": "Hire me.",
     "copyright_1": "COPYRIGHT © ",
-    "copyright_2": "Satria Bahari. All rights reserved."
+    "copyright_2": " Nelsen Chandra. All rights reserved."
   },
   "LocaleSwitcher": {
     "en": "🇺🇸",
