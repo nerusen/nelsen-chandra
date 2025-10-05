@@ -8,6 +8,7 @@ export interface MessageProps {
   reply_to?: string;
   created_at: string;
   is_show?: boolean;
+  is_pinned?: boolean;
 }
 
 export interface ChatListProps {
