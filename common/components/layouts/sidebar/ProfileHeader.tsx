@@ -43,7 +43,7 @@ const ProfileHeader = ({ expandMenu, imageSize }: ProfileHeaderProps) => {
       </div>
 
       <div className="hidden text-sm text-neutral-600 transition-all duration-300 hover:text-neutral-700 dark:text-neutral-500 dark:hover:text-neutral-400 lg:flex">
-        @nelsennnc
+        @satriabahari
       </div>
 
       <div className="hidden justify-between gap-6 lg:mt-4 lg:flex">
