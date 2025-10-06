@@ -34,7 +34,6 @@ import {
   SiJest,
   SiDocker,
   SiKotlin,
-  SiFramer,
   SiGeode,
   SiGit,
   SiGitlab,
