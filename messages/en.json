@@ -3,7 +3,7 @@
     "intro": "Hi, I'm Nelsen Chandra",
     "location": "Based in Surabaya, Indonesia 🇮🇩",
     "location_type": "Onsite",
-    "resume": "Experienced and passionate Fullstack Developer specializing in building scalable and efficient digital solutions. On the frontend, I work with Next.js, TypeScript, and Tailwind CSS to craft responsive and accessible user interfaces. On the backend, I develop robust services using Golang, and for mobile, I build native Android apps with Kotlin. I’m a collaborative and detail-oriented engineer committed to delivering well-structured, high-performance applications across platforms.",
+    "resume": "Experienced and passionate Front-End Developer specializing in building scalable and efficient digital solutions. I use Next.js, TypeScript, and Tailwind CSS to create responsive and accessible user interfaces. I'm a collaborative and detail-oriented engineer, committed to delivering well-structured and high-performance cross-platform applications.",
     "skills": {
       "title": "Skills",
       "sub_title": "My professional skills."
@@ -17,11 +17,11 @@
     "title": "About",
     "description": "A brief introduction to who I am.",
     "resume": {
-      "paragraf_1": "Hello there! Thank you for visiting my personal website. I'm Nelsen Chandra, a student majoring in Information Systems at the University of Jambi. I'm a Fullstack Developer with a passion for building impactful software products. My stack includes modern frontend technologies like Next.js, TypeScript, and Tailwind CSS, as well as backend development using Golang. For mobile applications, I develop native Android apps using Kotlin.",
+      "paragraf_1": "Hello there! Thank you for visiting my personal website. I'm Nelsen Chandra, a Visual Communication Design major at SMKS Ketintang Surabaya. I'm a Front-End Developer and Graphic Designer with a passion for building impactful software products. My tech stack includes modern Front-End technologies like Next.js, TypeScript, and Tailwind CSS.",
 
-      "paragraf_2": "I enjoy creating solutions that are both user-friendly and performant. Whether it's building intuitive interfaces or architecting backend services, I aim to bring efficiency and clarity into every layer of the application. I’m a fast learner who thrives in dynamic environments, and I enjoy solving complex problems collaboratively.",
+      "paragraf_2": "I enjoy creating user-friendly and high-performance solutions. I excel at building intuitive interfaces. I strive to bring efficiency and clarity to every layer of an application. I'm a fast learner who thrives in dynamic environments and enjoys solving complex problems both collaboratively and individually.",
 
-      "paragraf_3": "I believe that great communication and team synergy are key to success in software development. My experience has shaped my technical and analytical skills, as well as my leadership qualities. I'm always excited to work in teams, learn from others, and contribute to impactful projects.",
+      "paragraf_3": "I believe that strong communication and teamwork are key to success in software development. My experiences have shaped my technical and analytical skills, as well as my leadership qualities. I'm always eager to work in teams, learn from others, and contribute to impactful projects.",
 
       "paragraf_4": "Best regards,"
     },

@@ -3,7 +3,7 @@
     "intro": "Hai, saya Nelsen Chandra",
     "location": "Berdomisili di Surabaya, Indonesia 🇮🇩",
     "location_type": "Tatap Muka",
-    "resume": "Pengembang Fullstack yang berpengalaman dan penuh semangat, berspesialisasi dalam membangun solusi digital yang skalabel dan efisien. Di sisi frontend, saya menggunakan Next.js, TypeScript, dan Tailwind CSS untuk membuat antarmuka pengguna yang responsif dan mudah diakses. Di sisi backend, saya mengembangkan layanan yang tangguh menggunakan Golang, dan untuk mobile, saya membangun aplikasi Android native menggunakan Kotlin. Saya adalah engineer yang kolaboratif dan berorientasi pada detail, berkomitmen untuk menghadirkan aplikasi lintas platform yang terstruktur dengan baik dan berkinerja tinggi.",
+    "resume": "Pengembang Antarmuka yang berpengalaman dan penuh semangat, berspesialisasi dalam membangun solusi digital yang skalabel dan efisien. Saya menggunakan Next.js, TypeScript, dan Tailwind CSS untuk membuat antarmuka pengguna yang responsif dan mudah diakses. Saya adalah engineer yang kolaboratif dan berorientasi pada detail, berkomitmen untuk menghadirkan aplikasi lintas platform yang terstruktur dengan baik dan berkinerja tinggi.",
     "skills": {
       "title": "Keahlian",
       "sub_title": "Keahlian profesional saya."
@@ -17,9 +17,9 @@
     "title": "Tentang",
     "description": "Perkenalan singkat tentang siapa saya.",
     "resume": {
-      "paragraf_1": "Halo! Terima kasih telah mengunjungi situs pribadi saya. Saya Nelsen Chandra, seorang mahasiswa Sistem Informasi di Universitas Jambi. Saya adalah seorang Fullstack Developer dengan minat besar dalam membangun produk perangkat lunak yang berdampak. Stack teknologi saya meliputi teknologi frontend modern seperti Next.js, TypeScript, dan Tailwind CSS, serta pengembangan backend menggunakan Golang. Untuk aplikasi mobile, saya mengembangkan aplikasi Android native menggunakan Kotlin.",
+      "paragraf_1": "Halo! Terima kasih telah mengunjungi situs pribadi saya. Saya Nelsen Chandra, seorang pelajar dengan kejuaran Desain Komunikasi Visual di SMKS Ketintang Surabaya. Saya adalah seorang Front End Developer dan Desainer Grafis dengan minat besar dalam membangun produk perangkat lunak yang berdampak. Stack teknologi saya meliputi teknologi Frontend modern seperti Next.js, TypeScript, dan Tailwind CSS.",
 
-      "paragraf_2": "Saya menikmati menciptakan solusi yang ramah pengguna dan memiliki performa tinggi. Baik saat membangun antarmuka yang intuitif maupun merancang layanan backend, saya selalu berusaha membawa efisiensi dan kejelasan pada setiap lapisan aplikasi. Saya pembelajar cepat yang tumbuh dalam lingkungan dinamis dan senang menyelesaikan masalah kompleks secara kolaboratif.",
+      "paragraf_2": "Saya menikmati menciptakan solusi yang ramah pengguna dan memiliki performa tinggi. Baik saat membangun antarmuka yang intuitif. Saya selalu berusaha membawa efisiensi dan kejelasan pada setiap lapisan aplikasi. Saya pembelajar cepat yang tumbuh dalam lingkungan dinamis dan senang menyelesaikan masalah kompleks secara kolaboratif maupun individual.",
 
       "paragraf_3": "Saya percaya bahwa komunikasi yang baik dan sinergi tim adalah kunci kesuksesan dalam pengembangan perangkat lunak. Pengalaman saya telah membentuk kemampuan teknis dan analitis saya, serta kualitas kepemimpinan saya. Saya selalu bersemangat untuk bekerja dalam tim, belajar dari orang lain, dan berkontribusi pada proyek yang berdampak.",
 
