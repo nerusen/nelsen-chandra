@@ -17,7 +17,7 @@ export const CAREERS: CareerProps[] = [
       "Implemented efficient data handling and secure API integrations to support daily attendance workflows.",
       "Collaborated with frontend and product teams to ensure smooth functionality and seamless user experience.",
     ],
-    isShow: true,
+    isShow: false,
   },
   {
     position: "Frontend Web Developer",
@@ -35,7 +35,7 @@ export const CAREERS: CareerProps[] = [
       "Ensured SEO optimization and fast performance by leveraging Next.js features such as static site generation.",
       "Collaborated with design and marketing teams to align web presence with brand identity.",
     ],
-    isShow: true,
+    isShow: false,
   },
   {
     position: "Head of Technology in the Research and Technology Division",
@@ -54,7 +54,7 @@ export const CAREERS: CareerProps[] = [
       "Managed the technical team and oversaw the implementation of hardware-software integration.",
       "Ensured the system was user-friendly, secure, and met the organization's operational needs.",
     ],
-    isShow: true,
+    isShow: false,
   },
   {
     position: "Mobile Development Cohort",
@@ -73,7 +73,7 @@ export const CAREERS: CareerProps[] = [
       "Collaborated with a cross-functional team to develop a Company-Based Capstone Project, applying Agile methodologies and real-world problem-solving.",
       "Enhanced teamwork, problem-solving, and communication skills in a multicultural environment.",
     ],
-    isShow: true,
+    isShow: false,
   },
   {
     position: "Mobile Developer",
@@ -92,6 +92,6 @@ export const CAREERS: CareerProps[] = [
       "Worked closely with PT Amanah Corp to ensure alignment with business objectives and deliver impactful, real-world solutions.",
       "Strengthened technical and soft skills, including problem-solving, teamwork, and communication, in a professional, multicultural setting.",
     ],
-    isShow: true,
+    isShow: false,
   },
 ];
