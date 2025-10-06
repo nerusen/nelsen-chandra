@@ -6,7 +6,7 @@ const Portfolio = () => {
   const t = useTranslations("AboutPage");
 
   const PORTFOLIO_URL =
-    "https://www.canva.com/design/DAGGNurMYa0/Qz-ESp1akKih_dBsdV0_0w/edit?utm_content=DAGGNurMYa0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton";
+    "https://linktr.ee/nerusendsgn";
 
   return (
     <Link
