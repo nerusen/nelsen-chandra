@@ -34,6 +34,9 @@ import {
   SiJest,
   SiDocker,
   SiKotlin,
+  SiAdobe,
+  SiFigma,
+  SiSketch,
 } from "react-icons/si";
 
 export type SkillProps = {
@@ -262,6 +265,36 @@ export const STACKS: SkillProps = {
     icon: <SiGithub size={iconSize} />,
     background: "bg-slate-800",
     color: "text-neutral-50",
+    isActive: true,
+  },
+  "Adobe Photoshop": {
+    icon: <SiAdobe size={iconSize} />,
+    background: "bg-red-500",
+    color: "text-red-500",
+    isActive: true,
+  },
+  "Adobe Illustrator": {
+    icon: <SiAdobe size={iconSize} />,
+    background: "bg-red-500",
+    color: "text-red-500",
+    isActive: true,
+  },
+  CorelDRAW: {
+    icon: <SiAdobe size={iconSize} />,
+    background: "bg-blue-500",
+    color: "text-blue-500",
+    isActive: true,
+  },
+  Figma: {
+    icon: <SiFigma size={iconSize} />,
+    background: "bg-purple-500",
+    color: "text-purple-500",
+    isActive: true,
+  },
+  Sketch: {
+    icon: <SiSketch size={iconSize} />,
+    background: "bg-orange-500",
+    color: "text-orange-500",
     isActive: true,
   },
 };
