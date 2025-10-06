@@ -34,42 +34,10 @@ import {
   SiJest,
   SiDocker,
   SiKotlin,
-  SiGeode,
-  SiGit,
-  SiGitlab,
-  SiGithubcopilot,
-  SiDiscord,
-  SiGoogleanalytics,
-  SiGoogleappsscript,
-  SiGooglegemini,
-  SiGooglefonts,
-  SiGoogletranslate,
-  SiGoogledataproc,
-  SiGooglecloud,
-  SiGoogleauthenticator,
-  SiArchlinux,
-  SiHeroku,
-  SiCloudflare,
-  SiClaude,
   SiAdobe,
   SiFigma,
-  SiCoreldraw,
   SiSketch,
-  SiAdobelightroom,
-  SiAdobephotoshop,
-  SiAdobeillustrator,
-  SiCanva,
-  SiDeviantart
 } from "react-icons/si";
-import {
-  AiOutlineBehance,
-  AiFillGoogleCircle,
-  AiFillGooglePlusCircle,
-  AiFillDiscord,
-  AiFillLinkedin,
-  AiFillOpenAI,
-  AiFillSpotify
-} from "react-icons/ai";
 
 export type SkillProps = {
   [key: string]: {
@@ -99,7 +67,7 @@ export const STACKS: SkillProps = {
     icon: <BsFillBootstrapFill size={iconSize} />,
     background: "bg-violet-600",
     color: "text-violet-600",
-    isActive: false,
+    isActive: true,
   },
   TailwindCSS: {
     icon: <SiTailwindcss size={iconSize} />,
@@ -153,7 +121,7 @@ export const STACKS: SkillProps = {
     icon: <SiVite size={iconSize} />,
     background: "bg-purple-500",
     color: "text-purple-500",
-    isActive: false,
+    isActive: true,
   },
   "Framer Motion": {
     icon: <TbBrandFramerMotion size={iconSize} />,
@@ -165,13 +133,13 @@ export const STACKS: SkillProps = {
     icon: <SiRedux size={iconSize} />,
     background: "bg-violet-500",
     color: "text-violet-500",
-    isActive: false,
+    isActive: true,
   },
   "Astro.js": {
     icon: <SiAstro size={iconSize} />,
     background: "bg-violet-600",
     color: "text-violet-600",
-    isActive: false,
+    isActive: true,
   },
   "Next.js": {
     icon: <SiNextdotjs size={iconSize} />,
@@ -189,7 +157,7 @@ export const STACKS: SkillProps = {
     icon: <SiExpress size={iconSize} />,
     background: "bg-neutral-800",
     color: "text-neutral-800",
-    isActive: false,
+    isActive: true,
   },
   "Nest.js": {
     icon: <SiNestjs size={iconSize} />,
@@ -201,7 +169,7 @@ export const STACKS: SkillProps = {
     icon: <FaGolang size={iconSize} />,
     background: "bg-sky-500",
     color: "text-sky-500",
-    isActive: false,
+    isActive: true,
   },
   PHP: {
     icon: <SiPhp size={iconSize} />,
@@ -219,19 +187,19 @@ export const STACKS: SkillProps = {
     icon: <SiPrisma size={iconSize} />,
     background: "bg-teal-500",
     color: "text-teal-500",
-    isActive: false,
+    isActive: true,
   },
   Kotlin: {
     icon: <SiKotlin size={iconSize} />,
     background: "bg-violet-600",
     color: "text-violet-600",
-    isActive: false,
+    isActive: true,
   },
   PostgreSql: {
     icon: <BiLogoPostgresql size={iconSize} />,
     background: "bg-blue-500",
     color: "text-blue-500",
-    isActive: false,
+    isActive: true,
   },
   MySql: {
     icon: <SiMysql size={iconSize} />,
@@ -300,21 +268,21 @@ export const STACKS: SkillProps = {
     isActive: true,
   },
   "Adobe Photoshop": {
-    icon: <SiAdobephotoshop size={iconSize} />,
-    background: "bg-blue-950",
-    color: "text-blue-950",
+    icon: <SiAdobe size={iconSize} />,
+    background: "bg-red-500",
+    color: "text-red-500",
     isActive: true,
   },
   "Adobe Illustrator": {
-    icon: <SiAdobeillustrator size={iconSize} />,
-    background: "bg-amber-500",
-    color: "text-amber-500",
+    icon: <SiAdobe size={iconSize} />,
+    background: "bg-red-500",
+    color: "text-red-500",
     isActive: true,
   },
   CorelDRAW: {
-    icon: <SiCoreldraw size={iconSize} />,
-    background: "bg-lime-500",
-    color: "text-lime-500",
+    icon: <SiAdobe size={iconSize} />,
+    background: "bg-blue-500",
+    color: "text-blue-500",
     isActive: true,
   },
   Figma: {
@@ -323,40 +291,10 @@ export const STACKS: SkillProps = {
     color: "text-purple-500",
     isActive: true,
   },
-  Canva: {
-    icon: <SiCanva size={iconSize} />,
-    background: "bg-blue-600",
-    color: "text-blue-600",
-    isActive: true,
-  },
-  Framer: {
-    icon: <SiFramer size={iconSize} />,
-    background: "bg-blue-950",
-    color: "text-blue-950",
-    isActive: true,
-  },
-  Gemini: {
-    icon: <SiGooglegemini size={iconSize} />,
-    background: "bg-indigo-700",
-    color: "text-indigo-700",
-    isActive: true,
-  },
-  "Google Cloud": {
-    icon: <SiGooglecloud size={iconSize} />,
-    background: "bg-orange-600",
-    color: "text-orange-600",
-    isActive: true,
-  },
-  Discord: {
-    icon: <SiDiscord size={iconSize} />,
-    background: "bg-indigo-900",
-    color: "text-indigo-900",
-    isActive: true,
-  },
-  "Google Auth": {
-    icon: <SiGoogleauthenticator size={iconSize} />,
-    background: "bg-red-500",
-    color: "text-red-500",
+  Sketch: {
+    icon: <SiSketch size={iconSize} />,
+    background: "bg-orange-500",
+    color: "text-orange-500",
     isActive: true,
   },
 };
