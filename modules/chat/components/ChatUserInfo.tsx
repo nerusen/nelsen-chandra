@@ -2,6 +2,7 @@ import React from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { HiOutlineLogout as SignOutIcon } from "react-icons/hi";
+import { GiCoffeeCup } from "react-icons/gi";
 import cn from "@/common/libs/clsxm";
 
 const ChatUserInfo = ({ isWidget = false }: { isWidget?: boolean }) => {
@@ -25,13 +26,24 @@ const ChatUserInfo = ({ isWidget = false }: { isWidget?: boolean }) => {
         <p>({userEmail})</p>
       </div>
       {!isWidget && (
-        <button
-          onClick={() => signOut()}
-          className="flex cursor-pointer items-center gap-1 rounded-md bg-red-600 px-3 py-1 font-medium text-red-50 transition duration-100 hover:bg-red-500 active:scale-90"
-        >
-          <SignOutIcon size={16} />
-          <span>{t("sign_out_label")}</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => signOut()}
+            className="flex cursor-pointer items-center gap-1 rounded-md bg-red-600 px-3 py-1 font-medium text-red-50 transition duration-100 hover:bg-red-500 active:scale-90"
+          >
+            <SignOutIcon size={16} />
+            <span>{t("sign_out_label")}</span>
+          </button>
+          <a
+            href="https://buymeacoffee.com/nerusen"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex cursor-pointer items-center gap-1 rounded-md bg-gradient-to-r from-yellow-400 to-orange-500 px-3 py-1 font-medium text-white dark:text-black transition duration-100 hover:from-yellow-500 hover:to-orange-600 active:scale-90 animate-pulse"
+          >
+            <GiCoffeeCup size={16} />
+            <span>BuyMeCoffee</span>
+          </a>
+        </div>
       )}
     </div>
   ) : null;

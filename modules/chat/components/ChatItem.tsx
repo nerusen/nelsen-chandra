@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { MdAdminPanelSettings as AdminIcon } from "react-icons/md";
+import { MdVerified as VerifiedIcon } from "react-icons/md";
 import { FiTrash2 as DeleteIcon } from "react-icons/fi";
 import { BsFillReplyAllFill as ReplyIcon } from "react-icons/bs";
 import { BsPinAngleFill as PinIcon } from "react-icons/bs";
@@ -71,10 +72,16 @@ const ChatItem = ({
         >
           <div className="text-sm dark:text-neutral-200">{name}</div>
           {condition && (
-            <div className="flex items-center gap-[2px] rounded-full bg-sky-500/20 px-1.5 py-0.5 font-medium text-sky-500 ">
-              <AdminIcon size={13} />
-              <span className="text-[10px]">Author</span>
-            </div>
+            <>
+              <div className="flex items-center gap-[2px] rounded-full bg-yellow-400/20 px-1.5 py-0.5 font-medium text-yellow-900 ">
+                <AdminIcon size={13} />
+                <span className="text-[10px]">Author</span>
+              </div>
+              <div className="flex items-center gap-[2px] rounded-full bg-blue-500/20 px-1.5 py-0.5 font-medium text-blue-500 ">
+                <VerifiedIcon size={13} />
+                <span className="text-[10px]">Verified</span>
+              </div>
+            </>
           )}
           <div className="hidden md:flex">
             <ChatTime datetime={created_at} />
@@ -132,9 +139,9 @@ const ChatItem = ({
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.1 }}
                   onClick={() => onPin(id, !is_pinned)}
-                  className="rounded-md bg-yellow-400 p-2 text-yellow-900 transition duration-100 hover:bg-yellow-300"
+                  className="rounded-md bg-red-600 p-2 text-red-50 transition duration-100 hover:bg-red-500"
                 >
                   <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
                     <PinIcon size={17} />
