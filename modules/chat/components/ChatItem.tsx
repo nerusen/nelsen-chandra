@@ -113,7 +113,7 @@ const ChatItem = ({
           </div>
 
           {is_pinned && (
-            <span className="text-xs text-yellow-500 font-medium">pinned</span>
+            <span className="text-xs text-neutral-700 font-medium">pinned</span>
           )}
 
           {isHover && (
