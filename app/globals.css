@@ -28,22 +28,6 @@
   }
 }
 
-@keyframes author-shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.author-shimmer {
-  background: linear-gradient(90deg, #1f2937 0%, #374151 50%, #1f2937 100%);
-  background-size: 200% 100%;
-  animation: author-shimmer 3s ease-in-out infinite;
-  color: white;
-}
-
 @keyframes gold-shimmer {
   0% {
     background-position: -200% 0;
@@ -60,26 +44,29 @@
   color: black;
 }
 
-.author-border-glow {
+.author-gradient-border {
   position: relative;
+  background: #1f2937;
+  color: white;
 }
 
-.author-border-glow::before {
+.author-gradient-border::before {
   content: '';
   position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
   border-radius: inherit;
-  background: conic-gradient(from 0deg, #DB4437 0deg, #F4B400 90deg, #0F9D58 180deg, #4285F4 270deg, #DB4437 360deg);
+  background: conic-gradient(from var(--angle), #DB4437 0deg, #F4B400 90deg, #0F9D58 180deg, #4285F4 270deg, #DB4437 360deg);
   z-index: -1;
-  animation: rotate-border 2s linear infinite;
-  filter: blur(3px);
+  --angle: 0deg;
+  animation: gradient-rotate 2s linear infinite;
+  filter: blur(1px);
 }
 
-@keyframes rotate-border {
+@keyframes gradient-rotate {
   to {
-    transform: rotate(360deg);
+    --angle: 360deg;
   }
 }
