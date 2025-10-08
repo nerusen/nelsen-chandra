@@ -67,7 +67,7 @@
   left: -1px;
   z-index: -1;
   border-radius: inherit;
-  animation: spin 5s linear infinite;
+  animation: spin 3s linear infinite;
 }
 
 .author-gradient-border::before {
