@@ -71,7 +71,7 @@
 }
 
 .author-gradient-border::before {
-  filter: blur(1rem);
+  filter: blur(10px);
   opacity: 0.5;
 }
 
