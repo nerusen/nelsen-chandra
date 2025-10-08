@@ -73,11 +73,11 @@ const ChatItem = ({
           <div className="text-sm dark:text-neutral-200">{name}</div>
           {condition && (
             <>
-              <div className="flex items-center gap-[2px] rounded-full bg-yellow-400/20 px-1.5 py-0.5 font-medium text-yellow-500 ">
+              <div className="flex items-center gap-[2px] rounded-full bg-teal-500/20 px-1.5 py-0.5 font-medium text-teal-300 ">
                 <AdminIcon size={13} />
                 <span className="text-[10px]">Author</span>
               </div>
-              <div className="flex items-center gap-[2px] rounded-full bg-blue-500/20 px-1.5 py-0.5 font-medium text-blue-500 ">
+              <div className="flex items-center gap-[2px] rounded-full bg-blue-500/20 px-1.5 py-0.5 font-medium text-blue-400 ">
                 <VerifiedIcon size={13} />
                 <span className="text-[10px]">Verified</span>
               </div>
@@ -89,23 +89,16 @@ const ChatItem = ({
         </div>
         <div
           className={clsx(
-            "group relative ml-1.5 mr-2 flex w-fit items-center gap-3",
+            "group ml-1.5 mr-2 flex w-fit items-center gap-3",
             condition && "flex-row-reverse",
           )}
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
         >
-          <div
-            className={clsx(
-              "absolute top-1/2 h-3 w-3 -translate-y-1/2 rotate-45",
-              condition ? "author-shimmer -right-1" : "bg-neutral-200 group-hover:bg-neutral-300 dark:bg-neutral-800 dark:group-hover:bg-neutral-600 -left-1",
-            )}
-          />
-
           <div className={clsx(
             "rounded-xl px-4 py-2",
             condition
-              ? "author-shimmer"
+              ? "author-shimmer author-border-glow"
               : "bg-neutral-200 group-hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-50 dark:group-hover:bg-neutral-600",
           )}>
             {is_reply && (
