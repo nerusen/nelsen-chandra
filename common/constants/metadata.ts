@@ -12,5 +12,5 @@ export const METADATA = {
     locale: "id-ID",
   },
   exTitle: "| Nelsen Chandra",
-  profile: "/images/satria.jpg",
+  profile: "/images/thumbnail.jpg",
 };
