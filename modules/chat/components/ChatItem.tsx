@@ -73,7 +73,7 @@ const ChatItem = ({
           <div className="text-sm dark:text-neutral-200">{name}</div>
           {condition && (
             <>
-              <div className="flex items-center gap-[2px] rounded-full bg-yellow-400/20 px-1.5 py-0.5 font-medium text-yellow-900 ">
+              <div className="flex items-center gap-[2px] rounded-full bg-yellow-400/20 px-1.5 py-0.5 font-medium text-yellow-500 ">
                 <AdminIcon size={13} />
                 <span className="text-[10px]">Author</span>
               </div>
