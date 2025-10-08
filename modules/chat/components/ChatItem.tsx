@@ -98,7 +98,7 @@ const ChatItem = ({
           <div className={clsx(
             "rounded-xl px-4 py-2",
             condition
-              ? "author-shimmer author-border-glow"
+              ? "author-border-glow"
               : "bg-neutral-200 group-hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-50 dark:group-hover:bg-neutral-600",
           )}>
             {is_reply && (
