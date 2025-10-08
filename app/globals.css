@@ -58,15 +58,14 @@
   right: -1px;
   bottom: -1px;
   border-radius: inherit;
-  background: conic-gradient(from var(--angle), #DB4437 0deg, #F4B400 90deg, #0F9D58 180deg, #4285F4 270deg, #DB4437 360deg);
+  background: conic-gradient(from 0deg, #DB4437 0deg, #F4B400 90deg, #0F9D58 180deg, #4285F4 270deg, #DB4437 360deg);
   z-index: -1;
-  --angle: 0deg;
-  animation: gradient-rotate 2s linear infinite;
+  animation: rotate-border 2s linear infinite;
   filter: blur(1px);
 }
 
-@keyframes gradient-rotate {
+@keyframes rotate-border {
   to {
-    --angle: 360deg;
+    transform: rotate(360deg);
   }
 }
