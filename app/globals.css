@@ -38,7 +38,7 @@
 }
 
 .author-shimmer {
-  background: linear-gradient(90deg, #374151 0%, #4B5563 50%, #374151 100%);
+  background: linear-gradient(90deg, #1f2937 0%, #374151 50%, #1f2937 100%);
   background-size: 200% 100%;
   animation: author-shimmer 3s ease-in-out infinite;
   color: white;
@@ -74,6 +74,7 @@
   border-radius: inherit;
   background: conic-gradient(from 0deg, #DB4437 0deg, #F4B400 90deg, #0F9D58 180deg, #4285F4 270deg, #DB4437 360deg);
   z-index: -1;
+  animation: rotate-border 2s linear infinite;
   filter: blur(3px);
 }
 
