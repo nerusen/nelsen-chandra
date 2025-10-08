@@ -60,14 +60,12 @@
 .author-gradient-border::before {
   content: '';
   position: absolute;
-  height: 100%;
-  width: 100%;
+  height: calc(100% + 8px);
+  width: calc(100% + 8px);
   background-image: conic-gradient(from var(--angle), #DB4437, #F4B400, #0F9D58, #4285F4, #DB4437);
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
+  top: -4px;
+  left: -4px;
   z-index: -1;
-  padding: 4px;
   border-radius: inherit;
   animation: spin 3s linear infinite;
 }
