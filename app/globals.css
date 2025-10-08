@@ -43,3 +43,19 @@
   animation: author-shimmer 3s ease-in-out infinite;
   color: white;
 }
+
+@keyframes gold-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.gold-shimmer {
+  background: linear-gradient(90deg, #FFD700 0%, #DAA520 50%, #FFD700 100%);
+  background-size: 200% 100%;
+  animation: gold-shimmer 3s ease-in-out infinite;
+  color: black;
+}
