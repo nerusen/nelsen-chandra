@@ -73,7 +73,7 @@ const ChatItem = ({
           <div className="text-sm dark:text-neutral-200">{name}</div>
           {condition && (
             <>
-              <div className="flex items-center gap-[2px] rounded-full bg-yellow-400/20 px-1.5 py-0.5 font-medium text-yellow-400 ">
+              <div className="flex items-center gap-[2px] rounded-full bg-yellow-400/20 px-1.5 py-0.5 font-medium text-yellow-900 ">
                 <AdminIcon size={13} />
                 <span className="text-[10px]">Author</span>
               </div>
@@ -102,7 +102,12 @@ const ChatItem = ({
             )}
           />
 
-          <div className="rounded-xl bg-neutral-200 px-4 py-2 group-hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-50 dark:group-hover:bg-neutral-600">
+          <div className={clsx(
+            "rounded-xl px-4 py-2",
+            condition
+              ? "author-shimmer"
+              : "bg-neutral-200 group-hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-50 dark:group-hover:bg-neutral-600",
+          )}>
             {is_reply && (
               <>
                 <span className="text-emerald-500">@{reply_to} </span>
@@ -113,7 +118,7 @@ const ChatItem = ({
           </div>
 
           {is_pinned && (
-            <span className="text-xs text-neutral-700 font-medium">pinned</span>
+            <span className="text-xs text-yellow-500 font-medium">pinned</span>
           )}
 
           {isHover && (
@@ -141,10 +146,10 @@ const ChatItem = ({
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.1 }}
                   onClick={() => onPin(id, !is_pinned)}
-                  className="rounded-md bg-red-600 p-2 text-red-50 transition duration-100 hover:bg-red-500"
+                  className="rounded-md bg-yellow-500 p-2 text-black transition duration-100 hover:bg-yellow-400 w-9 h-9 flex items-center justify-center"
                 >
                   <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
-                    <PinIcon size={17} />
+                    <PinIcon size={16} />
                   </Tooltip>
                 </motion.button>
               )}
@@ -157,9 +162,9 @@ const ChatItem = ({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.1 }}
               onClick={() => onDelete(id)}
-              className="rounded-md bg-red-600 p-2 text-red-50 transition duration-100 hover:bg-red-500"
+              className="rounded-md bg-red-600 p-2 text-red-50 transition duration-100 hover:bg-red-500 w-9 h-9 flex items-center justify-center"
             >
-              <DeleteIcon size={17} />
+              <DeleteIcon size={16} />
             </motion.button>
           ) : null}
         </div>

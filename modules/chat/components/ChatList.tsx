@@ -75,11 +75,7 @@ const ChatList = ({
       <PinnedMessagesToggle messages={messages} isWidget={isWidget} />
       {messages
         ?.sort((a, b) => {
-          // Pinned messages first
-          if (a.is_pinned && !b.is_pinned) return -1;
-          if (!a.is_pinned && b.is_pinned) return 1;
-
-          // Within same pin status, sort by created_at (newest first)
+          // Sort by created_at (newest first) - pinned messages stay in chronological position
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         })
         .map((chat) => (
