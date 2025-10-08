@@ -38,7 +38,7 @@ const ChatUserInfo = ({ isWidget = false }: { isWidget?: boolean }) => {
             href="https://buymeacoffee.com/nerusen"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex cursor-pointer items-center gap-1 rounded-md bg-gradient-to-r from-yellow-400 to-orange-500 px-3 py-1 font-medium text-white dark:text-black transition duration-100 hover:from-yellow-500 hover:to-orange-600 active:scale-90 animate-pulse"
+            className="flex cursor-pointer items-center gap-1 rounded-md gold-shimmer px-3 py-1 font-medium transition duration-100 active:scale-90"
           >
             <GiCoffeeCup size={16} />
             <span>BuyMeCoffee</span>

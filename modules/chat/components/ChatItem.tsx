@@ -97,8 +97,8 @@ const ChatItem = ({
         >
           <div
             className={clsx(
-              "absolute top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 bg-neutral-200 group-hover:bg-neutral-300 dark:bg-neutral-800 dark:group-hover:bg-neutral-600",
-              condition ? "-right-1" : "-left-1",
+              "absolute top-1/2 h-3 w-3 -translate-y-1/2 rotate-45",
+              condition ? "author-shimmer -right-1" : "bg-neutral-200 group-hover:bg-neutral-300 dark:bg-neutral-800 dark:group-hover:bg-neutral-600 -left-1",
             )}
           />
 
