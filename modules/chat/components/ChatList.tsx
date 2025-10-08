@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import ChatItem from "./ChatItem";
+import PinnedMessagesToggle from "./PinnedMessagesToggle";
 
 import { ChatListProps } from "@/common/types/chat";
 
@@ -71,16 +72,27 @@ const ChatList = ({
 
   return (
     <div ref={chatListRef} className="h-96 space-y-5 overflow-y-auto py-4">
-      {messages?.map((chat, index) => (
-        <ChatItem
-          key={index}
-          onDelete={onDeleteMessage}
-          onReply={onClickReply}
-          onPin={onPinMessage}
-          isWidget={isWidget}
-          {...chat}
-        />
-      ))}
+      <PinnedMessagesToggle messages={messages} isWidget={isWidget} />
+      {messages
+        ?.sort((a, b) => {
+          // Pinned messages first
+          if (a.is_pinned && !b.is_pinned) return -1;
+          if (!a.is_pinned && b.is_pinned) return 1;
+
+          // Within same pin status, sort by created_at (newest first)
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        })
+        .map((chat) => (
+          <div key={chat.id} id={`message-${chat.id}`}>
+            <ChatItem
+              onDelete={onDeleteMessage}
+              onReply={onClickReply}
+              onPin={onPinMessage}
+              isWidget={isWidget}
+              {...chat}
+            />
+          </div>
+        ))}
     </div>
   );
 };
