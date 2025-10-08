@@ -74,8 +74,7 @@
   border-radius: inherit;
   background: conic-gradient(from 0deg, #DB4437 0deg, #F4B400 90deg, #0F9D58 180deg, #4285F4 270deg, #DB4437 360deg);
   z-index: -1;
-  animation: rotate-border 2s linear infinite;
-  filter: blur(2px);
+  filter: blur(3px);
 }
 
 @keyframes rotate-border {
