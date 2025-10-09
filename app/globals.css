@@ -52,9 +52,17 @@
 
 .author-gradient-border {
   position: relative;
+  background: white;
+  color: black;
+}
+
+.dark .author-gradient-border {
   background: #121212;
   color: white;
+
 }
+
+
 
 .author-gradient-border::after,
 .author-gradient-border::before {
