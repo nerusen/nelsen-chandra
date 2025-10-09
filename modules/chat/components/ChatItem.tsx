@@ -105,14 +105,11 @@ const ChatItem = ({
               <>
                 <span className="text-blue-500">@{reply_to} </span>
                 <span>{message}</span>
+                {is_pinned && <><br /><span className="text-xs text-neutral-700 font-medium">Pinned</span></>}
               </>
             )}
-            {!is_reply && <>{message}</>}
+            {!is_reply && <>{message}{is_pinned && <><br /><span className="text-xs text-neutral-700 font-medium">Pinned</span></>}</>}
           </div>
-
-          {is_pinned && (
-            <span className="text-xs text-neutral-700 font-medium">Pinned</span>
-          )}
 
           {isHover && (
             <>
