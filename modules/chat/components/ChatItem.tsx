@@ -103,7 +103,7 @@ const ChatItem = ({
           )}>
             {is_reply && (
               <>
-                <span className="text-emerald-500">@{reply_to} </span>
+                <span className="text-blue-500">@{reply_to} </span>
                 <span>{message}</span>
               </>
             )}
@@ -111,7 +111,7 @@ const ChatItem = ({
           </div>
 
           {is_pinned && (
-            <span className="text-xs text-yellow-500 font-medium">pinned</span>
+            <span className="text-xs text-neutral-700 font-medium">Pinned</span>
           )}
 
           {isHover && (
@@ -139,7 +139,7 @@ const ChatItem = ({
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.1 }}
                   onClick={() => onPin(id, !is_pinned)}
-                  className="rounded-md bg-yellow-500 p-2 text-black transition duration-100 hover:bg-yellow-400 w-9 h-9 flex items-center justify-center"
+                  className="rounded-md bg-neutral-700 p-2 text-black transition duration-100 hover:bg-neutral-600 w-9 h-9 flex items-center justify-center"
                 >
                   <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
                     <PinIcon size={16} />
