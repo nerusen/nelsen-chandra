@@ -38,7 +38,7 @@
 }
 
 .gold-shimmer {
-  background: linear-gradient(90deg, #FFD700 0%, #DAA520 50%, #FFD700 100%);
+  background: linear-gradient(90deg, #FFD602 0%, #EFB003 50%, #FFD602 100%);
   background-size: 200% 100%;
   animation: gold-shimmer 3s ease-in-out infinite;
   color: black;
@@ -52,7 +52,7 @@
 
 .author-gradient-border {
   position: relative;
-  background: #1f2937;
+  background: #121212;
   color: white;
 }
 
@@ -62,7 +62,7 @@
   position: absolute;
   height: calc(100% + 2px);
   width: calc(100% + 2px);
-  background-image: conic-gradient(from var(--angle), #DB4437, #F4B400, #0F9D58, #4285F4, #DB4437);
+  background-image: conic-gradient(from var(--angle), #F32E1D, #F4C234, #21CA65, #4285F4, #F32E1D);
   top: -1px;
   left: -1px;
   z-index: -1;
