@@ -72,7 +72,7 @@ const PinnedMessagesToggle = ({ messages, isWidget }: PinnedMessagesToggleProps)
           <div className="flex items-center gap-2">
             <PinIcon size={16} className="text-yellow-500" />
             <span className="hidden sm:inline">Message pinned</span>
-            <span className="sm:hidden">Pinned</span>
+            <span className="sm:hidden">Message Pinned</span>
           </div>
           <div className="flex items-center gap-1">
             <span className="rounded-full bg-yellow-500/20 px-2 py-0.5 text-xs text-yellow-600 dark:text-yellow-400">
