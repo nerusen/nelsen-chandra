@@ -4,7 +4,7 @@ import {
   BsLinkedin as LinkedinIcon,
   BsTiktok as TiktokIcon,
 } from "react-icons/bs";
-import { SiGmail } from "react-icons/si";
+import { SiGmail, SiWhatsapp } from "react-icons/si";
 
 import { SocialMediaProps } from "../types/socialMedia";
 
@@ -78,6 +78,19 @@ export const SOCIAL_MEDIA: SocialMediaProps[] = [
     backgroundColor: "bg-slate-400",
     borderColor: "border-slate-400",
     backgroundGradientColor: "bg-gradient-to-b from-slate-900 to-slate-950",
+    isShow: true,
+  },
+  {
+    title: "WhatsApp Channel",
+    description: "Follow my whatsapp channel and share.",
+    name: "whatsapp",
+    href: "https://whatsapp.com/channel/0029Vb5hvNe72WU0vYq8513l",
+    icon: <SiWhatsapp size={iconSize} />,
+    backgroundIcon: <SiWhatsapp size={backgroundIconSize} />,
+    textColor: "text-green-300",
+    backgroundColor: "bg-green-300",
+    borderColor: "border-green-300",
+    backgroundGradientColor: "bg-gradient-to-b from-green-700 to-green-900",
     isShow: true,
   },
 ];
