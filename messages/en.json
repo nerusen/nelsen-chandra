@@ -168,6 +168,10 @@
       "github": {
         "title": "Explore the Code",
         "description": "Explore my open-source work."
+      },
+      "whatsapp": {
+        "title": "Chat on WhatsApp",
+        "description": "Send a message directly on WhatsApp for quick communication."
       }
     },
     "form": {

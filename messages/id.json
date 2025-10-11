@@ -168,6 +168,10 @@
       "github": {
         "title": "Jelajahi Kode",
         "description": "Lihat karya open-source saya."
+      },
+      "whatsapp": {
+        "title": "Obrolan di WhatsApp",
+        "description": "Kirim pesan langsung di WhatsApp untuk komunikasi cepat."
       }
     },
     "form": {
