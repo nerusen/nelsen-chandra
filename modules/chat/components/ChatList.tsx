@@ -84,29 +84,31 @@ const ChatList = ({
   }, [isWidget]);
 
   return (
-    <div ref={chatListRef} className="relative h-96 space-y-5 overflow-y-auto py-4">
-      <PinnedMessagesToggle messages={messages} isWidget={isWidget} />
-      {messages
-        ?.sort((a, b) => {
-          // Sort by created_at (oldest first) - chronological order
-          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
-        })
-        .map((chat) => (
-          <div key={chat.id} id={`message-${chat.id}`}>
-            <ChatItem
-              onDelete={onDeleteMessage}
-              onReply={onClickReply}
-              onPin={onPinMessage}
-              isWidget={isWidget}
-              {...chat}
-            />
-          </div>
-        ))}
+    <>
+      <div ref={chatListRef} className="h-96 space-y-5 overflow-y-auto py-4">
+        <PinnedMessagesToggle messages={messages} isWidget={isWidget} />
+        {messages
+          ?.sort((a, b) => {
+            // Sort by created_at (oldest first) - chronological order
+            return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+          })
+          .map((chat) => (
+            <div key={chat.id} id={`message-${chat.id}`}>
+              <ChatItem
+                onDelete={onDeleteMessage}
+                onReply={onClickReply}
+                onPin={onPinMessage}
+                isWidget={isWidget}
+                {...chat}
+              />
+            </div>
+          ))}
+      </div>
       <ScrollToBottomButton
         onClick={handleScrollToBottom}
         isVisible={showScrollButton}
       />
-    </div>
+    </>
   );
 };
 
