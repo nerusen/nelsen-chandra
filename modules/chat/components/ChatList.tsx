@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import ChatItem from "./ChatItem";
 import PinnedMessagesToggle from "./PinnedMessagesToggle";
+import ScrollToBottomButton from "./ScrollToBottomButton";
 
 import { ChatListProps } from "@/common/types/chat";
 
@@ -23,19 +24,22 @@ const ChatList = ({
 }: ChatListPropsNew) => {
   const chatListRef = useRef<HTMLDivElement | null>(null);
   const [hasScrolledUp, setHasScrolledUp] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const [chatListHeight, setChatListHeight] = useState('500px');
 
   useEffect(() => {
     const handleScroll = () => {
       if (chatListRef.current) {
-        const isScrolledToBottom =
-          chatListRef.current.scrollHeight - chatListRef.current.clientHeight <=
-          chatListRef.current.scrollTop + 5;
+        const { scrollHeight, clientHeight, scrollTop } = chatListRef.current;
+        const isScrolledToBottom = scrollHeight - clientHeight <= scrollTop + 5;
+        const distanceFromBottom = scrollHeight - clientHeight - scrollTop;
 
         if (isScrolledToBottom) {
           setHasScrolledUp(false);
+          setShowScrollButton(false);
         } else {
           setHasScrolledUp(true);
+          setShowScrollButton(distanceFromBottom > 100);
         }
       }
     };
@@ -48,6 +52,15 @@ const ChatList = ({
       currentChatListRef?.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleScrollToBottom = () => {
+    if (chatListRef.current) {
+      chatListRef.current.scrollTo({
+        top: chatListRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   useEffect(() => {
     if (chatListRef.current && !hasScrolledUp) {
@@ -71,7 +84,7 @@ const ChatList = ({
   }, [isWidget]);
 
   return (
-    <div ref={chatListRef} className="h-96 space-y-5 overflow-y-auto py-4">
+    <div ref={chatListRef} className="relative h-96 space-y-5 overflow-y-auto py-4">
       <PinnedMessagesToggle messages={messages} isWidget={isWidget} />
       {messages
         ?.sort((a, b) => {
@@ -89,6 +102,10 @@ const ChatList = ({
             />
           </div>
         ))}
+      <ScrollToBottomButton
+        onClick={handleScrollToBottom}
+        isVisible={showScrollButton}
+      />
     </div>
   );
 };
