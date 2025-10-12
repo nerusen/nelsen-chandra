@@ -39,7 +39,7 @@ const ChatList = ({
           setShowScrollButton(false);
         } else {
           setHasScrolledUp(true);
-          setShowScrollButton(distanceFromBottom > 100);
+          setShowScrollButton(distanceFromBottom > 50);
         }
       }
     };
@@ -84,7 +84,7 @@ const ChatList = ({
   }, [isWidget]);
 
   return (
-    <div ref={chatListRef} className="relative h-96 space-y-5 overflow-y-auto py-4">
+    <div ref={chatListRef} className="h-96 space-y-5 overflow-y-auto py-4">
       <PinnedMessagesToggle messages={messages} isWidget={isWidget} />
       {messages
         ?.sort((a, b) => {
