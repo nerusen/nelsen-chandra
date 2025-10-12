@@ -22,7 +22,7 @@ const ScrollToBottomButton = ({ onClick, isVisible }: ScrollToBottomButtonProps)
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2 }}
           onClick={onClick}
-          className={`absolute bottom-2 right-4 z-20 flex h-10 w-10 items-center justify-center rounded-full shadow-lg transition-colors border ${
+          className={`fixed bottom-12 left-1/2 transform -translate-x-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full shadow-lg transition-colors border ${
             isDark
               ? 'bg-neutral-800 text-neutral-200 hover:bg-neutral-700 border-neutral-700'
               : 'bg-white text-neutral-700 hover:bg-neutral-200 border-neutral-300'
