@@ -10,7 +10,6 @@ import ChatAuth from "./ChatAuth";
 import ChatInput from "./ChatInput";
 import ChatList from "./ChatList";
 import ChatItemSkeleton from "./ChatItemSkeleton";
-import ScrollToBottomButton from "./ScrollToBottomButton";
 
 import { MessageProps } from "@/common/types/chat";
 import { fetcher } from "@/services/fetcher";
@@ -147,19 +146,6 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
           isWidget={isWidget}
         />
       )}
-      <ScrollToBottomButton
-        onClick={() => {
-          // Implement scroll to bottom logic here
-          const chatList = document.querySelector('.overflow-y-auto');
-          if (chatList) {
-            chatList.scrollTo({
-              top: chatList.scrollHeight,
-              behavior: 'smooth',
-            });
-          }
-        }}
-        isVisible={true} // For now, always visible; adjust logic as needed
-      />
       {session ? (
         <ChatInput
           onSendMessage={handleSendMessage}
