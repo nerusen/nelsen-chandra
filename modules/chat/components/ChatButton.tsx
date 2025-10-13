@@ -31,7 +31,7 @@ const ChatButton = () => {
         onClick={handleClick}
         data-umami-event="click_chat_button"
       >
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex items-center gap-1">
           {isHover ? <ChatIconHover size={16} /> : <ChatIcon size={16} />}
           <span className="text-xs font-medium">{t("title")}</span>
         </div>
