@@ -63,7 +63,7 @@ const IntlToggle = () => {
             disabled={isPending}
           >
             <motion.div
-              className="flex flex-col items-center justify-center text-sm font-semibold"
+              className="flex flex-col items-center justify-center text-xs font-bold"
               animate={{
                 color: currentIndex === index ? "#FFFFFF" : "#737373",
               }}
@@ -85,7 +85,7 @@ const IntlToggle = () => {
       >
         <motion.div
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-300 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-50"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-300 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-50 text-xs font-bold"
         >
           {locales[(currentIndex + 1) % locales.length].flag}
         </motion.div>
