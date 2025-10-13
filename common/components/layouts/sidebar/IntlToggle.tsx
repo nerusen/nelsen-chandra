@@ -63,7 +63,7 @@ const IntlToggle = () => {
             disabled={isPending}
           >
             <motion.div
-              className="flex flex-col items-center justify-center text-sm font-bold"
+              className="flex items-center justify-center text-sm font-bold"
               animate={{
                 color: currentIndex === index ? "#FFFFFF" : "#737373",
               }}
