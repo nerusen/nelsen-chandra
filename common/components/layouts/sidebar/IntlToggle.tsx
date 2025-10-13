@@ -77,7 +77,7 @@ const IntlToggle = () => {
 
       {/* Mobile */}
       <button
-        className="flex items-center gap-2 rounded-full border-[1.5px] border-neutral-300 bg-neutral-100 p-1 transition duration-200 hover:scale-110 dark:border-neutral-700 dark:bg-neutral-800 lg:hidden"
+        className="flex items-center gap-2 rounded-full p-1 transition duration-200 hover:scale-110 lg:hidden"
         onClick={() =>
           handleLocaleChange(locales[(currentIndex + 1) % locales.length].value)
         }
