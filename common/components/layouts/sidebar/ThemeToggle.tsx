@@ -72,9 +72,9 @@ const ThemeToggle = () => {
           className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-300 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-50"
         >
           {isLightMode ? (
-            <DarkModeIcon size={17} />
-          ) : (
             <LightModeIcon size={17} />
+          ) : (
+            <DarkModeIcon size={17} />
           )}
         </motion.div>
       </button>
