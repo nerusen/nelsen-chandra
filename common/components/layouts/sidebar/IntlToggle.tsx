@@ -9,8 +9,8 @@ const IntlToggle = () => {
   const currentLocale = useLocale();
 
   const locales = [
-    { value: "en" as Locale, flag: "EN" },
-    { value: "id" as Locale, flag: "ID" },
+    { value: "en" as Locale, flag: "ID" },
+    { value: "id" as Locale, flag: "EN" },
   ];
 
   const [isPending, startTransition] = useTransition();
@@ -63,7 +63,7 @@ const IntlToggle = () => {
             disabled={isPending}
           >
             <motion.div
-              className="flex flex-col items-center justify-center text-xs font-medium"
+              className="flex flex-col items-center justify-center text-sm font-semibold"
               animate={{
                 color: currentIndex === index ? "#FFFFFF" : "#737373",
               }}
