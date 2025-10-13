@@ -33,7 +33,7 @@ const ChatButton = () => {
       >
         <div className="flex flex-col items-center gap-1">
           {isHover ? <ChatIconHover size={16} /> : <ChatIcon size={16} />}
-          <span className="text-xs font-medium">{t("Chat Room")}</span>
+          <span className="text-xs font-medium">{t("title")}</span>
         </div>
       </div>
       {!isMobile && isOpen && <ChatWidget />}
