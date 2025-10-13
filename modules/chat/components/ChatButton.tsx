@@ -7,12 +7,14 @@ import useChatStore from "@/common/stores/chat";
 import ChatWidget from "./ChatWidget";
 import useIsMobile from "@/hooks/useIsMobile";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const ChatButton = () => {
   const { isOpen, toggleChat } = useChatStore();
   const [isHover, setIsHover] = useState(false);
 
   const router = useRouter();
+  const t = useTranslations("ChatRoomPage");
 
   const isMobile = useIsMobile();
 
@@ -23,13 +25,16 @@ const ChatButton = () => {
   return (
     <>
       <div
-        className="fixed bottom-6 right-6 rounded-full border-2 border-neutral-300 bg-gradient-to-br from-neutral-300 to-neutral-100 p-3 text-neutral-700 drop-shadow-xl transition duration-300 hover:scale-105 hover:to-neutral-50 active:scale-95 dark:border-neutral-600 dark:from-neutral-700 dark:to-neutral-800 dark:text-neutral-100 hover:dark:to-neutral-900"
+        className="fixed bottom-6 right-6 rounded-full border-2 border-neutral-300 bg-gradient-to-br from-neutral-300 to-neutral-100 p-2 text-neutral-700 drop-shadow-xl transition duration-300 hover:scale-105 hover:to-neutral-50 active:scale-95 dark:border-neutral-600 dark:from-neutral-700 dark:to-neutral-800 dark:text-neutral-100 hover:dark:to-neutral-900"
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         onClick={handleClick}
         data-umami-event="click_chat_button"
       >
-        {isHover ? <ChatIconHover size={23} /> : <ChatIcon size={23} />}
+        <div className="flex flex-col items-center gap-1">
+          {isHover ? <ChatIconHover size={18} /> : <ChatIcon size={18} />}
+          <span className="text-xs font-medium">{t("Chat Room")}</span>
+        </div>
       </div>
       {!isMobile && isOpen && <ChatWidget />}
     </>
