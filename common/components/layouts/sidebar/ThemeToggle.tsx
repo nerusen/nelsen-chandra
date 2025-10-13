@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import {
-  BsCloudMoon as DarkModeIcon,
-  BsCloudSun as LightModeIcon,
+  BsMoon as DarkModeIcon,
+  BsSun as LightModeIcon,
 } from "react-icons/bs";
 
 const ThemeToggle = () => {
