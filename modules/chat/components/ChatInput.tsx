@@ -84,7 +84,7 @@ const ChatInput = ({
             type="submit"
             onClick={handleSendMessage}
             className={clsx(
-              "ml-2 rounded-md bg-green-500 p-3 text-white transition duration-100 hover:bg-green-400 active:scale-90 dark:bg-green-600 dark:hover:bg-green-500",
+              "ml-2 rounded-md bg-emerald-500 p-3 text-white transition duration-100 hover:bg-emerald-400 active:scale-90 dark:bg-emerald-600 dark:hover:bg-emerald-500",
               !message.trim() &&
                 "cursor-not-allowed !bg-neutral-300 active:scale-100 dark:!bg-neutral-700",
             )}
