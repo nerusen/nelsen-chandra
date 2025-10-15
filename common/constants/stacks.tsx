@@ -1,5 +1,4 @@
-import { SiCss3, SiHtml5, SiJavascript, SiNextdotjs, SiReact, SiTailwindcss, SiFirebase, SiSupabase, SiGithub, SiFigma, SiAdobe } from "react-icons/si";
-import { FaGoogleCloud, FaCanva } from "react-icons/fa";
+import { SiCss3, SiHtml5, SiJavascript, SiNextdotjs, SiReact, SiTailwindcss, SiFirebase, SiSupabase, SiGithub, SiFigma, SiAdobe, SiGooglecloud, SiCanva } from "react-icons/si";
 
 export type SkillProps = {
   [key: string]: {
@@ -86,13 +85,13 @@ export const STACKS: SkillProps = {
     isActive: true,
   },
   Canva: {
-    icon: <FaCanva size={iconSize} />,
+    icon: <SiCanva size={iconSize} />,
     background: "bg-blue-400",
     color: "text-blue-900",
     isActive: true,
   },
   GoogleCloud: {
-    icon: <FaGoogleCloud size={iconSize} />,
+    icon: <SiGooglecloud size={iconSize} />,
     background: "bg-blue-600",
     color: "text-yellow-300",
     isActive: true,
