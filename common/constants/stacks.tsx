@@ -1,43 +1,5 @@
-import { BiLogoPostgresql } from "react-icons/bi";
-import { BsFillBootstrapFill, BsRobot } from "react-icons/bs";
-import { TbBrandFramerMotion } from "react-icons/tb";
-import { FaNpm, FaGolang } from "react-icons/fa6";
-import {
-  SiCss3,
-  SiExpress,
-  SiFramer,
-  SiGithub,
-  SiHtml5,
-  SiJavascript,
-  SiNextdotjs,
-  SiNodedotjs,
-  SiPrisma,
-  SiReact,
-  SiTailwindcss,
-  SiTypescript,
-  SiVite,
-  SiLaravel,
-  SiPhp,
-  SiRedux,
-  SiVuedotjs,
-  SiFirebase,
-  SiReactrouter,
-  SiReacthookform,
-  SiReacttable,
-  SiMysql,
-  SiMongodb,
-  SiAstro,
-  SiBun,
-  SiYarn,
-  SiNestjs,
-  SiSupabase,
-  SiJest,
-  SiDocker,
-  SiKotlin,
-  SiAdobe,
-  SiFigma,
-  SiSketch,
-} from "react-icons/si";
+import { SiCss3, SiHtml5, SiJavascript, SiNextdotjs, SiReact, SiTailwindcss, SiFirebase, SiSupabase, SiGithub, SiFigma, SiAdobe } from "react-icons/si";
+import { FaGoogleCloud, FaCanva } from "react-icons/fa";
 
 export type SkillProps = {
   [key: string]: {
@@ -62,12 +24,6 @@ export const STACKS: SkillProps = {
     background: "bg-blue-500",
     color: "text-blue-500",
     isActive: true,
-  },
-  Bootstrap: {
-    icon: <BsFillBootstrapFill size={iconSize} />,
-    background: "bg-violet-600",
-    color: "text-violet-600",
-    isActive: false,
   },
   TailwindCSS: {
     icon: <SiTailwindcss size={iconSize} />,
@@ -248,6 +204,50 @@ export const STACKS: SkillProps = {
     background: "bg-red-700",
     color: "text-red-500",
     isActive: true,
+  },
+  Yarn: {
+    icon: <SiYarn size={iconSize} />,
+    background: "bg-violet-800",
+    color: "text-sky-400",
+    isActive: false,
+  },
+  bun: {
+    icon: <SiBun size={iconSize} />,
+    background: "bg-orange-100",
+    color: "text-yellow-50",
+    isActive: true,
+  },
+  Github: {
+    icon: <SiGithub size={iconSize} />,
+    background: "bg-slate-800",
+    color: "text-neutral-50",
+    isActive: true,
+  },
+  AdobePhotoshop: {
+    icon: <SiAdobe size={iconSize} />,
+    background: "bg-red-500",
+    color: "text-red-500",
+    isActive: true,
+  },
+  AdobeIllustrator: {
+    icon: <SiAdobe size={iconSize} />,
+    background: "bg-orange-500",
+    color: "text-orange-500",
+    isActive: true,
+  },
+  Canva: {
+    icon: <FaCanva size={iconSize} />,
+    background: "bg-blue-400",
+    color: "text-blue-900",
+    isActive: true,
+  },
+  GoogleCloud: {
+    icon: <FaGoogleCloud size={iconSize} />,
+    background: "bg-blue-600",
+    color: "text-yellow-300",
+    isActive: true,
+  },
+};
   },
   Yarn: {
     icon: <SiYarn size={iconSize} />,
