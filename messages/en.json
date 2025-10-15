@@ -6,7 +6,9 @@
     "resume": "Experienced and passionate Front-End Developer specializing in building scalable and efficient digital solutions. I use Next.js, TypeScript, and Tailwind CSS to create responsive and accessible user interfaces. I'm a collaborative and detail-oriented engineer, committed to delivering well-structured and high-performance cross-platform applications.",
     "skills": {
       "title": "Skills",
-      "sub_title": "My professional skills."
+      "sub_title": "My professional skills.",
+      "show_more": "Show More",
+      "show_less": "Show Less"
     },
     "bento": {
       "title": "Featured Sections",
