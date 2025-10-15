@@ -7,8 +7,8 @@
     "skills": {
       "title": "Keahlian",
       "sub_title": "Keahlian profesional saya.",
-      "show_more": "Lihat Selengkapnya",
-      "show_less": "Lihat Lebih Sedikit"
+      "show_more": "Tampilkan Lebih",
+      "show_less": "Tampilkan Sedikit"
     },
     "bento": {
       "title": "Bagian Unggulan",
