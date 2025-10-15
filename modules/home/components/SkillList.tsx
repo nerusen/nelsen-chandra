@@ -1,3 +1,5 @@
+"use client";
+
 import { BiCodeAlt as SkillsIcon } from "react-icons/bi";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -38,14 +40,12 @@ const SkillList = () => {
             background={background}
           />
         ))}
-        {!showAll && (
-          <button
-            onClick={() => setShowAll(true)}
-            className="flex items-center justify-center bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm border border-white/20 dark:border-gray-700 text-sm px-3 py-2 rounded-md transition-all hover:bg-white/20 dark:hover:bg-gray-700/50 cursor-pointer text-gray-900 dark:text-gray-100"
-          >
-            Show More
-          </button>
-        )}
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className="flex items-center justify-center bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm border border-white/20 dark:border-gray-700 text-sm px-3 py-2 rounded-md transition-all hover:bg-white/20 dark:hover:bg-gray-700/50 cursor-pointer text-gray-900 dark:text-gray-100"
+        >
+          {showAll ? t("skills.show_less") : t("skills.show_more")}
+        </button>
       </div>
     </section>
   );
