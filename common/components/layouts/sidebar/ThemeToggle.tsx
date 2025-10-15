@@ -64,12 +64,12 @@ const ThemeToggle = () => {
 
       {/* Mobile */}
       <button
-        className="flex items-center gap-2 rounded-full p-1 transition duration-200 hover:scale-110 lg:hidden"
+        className="flex items-center gap-2 rounded-lg p-1 transition duration-200 hover:scale-110 lg:hidden"
         onClick={() => setTheme(isLightMode ? "dark" : "light")}
       >
         <motion.div
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-300 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-50"
+          className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-300 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-50"
         >
           {isLightMode ? (
             <LightModeIcon size={17} />
