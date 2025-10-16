@@ -84,7 +84,7 @@ const ChatList = ({
   }, [isWidget]);
 
   return (
-    <>
+    <div className="relative">
       <div ref={chatListRef} className="h-96 space-y-5 overflow-y-auto py-4">
         <PinnedMessagesToggle messages={messages} isWidget={isWidget} />
         {messages
@@ -107,8 +107,9 @@ const ChatList = ({
       <ScrollToBottomButton
         onClick={handleScrollToBottom}
         isVisible={showScrollButton}
+        isWidget={isWidget}
       />
-    </>
+    </div>
   );
 };
 
