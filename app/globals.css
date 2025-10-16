@@ -91,3 +91,27 @@
     --angle: 360deg;
   }
 }
+
+.google-profile-border {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #DB4437 0deg, #F4B400 90deg, #0F9D58 180deg, #4285F4 270deg, #DB4437 360deg);
+  padding: 2px;
+}
+
+.google-profile-border::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: white;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.dark .google-profile-border::before {
+  background: #121212;
+}
