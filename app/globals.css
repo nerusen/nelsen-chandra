@@ -96,7 +96,12 @@
   position: relative;
   display: inline-block;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, #DB4437 0deg, #F4B400 90deg, #0F9D58 180deg, #4285F4 270deg, #DB4437 360deg);
+  background: conic-gradient(
+    #DB4437 0deg 90deg,
+    #F4B400 90deg 180deg,
+    #0F9D58 180deg 270deg,
+    #4285F4 270deg 360deg
+  );
   padding: 2px;
 }
 
