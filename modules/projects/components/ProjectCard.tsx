@@ -54,6 +54,8 @@ const ProjectCard = ({
             {stacks.map((stack: string, index: number) => {
               const stackData = STACKS[stack];
 
+              if (!stackData) return null;
+
               return (
                 <div key={index} className={`${stackData.color}`}>
                   {stackData.icon}
