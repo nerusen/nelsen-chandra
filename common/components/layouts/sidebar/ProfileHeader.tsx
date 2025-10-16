@@ -21,14 +21,16 @@ const ProfileHeader = ({ expandMenu, imageSize }: ProfileHeaderProps) => {
         expandMenu && "flex-col !items-start",
       )}
     >
-      <Image
-        src={"/images/satria-3.jpg"}
-        width={expandMenu ? 80 : imageSize * 0.9}
-        height={expandMenu ? 80 : imageSize * 0.9}
-        alt="n31sen.st"
-        className="border-2 border-neutral-400 dark:border-neutral-600 lg:hover:scale-105"
-        rounded="rounded-full"
-      />
+      <div className="google-profile-border">
+        <Image
+          src={"/images/satria-3.jpg"}
+          width={expandMenu ? 80 : imageSize * 0.9}
+          height={expandMenu ? 80 : imageSize * 0.9}
+          alt="n31sen.st"
+          className="relative z-10 border-2 border-white/80 dark:border-neutral-800/80 lg:hover:scale-105"
+          rounded="rounded-full"
+        />
+      </div>
 
       <div className="mt-1 flex items-center gap-2 lg:mt-4">
         <Link href="/" passHref>
