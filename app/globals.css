@@ -97,6 +97,7 @@
   display: inline-block;
   border-radius: 50%;
   background: conic-gradient(
+    from -20deg,
     #DB4437 0deg 90deg,
     #4285F4 90deg 210deg,
     #0F9D58 210deg 300deg,
