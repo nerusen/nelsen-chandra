@@ -29,7 +29,7 @@ const SkillList = () => {
         </SectionSubHeading>
       </div>
 
-      <div className="grid w-full gap-x-[1em] gap-y-[1.5em] py-2 grid-cols-6 md:grid-cols-10 lg:grid-cols-11">
+      <div className="grid w-full gap-x-[1em] gap-y-[1.5em] py-2 grid-cols-4 md:grid-cols-10 lg:grid-cols-11 overflow-x-auto">
         {stacksInArray.map(([name, { icon, background }], index) => (
           <div
             key={name}
