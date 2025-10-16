@@ -7,9 +7,10 @@ import { useTheme } from "next-themes";
 interface ScrollToBottomButtonProps {
   onClick: () => void;
   isVisible: boolean;
+  isWidget?: boolean;
 }
 
-const ScrollToBottomButton = ({ onClick, isVisible }: ScrollToBottomButtonProps) => {
+const ScrollToBottomButton = ({ onClick, isVisible, isWidget }: ScrollToBottomButtonProps) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
@@ -22,11 +23,11 @@ const ScrollToBottomButton = ({ onClick, isVisible }: ScrollToBottomButtonProps)
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2 }}
           onClick={onClick}
-          className={`sticky bottom-0 z-10 mx-4 mb-2 mt-4 rounded-lg border px-3 py-2 text-sm font-medium shadow-sm transition-colors ${
+          className={`sticky bottom-0 z-10 mb-2 mt-4 rounded-lg border px-3 py-2 text-sm font-medium shadow-sm backdrop-blur-sm transition-colors ${
             isDark
-              ? 'border-neutral-700 text-neutral-200'
-              : 'border-neutral-300 text-neutral-700'
-          }`}
+              ? 'border-neutral-700 bg-neutral-800/90 text-neutral-200 hover:bg-neutral-700/90'
+              : 'border-neutral-300 bg-neutral-100/90 text-neutral-700 hover:bg-neutral-200/90'
+          } ${isWidget ? 'mx-2' : 'mx-4 lg:mx-8'}`}
           aria-label="Scroll to bottom"
         >
           <div className="flex items-center gap-2">
