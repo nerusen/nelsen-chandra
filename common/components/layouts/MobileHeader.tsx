@@ -24,12 +24,13 @@ const MobileHeader = () => {
         <div
           className={`flex ${isOpen ? "flex-col space-y-3" : "flex-row space-x-3"}`}
         >
-          <div className="z-10 w-max rounded-full border-2 border-white shadow-md dark:border-neutral-800">
+          <div className="z-10 w-max rounded-full google-profile-border shadow-md">
             <Image
               src={"/images/satria.jpg"}
               alt="profile"
               width={isOpen ? 80 : imageSize * 0.9}
               height={isOpen ? 80 : imageSize * 0.9}
+              className="relative z-10 border-2 border-white/80 dark:border-neutral-800/80"
               rounded="rounded-full"
             />
           </div>
