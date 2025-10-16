@@ -15,16 +15,16 @@ export const UMAMI_ACCOUNT = {
   is_active: true,
   websites: [
     {
-      domain: "nelsen-chandra.vercel.app",
+      domain: "nerusen.web.id",
       website_id: process.env.UMAMI_WEBSITE_ID_SITE,
       umami_url:
-        "https://us.umami.is/share/BvFG8SxvT8qsY8dC/nelsen-chandra.vercel.app",
+        "https://cloud.umami.is/share/v2GWNdkrP99ih6gw",
     },
     {
-      domain: "nelsen-chandra.vercel.app",
+      domain: "nelsen.my.id",
       website_id: process.env.UMAMI_WEBSITE_ID_MYID,
       umami_url:
-        "https://cloud.umami.is/share/BvFG8SxvT8qsY8dC/nelsen-chandra.vercel.app",
+        "https://cloud.umami.is/share/BvFG8SxvT8qsY8dC",
     },
   ],
 };
