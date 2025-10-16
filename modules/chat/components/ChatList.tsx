@@ -103,12 +103,12 @@ const ChatList = ({
               />
             </div>
           ))}
+        <ScrollToBottomButton
+          onClick={handleScrollToBottom}
+          isVisible={showScrollButton}
+          isWidget={isWidget}
+        />
       </div>
-      <ScrollToBottomButton
-        onClick={handleScrollToBottom}
-        isVisible={showScrollButton}
-        isWidget={isWidget}
-      />
     </div>
   );
 };
