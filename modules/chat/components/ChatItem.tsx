@@ -21,6 +21,8 @@ interface ChatItemProps extends MessageProps {
   onReply: (name: string) => void;
   onPin: (id: string, is_pinned: boolean) => void;
   onEdit: (id: string, message: string) => void;
+  onEditCancel?: () => void;
+  isEditing?: boolean;
 }
 
 const ChatItem = ({
@@ -38,9 +40,10 @@ const ChatItem = ({
   onReply,
   onPin,
   onEdit,
+  onEditCancel,
+  isEditing,
 }: ChatItemProps) => {
   const [isHover, setIsHover] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [editMessage, setEditMessage] = useState(message);
   const { data: session } = useSession();
 
@@ -53,13 +56,13 @@ const ChatItem = ({
   const handleEditSave = () => {
     if (editMessage.trim()) {
       onEdit(id, editMessage);
-      setIsEditing(false);
+      onEditCancel?.();
     }
   };
 
   const handleEditCancel = () => {
     setEditMessage(message);
-    setIsEditing(false);
+    onEditCancel?.();
   };
 
   return (
@@ -67,7 +70,6 @@ const ChatItem = ({
       className={clsx(
         "flex items-center gap-3 px-4 lg:px-8",
         condition && "flex-row-reverse",
-        isEditing && "blur-sm",
       )}
     >
       {image && (
@@ -182,12 +184,12 @@ const ChatItem = ({
                 </Tooltip>
               </motion.button>
 
-              {isOwnMessage && (
+              {isOwnMessage && !isEditing && (
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.1 }}
-                  onClick={() => setIsEditing(true)}
+                  onClick={() => onEdit(id, message)}
                   className="rounded-md bg-blue-600 p-2 text-white transition duration-100 hover:bg-blue-500 w-9 h-9 flex items-center justify-center"
                 >
                   <Tooltip title="Edit Message">
@@ -212,7 +214,7 @@ const ChatItem = ({
             </>
           )}
 
-          {isOwnMessage && isHover && !isEditing ? (
+          {isOwnMessage && isHover && !isEditing && (
             <motion.button
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -220,9 +222,11 @@ const ChatItem = ({
               onClick={() => onDelete(id)}
               className="rounded-md bg-red-600 p-2 text-red-50 transition duration-100 hover:bg-red-500 w-9 h-9 flex items-center justify-center"
             >
-              <DeleteIcon size={16} />
+              <Tooltip title="Delete Message">
+                <DeleteIcon size={16} />
+              </Tooltip>
             </motion.button>
-          ) : null}
+          )}
         </div>
         <div className="flex md:hidden">
           <ChatTime datetime={created_at} />

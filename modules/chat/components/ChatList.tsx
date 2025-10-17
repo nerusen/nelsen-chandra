@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import clsx from "clsx";
 
 import ChatItem from "./ChatItem";
 import PinnedMessagesToggle from "./PinnedMessagesToggle";
@@ -24,6 +25,7 @@ const ChatList = ({
   onPinMessage,
   onEditMessage,
 }: ChatListPropsNew) => {
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
   const chatListRef = useRef<HTMLDivElement | null>(null);
   const [hasScrolledUp, setHasScrolledUp] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
@@ -95,17 +97,28 @@ const ChatList = ({
             return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
           })
           .map((chat) => (
-            <div key={chat.id} id={`message-${chat.id}`}>
+            <div
+              key={chat.id}
+              id={`message-${chat.id}`}
+              className={clsx(
+                editingMessageId && editingMessageId !== chat.id && "blur-sm"
+              )}
+            >
               <ChatItem
                 onDelete={onDeleteMessage}
                 onReply={onClickReply}
                 onPin={onPinMessage}
-                onEdit={onEditMessage}
+                onEdit={(id, message) => {
+                  setEditingMessageId(id);
+                  onEditMessage(id, message);
+                }}
+                onEditCancel={() => setEditingMessageId(null)}
+                isEditing={editingMessageId === chat.id}
                 isWidget={isWidget}
                 {...chat}
               />
             </div>
-          ))}
+          ))
         <ScrollToBottomButton
           onClick={handleScrollToBottom}
           isVisible={showScrollButton}
