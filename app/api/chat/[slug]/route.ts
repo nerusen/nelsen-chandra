@@ -9,8 +9,31 @@ export const DELETE = async (
   const supabase = createClient();
   try {
     const id = params.slug;
+    const { email } = await req.json();
+
+    // First, check if the message exists and belongs to the user
+    const { data: existingMessage, error: fetchError } = await supabase
+      .from("messages")
+      .select("email")
+      .eq("id", id)
+      .single();
+
+    if (fetchError || !existingMessage) {
+      return NextResponse.json(
+        { message: "Message not found" },
+        { status: 404 },
+      );
+    }
+
+    if (existingMessage.email !== email) {
+      return NextResponse.json(
+        { message: "Unauthorized to delete this message" },
+        { status: 403 },
+      );
+    }
+
     await supabase.from("messages").delete().eq("id", id);
-    return NextResponse.json("Data saved successfully", { status: 200 });
+    return NextResponse.json("Data deleted successfully", { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Internal Server Error" },
