@@ -1,6 +1,6 @@
 import Image from "next/image";
 import clsx from "clsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { MdAdminPanelSettings as AdminIcon } from "react-icons/md";
@@ -45,6 +45,13 @@ const ChatItem = ({
 }: ChatItemProps) => {
   const [isHover, setIsHover] = useState(false);
   const [editMessage, setEditMessage] = useState(message);
+
+  // Reset editMessage when message changes or when not editing
+  useEffect(() => {
+    if (!isEditing) {
+      setEditMessage(message);
+    }
+  }, [message, isEditing]);
   const { data: session } = useSession();
 
   const authorEmail = process.env.NEXT_PUBLIC_AUTHOR_EMAIL;
@@ -137,6 +144,7 @@ const ChatItem = ({
                     if (e.key === 'Enter') handleEditSave();
                     if (e.key === 'Escape') handleEditCancel();
                   }}
+                  onFocus={(e) => e.target.select()}
                 />
                 <div className="flex gap-2 justify-end">
                   <button
