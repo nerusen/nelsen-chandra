@@ -77,6 +77,15 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
     }
   };
 
+  const handleEditMessage = async (id: string, message: string) => {
+    try {
+      await axios.put(`/api/chat/${id}`, { message, email: session?.user?.email });
+      notif("Message edited successfully");
+    } catch (error) {
+      notif("Failed to edit message");
+    }
+  };
+
   useEffect(() => {
     if (data) setMessages(data);
   }, [data]);
@@ -143,6 +152,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
           onDeleteMessage={handleDeleteMessage}
           onClickReply={handleClickReply}
           onPinMessage={handlePinMessage}
+          onEditMessage={handleEditMessage}
           isWidget={isWidget}
         />
       )}
