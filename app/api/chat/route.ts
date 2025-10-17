@@ -31,7 +31,33 @@ export const POST = async (req: Request) => {
 export const PATCH = async (req: Request) => {
   const supabase = createClient();
   try {
-    const { id, is_pinned } = await req.json();
+    const { id, is_pinned, email } = await req.json();
+
+    const authorEmail = process.env.NEXT_PUBLIC_AUTHOR_EMAIL;
+    const isAuthor = email === authorEmail;
+
+    // First, check if the message exists
+    const { data: existingMessage, error: fetchError } = await supabase
+      .from("messages")
+      .select("email")
+      .eq("id", id)
+      .single();
+
+    if (fetchError || !existingMessage) {
+      return NextResponse.json(
+        { message: "Message not found" },
+        { status: 404 },
+      );
+    }
+
+    // Only author can pin/unpin messages
+    if (!isAuthor) {
+      return NextResponse.json(
+        { message: "Unauthorized to pin/unpin this message" },
+        { status: 403 },
+      );
+    }
+
     const { data, error } = await supabase
       .from("messages")
       .update({ is_pinned })
