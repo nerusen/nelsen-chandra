@@ -65,12 +65,14 @@ const ChatItem = ({
     if (editMessage.trim()) {
       onEdit(id, editMessage);
       onEditCancel?.();
+      setIsHover(false); // Reset hover state after edit
     }
   };
 
   const handleEditCancel = () => {
     setEditMessage(message);
     onEditCancel?.();
+    setIsHover(false); // Reset hover state after cancel
   };
 
   return (
