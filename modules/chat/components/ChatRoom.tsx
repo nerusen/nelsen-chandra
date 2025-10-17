@@ -17,7 +17,7 @@ import { createClient } from "@/common/utils/client";
 import useNotif from "@/hooks/useNotif";
 
 export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
-  const { data, isLoading } = useSWR("/api/chat", fetcher);
+  const { data, isLoading, error } = useSWR("/api/chat", fetcher);
 
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [isReply, setIsReply] = useState({ is_reply: false, name: "" });
@@ -89,6 +89,15 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
   useEffect(() => {
     if (data) setMessages(data);
   }, [data]);
+
+  // Debug logging
+  useEffect(() => {
+    if (error) {
+      console.error("Chat fetch error:", error);
+    }
+    console.log("Chat data:", data);
+    console.log("Chat loading:", isLoading);
+  }, [data, error, isLoading]);
 
   useEffect(() => {
     const channel = supabase
