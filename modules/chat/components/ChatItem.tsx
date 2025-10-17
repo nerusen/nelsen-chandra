@@ -119,10 +119,9 @@ const ChatItem = ({
           className={clsx(
             "group ml-1.5 mr-2 flex w-fit items-center gap-3",
             condition && "flex-row-reverse",
-            isEditing && "pointer-events-none",
           )}
-          onMouseEnter={() => !isEditing && setIsHover(true)}
-          onMouseLeave={() => !isEditing && setIsHover(false)}
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
         >
           <div className={clsx(
             "rounded-xl px-4 py-2 relative",
@@ -182,7 +181,7 @@ const ChatItem = ({
             )}
           </div>
 
-          {isHover && !isEditing && (
+          {isHover && (
             <>
               <motion.button
                 initial={{ opacity: 0, scale: 0, transform: "rotate(45deg)" }}
@@ -201,7 +200,7 @@ const ChatItem = ({
                 </Tooltip>
               </motion.button>
 
-              {isOwnMessage && (
+              {isOwnMessage && !isEditing && (
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -229,7 +228,7 @@ const ChatItem = ({
                 </motion.button>
               )}
 
-              {isOwnMessage && (
+              {isOwnMessage && !isEditing && (
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
