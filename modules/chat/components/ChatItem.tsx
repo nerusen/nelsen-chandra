@@ -57,6 +57,7 @@ const ChatItem = ({
   const authorEmail = process.env.NEXT_PUBLIC_AUTHOR_EMAIL;
   const isAuthor = email === authorEmail;
   const isOwnMessage = session?.user?.email === email;
+  const isCurrentUserAuthor = session?.user?.email === authorEmail;
 
   const condition = isAuthor && !isWidget;
 
@@ -200,7 +201,7 @@ const ChatItem = ({
                 </Tooltip>
               </motion.button>
 
-              {(isOwnMessage || isAuthor) && !isEditing && (
+              {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -214,7 +215,7 @@ const ChatItem = ({
                 </motion.button>
               )}
 
-              {isAuthor && (
+              {isCurrentUserAuthor && (
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -228,7 +229,7 @@ const ChatItem = ({
                 </motion.button>
               )}
 
-              {(isOwnMessage || isAuthor) && !isEditing && (
+              {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
