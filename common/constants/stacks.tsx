@@ -5,13 +5,11 @@ import {
   SiAdobephotoshop,
   SiBehance,
   SiCanva,
-  SiCoreldraw,
   SiCss3,
   SiFirebase,
   SiGithub,
   SiGooglecloud,
   SiGooglefonts,
-  SiGooglegemini,
   SiHtml5,
   SiSupabase,
   SiTailwindcss,
@@ -60,12 +58,7 @@ export const STACKS: SkillProps = {
     color: "text-blue-500",
     isActive: true,
   },
-  CorelDraw: {
-    icon: <SiCoreldraw size={iconSize} />,
-    background: "bg-gray-600",
-    color: "text-gray-600",
-    isActive: true,
-  },
+
   Vercel: {
     icon: <SiVercel size={iconSize} />,
     background: "bg-black",
@@ -108,12 +101,7 @@ export const STACKS: SkillProps = {
     color: "text-red-500",
     isActive: true,
   },
-  GoogleGemini: {
-    icon: <SiGooglegemini size={iconSize} />,
-    background: "bg-purple-500",
-    color: "text-purple-500",
-    isActive: true,
-  },
+
   GooglePlus: {
     icon: <FaGooglePlusG size={iconSize} />,
     background: "bg-red-500",
