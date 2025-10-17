@@ -1,5 +1,3 @@
-"use client";
-
 import { BiCodeAlt as SkillsIcon } from "react-icons/bi";
 import { useTranslations } from "next-intl";
 
@@ -14,7 +12,7 @@ const SkillList = () => {
   const stacksInArray: Array<
     [string, { icon: JSX.Element; background: string }]
   > = Object.entries(STACKS)
-    .filter(([name, value]) => value.isActive)
+    .filter(([, value]) => value.isActive)
     .map(([name, value]) => [
       name,
       { icon: value.icon, background: value.background },
@@ -29,18 +27,14 @@ const SkillList = () => {
         </SectionSubHeading>
       </div>
 
-      <div className="grid w-full gap-x-1 gap-y-4 py-2 grid-cols-3 md:gap-x-2 md:gap-y-6 md:grid-cols-10 lg:grid-cols-11">
+      <div className="grid w-full grid-cols-6 gap-x-[1em] gap-y-[2.7em] py-2 md:grid-cols-10 lg:grid-cols-11">
         {stacksInArray.map(([name, { icon, background }], index) => (
-          <div
-            key={name}
-            className="transition-all duration-500 ease-in-out opacity-100 blur-0 scale-100"
-          >
-            <GlassIcon
-              name={name}
-              icon={icon}
-              background={background}
-            />
-          </div>
+          <GlassIcon
+            key={index}
+            name={name}
+            icon={icon}
+            background={background}
+          />
         ))}
       </div>
     </section>
