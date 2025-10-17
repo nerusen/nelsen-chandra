@@ -141,21 +141,28 @@ const ChatItem = ({
                   placeholder="Edit your message..."
                   autoFocus
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleEditSave();
-                    if (e.key === 'Escape') handleEditCancel();
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleEditSave();
+                    }
+                    if (e.key === 'Escape') {
+                      e.preventDefault();
+                      handleEditCancel();
+                    }
                   }}
                   onFocus={(e) => e.target.select()}
                 />
                 <div className="flex gap-2 justify-end">
                   <button
                     onClick={handleEditCancel}
-                    className="text-xs bg-red-600 text-white px-3 py-1.5 rounded-md hover:bg-red-500 transition duration-100"
+                    className="text-xs bg-red-600 text-white px-3 py-1.5 rounded-md hover:bg-red-500 transition duration-100 active:scale-95"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleEditSave}
-                    className="text-xs bg-emerald-500 text-white px-3 py-1.5 rounded-md hover:bg-emerald-400 transition duration-100"
+                    className="text-xs bg-emerald-500 text-white px-3 py-1.5 rounded-md hover:bg-emerald-400 transition duration-100 active:scale-95"
+                    disabled={!editMessage.trim()}
                   >
                     Save
                   </button>
