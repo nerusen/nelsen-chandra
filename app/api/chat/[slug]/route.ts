@@ -11,7 +11,10 @@ export const DELETE = async (
     const id = params.slug;
     const { email } = await req.json();
 
-    // First, check if the message exists and belongs to the user
+    const authorEmail = process.env.NEXT_PUBLIC_AUTHOR_EMAIL;
+    const isAuthor = email === authorEmail;
+
+    // First, check if the message exists
     const { data: existingMessage, error: fetchError } = await supabase
       .from("messages")
       .select("email")
@@ -25,7 +28,8 @@ export const DELETE = async (
       );
     }
 
-    if (existingMessage.email !== email) {
+    // Allow if user is author or owns the message
+    if (!isAuthor && existingMessage.email !== email) {
       return NextResponse.json(
         { message: "Unauthorized to delete this message" },
         { status: 403 },
@@ -51,7 +55,10 @@ export const PUT = async (
     const id = params.slug;
     const { message, email } = await req.json();
 
-    // First, check if the message exists and belongs to the user
+    const authorEmail = process.env.NEXT_PUBLIC_AUTHOR_EMAIL;
+    const isAuthor = email === authorEmail;
+
+    // First, check if the message exists
     const { data: existingMessage, error: fetchError } = await supabase
       .from("messages")
       .select("email")
@@ -65,7 +72,8 @@ export const PUT = async (
       );
     }
 
-    if (existingMessage.email !== email) {
+    // Allow if user is author or owns the message
+    if (!isAuthor && existingMessage.email !== email) {
       return NextResponse.json(
         { message: "Unauthorized to edit this message" },
         { status: 403 },
