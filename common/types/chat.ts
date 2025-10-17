@@ -7,6 +7,7 @@ export interface MessageProps {
   is_reply?: boolean;
   reply_to?: string;
   created_at: string;
+  updated_at?: string;
   is_show?: boolean;
   is_pinned?: boolean;
 }
