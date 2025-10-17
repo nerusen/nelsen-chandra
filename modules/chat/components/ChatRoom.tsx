@@ -70,7 +70,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
 
   const handlePinMessage = async (id: string, is_pinned: boolean) => {
     try {
-      await axios.patch("/api/chat", { id, is_pinned });
+      await axios.patch("/api/chat", { id, is_pinned, email: session?.user?.email });
       notif(`Message ${is_pinned ? "pinned" : "unpinned"} successfully`);
     } catch (error) {
       notif("Failed to toggle pin status");
