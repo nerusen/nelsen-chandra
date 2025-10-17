@@ -118,7 +118,7 @@ const ChatList = ({
                 {...chat}
               />
             </div>
-          ))
+          ))}
         <ScrollToBottomButton
           onClick={handleScrollToBottom}
           isVisible={showScrollButton}
