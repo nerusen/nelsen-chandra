@@ -30,7 +30,7 @@ const MobileHeader = () => {
               alt="profile"
               width={isOpen ? 80 : imageSize * 0.9}
               height={isOpen ? 80 : imageSize * 0.9}
-              className="relative z-10 border-2 border-white/80 dark:border-neutral-800/80"
+              className="relative z-10 border-4 border-white/80 dark:border-neutral-800/80"
               rounded="rounded-full"
             />
           </div>
