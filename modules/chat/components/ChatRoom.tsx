@@ -61,7 +61,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
 
   const handleDeleteMessage = async (id: string) => {
     try {
-      await axios.delete(`/api/chat/${id}`);
+      await axios.delete(`/api/chat/${id}`, { data: { email: session?.user?.email } });
       notif("Successfully to delete message");
     } catch (error) {
       notif("Failed to delete message");
