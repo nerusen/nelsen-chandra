@@ -196,7 +196,7 @@ const ChatItem = ({
                 </motion.button>
               )}
 
-              {session?.user?.email === authorEmail && (
+              {isAuthor && (
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
