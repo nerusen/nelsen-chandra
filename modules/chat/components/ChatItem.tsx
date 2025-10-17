@@ -112,9 +112,10 @@ const ChatItem = ({
           className={clsx(
             "group ml-1.5 mr-2 flex w-fit items-center gap-3",
             condition && "flex-row-reverse",
+            isEditing && "pointer-events-none",
           )}
-          onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}
+          onMouseEnter={() => !isEditing && setIsHover(true)}
+          onMouseLeave={() => !isEditing && setIsHover(false)}
         >
           <div className={clsx(
             "rounded-xl px-4 py-2 relative",
@@ -129,25 +130,26 @@ const ChatItem = ({
                   type="text"
                   value={editMessage}
                   onChange={(e) => setEditMessage(e.target.value)}
-                  className="bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded px-2 py-1 text-sm"
+                  className="bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded px-2 py-1 text-sm opacity-50"
+                  placeholder="Edit your message..."
                   autoFocus
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') handleEditSave();
                     if (e.key === 'Escape') handleEditCancel();
                   }}
                 />
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleEditSave}
-                    className="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
-                  >
-                    Save
-                  </button>
+                <div className="flex gap-2 justify-end">
                   <button
                     onClick={handleEditCancel}
-                    className="text-xs bg-gray-500 text-white px-2 py-1 rounded hover:bg-gray-600"
+                    className="text-xs bg-red-600 text-white px-3 py-1.5 rounded-md hover:bg-red-500 transition duration-100"
                   >
                     Cancel
+                  </button>
+                  <button
+                    onClick={handleEditSave}
+                    className="text-xs bg-emerald-500 text-white px-3 py-1.5 rounded-md hover:bg-emerald-400 transition duration-100"
+                  >
+                    Save
                   </button>
                 </div>
               </div>
@@ -184,7 +186,7 @@ const ChatItem = ({
                 </Tooltip>
               </motion.button>
 
-              {isOwnMessage && !isEditing && (
+              {isOwnMessage && (
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -211,21 +213,21 @@ const ChatItem = ({
                   </Tooltip>
                 </motion.button>
               )}
-            </>
-          )}
 
-          {isOwnMessage && isHover && !isEditing && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.1 }}
-              onClick={() => onDelete(id)}
-              className="rounded-md bg-red-600 p-2 text-red-50 transition duration-100 hover:bg-red-500 w-9 h-9 flex items-center justify-center"
-            >
-              <Tooltip title="Delete Message">
-                <DeleteIcon size={16} />
-              </Tooltip>
-            </motion.button>
+              {isOwnMessage && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.1 }}
+                  onClick={() => onDelete(id)}
+                  className="rounded-md bg-red-600 p-2 text-red-50 transition duration-100 hover:bg-red-500 w-9 h-9 flex items-center justify-center"
+                >
+                  <Tooltip title="Delete Message">
+                    <DeleteIcon size={16} />
+                  </Tooltip>
+                </motion.button>
+              )}
+            </>
           )}
         </div>
         <div className="flex md:hidden">
