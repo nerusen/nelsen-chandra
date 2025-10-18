@@ -13,7 +13,6 @@ import {
   SiDribbble,
   SiAdobeillustrator,
   SiCoursera,
-  SiHostinger,
   SiBehance,
   SiCanva,
   SiCss3,
