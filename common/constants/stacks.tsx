@@ -11,8 +11,11 @@ import {
   SiGooglecloud,
   SiGooglefonts,
   SiHtml5,
+  SiJavascript,
+  SiNextdotjs,
   SiSupabase,
   SiTailwindcss,
+  SiTypescript,
   SiVercel,
 } from "react-icons/si";
 
@@ -112,6 +115,24 @@ export const STACKS: SkillProps = {
     icon: <FcGoogle size={iconSize} />,
     background: "bg-white",
     color: "text-gray-900",
+    isActive: true,
+  },
+  JavaScript: {
+    icon: <SiJavascript size={iconSize} />,
+    background: "bg-yellow-500",
+    color: "text-yellow-500",
+    isActive: true,
+  },
+  TypeScript: {
+    icon: <SiTypescript size={iconSize} />,
+    background: "bg-blue-600",
+    color: "text-blue-600",
+    isActive: true,
+  },
+  NextJS: {
+    icon: <SiNextdotjs size={iconSize} />,
+    background: "bg-black",
+    color: "text-white",
     isActive: true,
   },
 };
