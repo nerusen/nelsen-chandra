@@ -3,6 +3,7 @@ import { FaGooglePlusG } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import {
   SiAdobephotoshop,
+  SiHostinger,
   SiBehance,
   SiCanva,
   SiCss3,
@@ -17,6 +18,15 @@ import {
   SiTailwindcss,
   SiTypescript,
   SiVercel,
+  SiGooglegemini,
+  SiCoreldraw,
+  SiClaude,
+  SiGoogledataproc,
+  SiMonkeytype,
+  SiOpenai,
+  SiPhp,
+  SiPhpmyadmin,
+  SiPinterest,
 } from "react-icons/si";
 
 export type SkillProps = {
