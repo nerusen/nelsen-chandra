@@ -10,6 +10,7 @@ import ChatAuth from "./ChatAuth";
 import ChatInput from "./ChatInput";
 import ChatList from "./ChatList";
 import ChatItemSkeleton from "./ChatItemSkeleton";
+import WelcomeNotification from "./WelcomeNotification";
 
 import { MessageProps } from "@/common/types/chat";
 import { fetcher } from "@/services/fetcher";
@@ -153,6 +154,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
 
   return (
     <>
+      <WelcomeNotification isWidget={isWidget} />
       {isLoading ? (
         <ChatItemSkeleton />
       ) : (
