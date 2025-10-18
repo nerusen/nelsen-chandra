@@ -3,6 +3,17 @@ import { FaGooglePlusG } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import {
   SiAdobephotoshop,
+  SiWakatime,
+  SiWebflow,
+  SiWordpress,
+  SiReact,
+  SiReplit,
+  SiYoutube,
+  SiAdobelightroom,
+  SiDribbble,
+  SiAdobeillustrator,
+  SiPinterest,
+  SiCoursera,
   SiHostinger,
   SiBehance,
   SiCanva,
