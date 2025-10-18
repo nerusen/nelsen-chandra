@@ -21,10 +21,6 @@ import {
   SiTailwindcss,
   SiTypescript,
   SiVercel,
-  SiGoogledataproc,
-  SiMonkeytype,
-  SiOpenai,
-  SiPinterest,
 } from "react-icons/si";
 
 export type SkillProps = {
