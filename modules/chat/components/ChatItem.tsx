@@ -100,14 +100,14 @@ const ChatItem = ({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.3 }}
-          className="absolute top-[-50px] right-[-200px] z-10 bg-neutral-100/95 dark:bg-neutral-800/95 backdrop-blur-md border border-neutral-300 dark:border-neutral-600 rounded-lg px-3 py-2 shadow-lg text-xs text-neutral-700 dark:text-neutral-300 w-48"
+          className="absolute bottom-2 left-2 z-10 rounded-lg border px-3 py-2 text-sm font-medium shadow-sm backdrop-blur-sm bg-neutral-100/90 dark:bg-neutral-800/90 border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200"
         >
           <div className="flex items-center gap-2">
-            <InfoIcon size={16} className="text-blue-500" />
-            <span>You can delete and edit your messages.</span>
+            <InfoIcon size={16} className="text-blue-500 flex-shrink-0" />
+            <span className="text-xs">You can delete and edit your messages.</span>
             <button
               onClick={() => setIsPopupVisible(false)}
-              className="ml-auto p-0.5 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+              className="ml-auto p-0.5 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors flex-shrink-0"
               aria-label="Close popup"
             >
               <CloseIcon size={12} />
