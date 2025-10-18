@@ -11,29 +11,37 @@ interface WelcomeNotificationProps {
 }
 
 const WelcomeNotification = ({ isWidget }: WelcomeNotificationProps) => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [isVisible, setIsVisible] = useState(false);
   const [hasShown, setHasShown] = useState(false);
 
   useEffect(() => {
-    if (session?.user && !hasShown) {
-      setIsVisible(true);
-      setHasShown(true);
+    // Show notification when user is authenticated and hasn't been shown before
+    if (status === "authenticated" && session?.user && !hasShown) {
+      // Small delay to ensure component is mounted
+      const showTimer = setTimeout(() => {
+        setIsVisible(true);
+        setHasShown(true);
+      }, 100);
 
       // Auto-hide after 5 seconds
-      const timer = setTimeout(() => {
+      const hideTimer = setTimeout(() => {
         setIsVisible(false);
-      }, 5000);
+      }, 5100);
 
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(showTimer);
+        clearTimeout(hideTimer);
+      };
     }
-  }, [session, hasShown]);
+  }, [status, session, hasShown]);
 
   const handleClose = () => {
     setIsVisible(false);
   };
 
-  if (!session?.user) return null;
+  // Don't render if not authenticated or no user
+  if (status !== "authenticated" || !session?.user) return null;
 
   const userName = session.user.name || "User";
 
