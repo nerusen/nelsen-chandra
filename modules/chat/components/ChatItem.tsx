@@ -9,6 +9,8 @@ import { FiTrash2 as DeleteIcon } from "react-icons/fi";
 import { BsFillReplyAllFill as ReplyIcon } from "react-icons/bs";
 import { BsPinAngleFill as PinIcon } from "react-icons/bs";
 import { MdEdit as EditIcon } from "react-icons/md";
+import { IoInformationCircle as InfoIcon } from "react-icons/io5";
+import { IoClose as CloseIcon } from "react-icons/io5";
 
 import ChatTime from "./ChatTime";
 
@@ -23,6 +25,7 @@ interface ChatItemProps extends MessageProps {
   onEdit: (id: string, message: string) => void;
   onEditCancel?: () => void;
   isEditing?: boolean;
+  showPopup?: boolean;
 }
 
 const ChatItem = ({
@@ -42,9 +45,11 @@ const ChatItem = ({
   onEdit,
   onEditCancel,
   isEditing,
+  showPopup,
 }: ChatItemProps) => {
   const [isHover, setIsHover] = useState(false);
   const [editMessage, setEditMessage] = useState(message);
+  const [isPopupVisible, setIsPopupVisible] = useState(showPopup || false);
 
   // Reset editMessage when message changes or when not editing
   useEffect(() => {
@@ -82,6 +87,27 @@ const ChatItem = ({
         condition && "flex-row-reverse",
       )}
     >
+      {isPopupVisible && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.3 }}
+          className="absolute top-[-60px] left-1/2 transform -translate-x-1/2 z-10 bg-neutral-100/95 dark:bg-neutral-800/95 backdrop-blur-md border border-neutral-300 dark:border-neutral-600 rounded-lg px-3 py-2 shadow-lg text-xs text-neutral-700 dark:text-neutral-300 w-48"
+        >
+          <div className="flex items-center gap-2">
+            <InfoIcon size={14} className="text-blue-500" />
+            <span>You can delete and edit your messages.</span>
+            <button
+              onClick={() => setIsPopupVisible(false)}
+              className="ml-auto p-0.5 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+              aria-label="Close popup"
+            >
+              <CloseIcon size={12} />
+            </button>
+          </div>
+        </motion.div>
+      )}
       {image && (
         <Image
           src={image}

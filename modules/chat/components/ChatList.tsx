@@ -15,6 +15,7 @@ interface ChatListPropsNew extends ChatListProps {
   onPinMessage: (id: string, is_pinned: boolean) => void;
   onEditMessage: (id: string, message: string) => void;
   isWidget?: boolean;
+  showPopupFor?: string | null;
 }
 
 const ChatList = ({
@@ -24,6 +25,7 @@ const ChatList = ({
   onClickReply,
   onPinMessage,
   onEditMessage,
+  showPopupFor,
 }: ChatListPropsNew) => {
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
   const chatListRef = useRef<HTMLDivElement | null>(null);
@@ -115,6 +117,7 @@ const ChatList = ({
                 onEditCancel={() => setEditingMessageId(null)}
                 isEditing={editingMessageId === chat.id}
                 isWidget={isWidget}
+                showPopup={showPopupFor === chat.id}
                 {...chat}
               />
             </div>

@@ -22,6 +22,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
 
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [isReply, setIsReply] = useState({ is_reply: false, name: "" });
+  const [showPopupFor, setShowPopupFor] = useState<string | null>(null);
 
   const { data: session } = useSession();
 
@@ -54,6 +55,12 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
     try {
       await axios.post("/api/chat", newMessageData);
       notif("Successfully to send message");
+
+      // Check if this is the user's first message
+      const userMessages = messages.filter(msg => msg.email === session?.user?.email);
+      if (userMessages.length === 0) {
+        setShowPopupFor(messageId);
+      }
     } catch (error) {
       console.error("Error:", error);
       notif("Failed to send message");
@@ -165,6 +172,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
           onPinMessage={handlePinMessage}
           onEditMessage={handleEditMessage}
           isWidget={isWidget}
+          showPopupFor={showPopupFor}
         />
       )}
       {session ? (
