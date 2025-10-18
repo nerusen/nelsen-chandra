@@ -100,10 +100,10 @@ const ChatItem = ({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.3 }}
-          className="absolute top-[-50px] left-0 z-10 bg-neutral-100/95 dark:bg-neutral-800/95 backdrop-blur-md border border-neutral-300 dark:border-neutral-600 rounded-lg px-3 py-2 shadow-lg text-xs text-neutral-700 dark:text-neutral-300 w-48"
+          className="absolute top-[-50px] left-[-200px] z-10 bg-neutral-100/95 dark:bg-neutral-800/95 backdrop-blur-md border border-neutral-300 dark:border-neutral-600 rounded-lg px-3 py-2 shadow-lg text-xs text-neutral-700 dark:text-neutral-300 w-48"
         >
           <div className="flex items-center gap-2">
-            <InfoIcon size={14} className="text-blue-500" />
+            <InfoIcon size={16} className="text-blue-500" />
             <span>You can delete and edit your messages.</span>
             <button
               onClick={() => setIsPopupVisible(false)}
