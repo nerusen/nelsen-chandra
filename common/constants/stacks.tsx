@@ -12,7 +12,6 @@ import {
   SiAdobelightroom,
   SiDribbble,
   SiAdobeillustrator,
-  SiPinterest,
   SiCoursera,
   SiHostinger,
   SiBehance,
