@@ -129,7 +129,7 @@ export const STACKS: SkillProps = {
     color: "text-blue-600",
     isActive: true,
   },
-  NextJS: {
+  'Next.js': {
     icon: <SiNextdotjs size={iconSize} />,
     background: "bg-black",
     color: "text-white",
