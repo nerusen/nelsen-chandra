@@ -57,6 +57,13 @@ const ChatItem = ({
       setEditMessage(message);
     }
   }, [message, isEditing]);
+
+  // Handle popup visibility based on showPopup prop
+  useEffect(() => {
+    if (showPopup) {
+      setIsPopupVisible(true);
+    }
+  }, [showPopup]);
   const { data: session } = useSession();
 
   const authorEmail = process.env.NEXT_PUBLIC_AUTHOR_EMAIL;
