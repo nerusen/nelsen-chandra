@@ -99,13 +99,13 @@ export const STACKS: SkillProps = {
     icon: <SiFirebase size={iconSize} />,
     background: "bg-yellow-500",
     color: "text-yellow-500",
-    isActive: true,
+    isActive: false,
   },
   Supabase: {
     icon: <SiSupabase size={iconSize} />,
     background: "bg-green-500",
     color: "text-green-500",
-    isActive: true,
+    isActive: false,
   },
   Behance: {
     icon: <SiBehance size={iconSize} />,
@@ -123,14 +123,14 @@ export const STACKS: SkillProps = {
     icon: <SiGooglefonts size={iconSize} />,
     background: "bg-red-500",
     color: "text-red-500",
-    isActive: true,
+    isActive: false,
   },
 
   GooglePlus: {
     icon: <FaGooglePlusG size={iconSize} />,
     background: "bg-red-500",
     color: "text-red-500",
-    isActive: true,
+    isActive: false,
   },
   Google: {
     icon: <FcGoogle size={iconSize} />,
@@ -142,13 +142,13 @@ export const STACKS: SkillProps = {
     icon: <SiJavascript size={iconSize} />,
     background: "bg-yellow-500",
     color: "text-yellow-500",
-    isActive: true,
+    isActive: false,
   },
   TypeScript: {
     icon: <SiTypescript size={iconSize} />,
     background: "bg-blue-600",
     color: "text-blue-600",
-    isActive: true,
+    isActive: false,
   },
   'Next.js': {
     icon: <SiNextdotjs size={iconSize} />,
