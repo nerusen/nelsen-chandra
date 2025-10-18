@@ -3,13 +3,10 @@ import { FaGooglePlusG } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import {
   SiAdobephotoshop,
-  SiWakatime,
   SiReact,
   SiReplit,
   SiAdobelightroom,
-  SiDribbble,
   SiAdobeillustrator,
-  SiCoursera,
   SiBehance,
   SiCanva,
   SiCss3,
@@ -24,14 +21,9 @@ import {
   SiTailwindcss,
   SiTypescript,
   SiVercel,
-  SiGooglegemini,
-  SiCoreldraw,
-  SiClaude,
   SiGoogledataproc,
   SiMonkeytype,
   SiOpenai,
-  SiPhp,
-  SiPhpmyadmin,
   SiPinterest,
 } from "react-icons/si";
 
