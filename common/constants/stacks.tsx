@@ -64,7 +64,7 @@ export const STACKS: SkillProps = {
 
   Vercel: {
     icon: <SiVercel size={iconSize} />,
-    background: "bg-neutral-900",
+    background: "bg-neutral-800",
     color: "text-white",
     isActive: true,
   },
@@ -114,7 +114,7 @@ export const STACKS: SkillProps = {
   Google: {
     icon: <FcGoogle size={iconSize} />,
     background: "bg-neutral-900",
-    color: "text-gray-900",
+    color: "text-gray-800",
     isActive: true,
   },
   JavaScript: {
@@ -131,7 +131,7 @@ export const STACKS: SkillProps = {
   },
   'Next.js': {
     icon: <SiNextdotjs size={iconSize} />,
-    background: "bg-neutral-900",
+    background: "bg-neutral-800",
     color: "text-white",
     isActive: true,
   },
