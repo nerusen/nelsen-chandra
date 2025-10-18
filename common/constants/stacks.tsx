@@ -4,11 +4,8 @@ import { FcGoogle } from "react-icons/fc";
 import {
   SiAdobephotoshop,
   SiWakatime,
-  SiWebflow,
-  SiWordpress,
   SiReact,
   SiReplit,
-  SiYoutube,
   SiAdobelightroom,
   SiDribbble,
   SiAdobeillustrator,
