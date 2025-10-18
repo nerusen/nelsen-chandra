@@ -13,15 +13,21 @@ interface WelcomeNotificationProps {
 const WelcomeNotification = ({ isWidget }: WelcomeNotificationProps) => {
   const { data: session, status } = useSession();
   const [isVisible, setIsVisible] = useState(false);
-  const [hasShown, setHasShown] = useState(false);
+  const [hasShownForSession, setHasShownForSession] = useState(false);
 
   useEffect(() => {
-    // Show notification when user is authenticated and hasn't been shown before
-    if (status === "authenticated" && session?.user && !hasShown) {
+    // Check if we've already shown the notification for this session
+    const sessionId = session?.user?.email || 'anonymous';
+    const shownKey = `welcome_shown_${sessionId}`;
+    const hasShown = localStorage.getItem(shownKey) === 'true';
+
+    if (status === "authenticated" && session?.user && !hasShown && !hasShownForSession) {
       // Small delay to ensure component is mounted
       const showTimer = setTimeout(() => {
         setIsVisible(true);
-        setHasShown(true);
+        setHasShownForSession(true);
+        // Mark as shown in localStorage
+        localStorage.setItem(shownKey, 'true');
       }, 100);
 
       // Auto-hide after 5 seconds
@@ -34,7 +40,7 @@ const WelcomeNotification = ({ isWidget }: WelcomeNotificationProps) => {
         clearTimeout(hideTimer);
       };
     }
-  }, [status, session, hasShown]);
+  }, [status, session, hasShownForSession]);
 
   const handleClose = () => {
     setIsVisible(false);
