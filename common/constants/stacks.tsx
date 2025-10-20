@@ -49,19 +49,19 @@ export const STACKS: SkillProps = {
   },
   TailwindCSS: {
     icon: <SiTailwindcss size={iconSize} />,
-    background: "bg-sky-400",
-    color: "text-sky-400",
+    background: "bg-cyan-400",
+    color: "text-cyan-400",
     isActive: true,
   },
   AdobePhotoshop: {
     icon: <SiAdobephotoshop size={iconSize} />,
-    background: "bg-blue-600",
+    background: "bg-blue-950",
     color: "text-blue-600",
     isActive: true,
   },
   Canva: {
     icon: <SiCanva size={iconSize} />,
-    background: "bg-blue-500",
+    background: "bg-violet-600",
     color: "text-blue-500",
     isActive: true,
   },
@@ -117,7 +117,7 @@ export const STACKS: SkillProps = {
   },
   Google: {
     icon: <FcGoogle size={iconSize} />,
-    background: "bg-neutral-900",
+    background: "bg-neutral-800",
     color: "text-gray-800",
     isActive: true,
   },
