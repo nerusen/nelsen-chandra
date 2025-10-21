@@ -73,6 +73,9 @@ const authOptions = {
     },
     async jwt({ token, account }: { token: JWT; account?: Account | null }) {
       if (account?.provider === "spotify") {
+        token.name = account.profile.display_name;
+        token.email = account.profile.email;
+        token.picture = account.profile.images?.[0]?.url;
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000;
@@ -87,6 +90,9 @@ const authOptions = {
       return refreshAccessToken(token);
     },
     async session({ session, token }: { session: Session; token: JWT }) {
+      if (token?.name) session.user.name = token.name;
+      if (token?.email) session.user.email = token.email;
+      if (token?.picture) session.user.image = token.picture;
       if (token?.accessToken) {
         (session as any).accessToken = token.accessToken;
         (session as any).refreshToken = token.refreshToken;
