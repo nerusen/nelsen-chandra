@@ -80,9 +80,9 @@ const MusicRoom = () => {
     }
   };
 
-  const handleLogin = () => {
-    const { signIn } = require("next-auth/react");
-    signIn("spotify", { callbackUrl: window.location.origin + "/music-room" });
+  const handleLogin = async () => {
+    const { signIn } = await import("next-auth/react");
+    signIn("spotify", { callbackUrl: "/music-room" });
   };
 
   const handleLogout = () => {
