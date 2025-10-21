@@ -5,6 +5,43 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import SpotifyProvider from "next-auth/providers/spotify";
 
+async function refreshAccessToken(token: JWT) {
+  try {
+    const url = "https://accounts.spotify.com/api/token";
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      method: "POST",
+      body: new URLSearchParams({
+        client_id: process.env.SPOTIFY_CLIENT_ID!,
+        client_secret: process.env.SPOTIFY_CLIENT_SECRET!,
+        grant_type: "refresh_token",
+        refresh_token: token.refreshToken as string,
+      }),
+    });
+
+    const refreshedTokens = await response.json();
+
+    if (!response.ok) {
+      throw refreshedTokens;
+    }
+
+    return {
+      ...token,
+      accessToken: refreshedTokens.access_token,
+      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
+    };
+  } catch (error) {
+    console.error("Error refreshing access token", error);
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+    };
+  }
+}
+
 const authOptions = {
   providers: [
     GoogleProvider({
@@ -27,6 +64,7 @@ const authOptions = {
   ],
   pages: {
     signIn: "/music-room",
+    error: "/music-room",
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }: any) {
@@ -36,12 +74,23 @@ const authOptions = {
     async jwt({ token, account }: { token: JWT; account?: Account | null }) {
       if (account?.provider === "spotify") {
         token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
+        token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000;
       }
-      return token;
+
+      // Return previous token if the access token has not expired yet
+      if (Date.now() < (token.accessTokenExpires as number)) {
+        return token;
+      }
+
+      // Access token has expired, try to update it
+      return refreshAccessToken(token);
     },
     async session({ session, token }: { session: Session; token: JWT }) {
       if (token?.accessToken) {
         (session as any).accessToken = token.accessToken;
+        (session as any).refreshToken = token.refreshToken;
+        (session as any).accessTokenExpires = token.accessTokenExpires;
       }
       return session;
     },
@@ -52,3 +101,4 @@ const authOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+
