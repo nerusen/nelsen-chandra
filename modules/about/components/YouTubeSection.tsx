@@ -12,7 +12,7 @@ const YouTubeSection = () => {
   const t = useTranslations("AboutPage.youtube");
 
   // YouTube video ID
-  const videoId = "EwzWg-Joxq0";
+  const videoId = "E8lXC2mR6";
   const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
 
