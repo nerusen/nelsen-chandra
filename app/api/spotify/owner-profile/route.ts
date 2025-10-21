@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next";
+import { NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Replace with your Spotify user ID
     const ownerId = process.env.SPOTIFY_OWNER_ID;
