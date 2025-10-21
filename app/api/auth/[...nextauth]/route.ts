@@ -26,6 +26,10 @@ const authOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      // Allow OAuth without email verification
+      return true;
+    },
     async jwt({ token, account }: { token: JWT; account?: Account | null }) {
       if (account?.provider === "spotify") {
         token.accessToken = account.access_token;
