@@ -172,9 +172,11 @@ const authOptions = {
       return refreshAccessToken(token);
     },
     async session({ session, token }: { session: Session; token: JWT }) {
-      if (token?.name) session.user.name = token.name;
-      if (token?.email) session.user.email = token.email;
-      if (token?.picture) session.user.image = token.picture;
+      if (session.user) {
+        if (token?.name) session.user.name = token.name;
+        if (token?.email) session.user.email = token.email;
+        if (token?.picture) session.user.image = token.picture;
+      }
       if (token?.accessToken) {
         (session as any).accessToken = token.accessToken;
         (session as any).refreshToken = token.refreshToken;
@@ -190,4 +192,4 @@ const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
 
-          
+        
