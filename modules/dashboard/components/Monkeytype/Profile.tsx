@@ -92,7 +92,7 @@ const Profile = ({ data }: ProfileProps) => {
               src={"/images/satria-3.jpg"}
               width={80}
               height={80}
-              alt="Satria Bahari"
+              alt="Nelsen Chandra"
               className="rounded-full border-2 border-neutral-400 transition-all duration-300 dark:border-neutral-600 lg:hover:scale-105"
             />
           </div>
