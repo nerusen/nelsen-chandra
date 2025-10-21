@@ -5,6 +5,77 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import SpotifyProvider from "next-auth/providers/spotify";
 
+// Custom TikTok Provider
+function TikTokProvider(options: any) {
+  return {
+    id: "tiktok",
+    name: "TikTok",
+    type: "oauth",
+    authorization: {
+      url: "https://www.tiktok.com/auth/authorize/",
+      params: {
+        scope: "user.info.basic",
+        response_type: "code",
+      },
+    },
+    token: {
+      url: "https://open-api.tiktok.com/oauth/access_token/",
+      async request({ client, params, checks, provider }: any) {
+        const response = await fetch(provider.token.url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            client_key: client.client_id,
+            client_secret: client.client_secret,
+            code: params.code,
+            grant_type: "authorization_code",
+            redirect_uri: client.redirect_uri,
+          }),
+        });
+
+        const tokens = await response.json();
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch access token");
+        }
+
+        return {
+          tokens,
+        };
+      },
+    },
+    userinfo: {
+      url: "https://open-api.tiktok.com/user/info/",
+      async request({ tokens, client }: any) {
+        const response = await fetch(`${this.url}?access_token=${tokens.access_token}&open_id=${tokens.open_id}`, {
+          headers: {
+            "Authorization": `Bearer ${tokens.access_token}`,
+          },
+        });
+
+        const userInfo = await response.json();
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user info");
+        }
+
+        return userInfo.data.user;
+      },
+    },
+    profile(profile: any) {
+      return {
+        id: profile.open_id,
+        name: profile.display_name,
+        email: profile.email || null,
+        image: profile.avatar_url,
+      };
+    },
+    options,
+  };
+}
+
 async function refreshAccessToken(token: JWT) {
   try {
     const url = "https://accounts.spotify.com/api/token";
@@ -61,6 +132,10 @@ const authOptions = {
         },
       },
     }),
+    TikTokProvider({
+      clientId: process.env.TIKTOK_CLIENT_ID as string,
+      clientSecret: process.env.TIKTOK_CLIENT_SECRET as string,
+    }),
   ],
   pages: {
     signIn: "/music-room",
@@ -108,3 +183,4 @@ const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
 
+      
