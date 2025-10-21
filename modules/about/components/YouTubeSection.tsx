@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useRef } from "react";
 import { TbBrandYoutube as YouTubeIcon } from "react-icons/tb";
 import { FaPlay, FaPause, FaForward, FaBackward } from "react-icons/fa";
-import { LuDownload as DownloadIcon } from "react-icons/lu";
+import { LuExternalLink as ExternalLinkIcon } from "react-icons/lu";
 import { useTranslations } from "next-intl";
 
 import SectionHeading from "@/common/components/elements/SectionHeading";
@@ -76,7 +76,7 @@ const YouTubeSection = () => {
                 className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
                 data-umami-event="click_youtube_show_more_button"
               >
-                <DownloadIcon />
+                <ExternalLinkIcon />
                 <span>{t("show_more")}</span>
               </Link>
             </div>
