@@ -26,7 +26,7 @@ const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user, account, profile, email, credentials }: any) {
       // Allow OAuth without email verification
       return true;
     },
