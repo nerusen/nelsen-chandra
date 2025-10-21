@@ -60,6 +60,7 @@ const TrafficTrendsChart = ({ data }: DataProps) => {
 
   const options: ChartOptions<"bar"> = {
     responsive: true,
+    animation: false,
     plugins: {
       legend: {
         position: "top",
