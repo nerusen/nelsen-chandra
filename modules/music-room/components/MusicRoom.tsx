@@ -35,7 +35,7 @@ const MusicRoom = () => {
   const [userPlaylists, setUserPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const isLoggedIn = status === "authenticated" && session?.user && session?.accessToken;
+  const isLoggedIn = status === "authenticated" && session?.user && (session as any)?.accessToken;
 
   useEffect(() => {
     if (isLoggedIn) {
