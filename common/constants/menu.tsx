@@ -8,6 +8,7 @@ import {
 import { PiChatTeardropDotsBold as ChatRoomIcon } from "react-icons/pi";
 import { PiCertificate as AchievementIcon } from "react-icons/pi";
 import { VscHubot as SmartChatIcon } from "react-icons/vsc";
+import { IoMdMusicalNote as MusicRoomIcon } from "react-icons/io";
 
 import { MenuItemProps } from "../types/menu";
 
@@ -61,6 +62,22 @@ export const MENU_ITEMS: MenuItemProps[] = [
     isShow: true,
     isExternal: false,
     eventName: "Pages: Chat Room",
+  },
+  {
+    title: "Music Room",
+    href: "/music-room",
+    icon: <MusicRoomIcon size={iconSize} />,
+    isShow: true,
+    isExternal: false,
+    eventName: "Pages: Music Room",
+  },
+  {
+    title: "Music Room",
+    href: "/music-room",
+    icon: <MusicRoomIcon size={iconSize} />,
+    isShow: true,
+    isExternal: false,
+    eventName: "Pages: Music Room",
   },
   {
     title: "Contact",
