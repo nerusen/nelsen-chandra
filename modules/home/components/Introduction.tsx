@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { SiBuymeacoffee } from "react-icons/si";
 import { useTranslations } from "next-intl";
 
 const Introduction = () => {
@@ -5,8 +7,19 @@ const Introduction = () => {
 
   return (
     <section className="space-y-2 bg-cover bg-no-repeat">
-      <div className="text-3xl font-medium text-neutral-900 dark:text-neutral-50">
-        <h1>{t("intro")}</h1>
+      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+        <div className="text-3xl font-medium text-neutral-900 dark:text-neutral-50">
+          <h1>{t("intro")}</h1>
+        </div>
+        <Link
+          href="https://buymeacoffee.com/nerusen"
+          target="_blank"
+          passHref
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+        >
+          <SiBuymeacoffee />
+          <span>Buy me a coffee</span>
+        </Link>
       </div>
 
       <div className="space-y-4">
