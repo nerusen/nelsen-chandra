@@ -35,7 +35,7 @@ const MusicRoom = () => {
   const [userPlaylists, setUserPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const isLoggedIn = status === "authenticated" && session?.user && (session as any)?.accessToken;
+  const isLoggedIn = status === "authenticated" && session?.user;
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -80,9 +80,9 @@ const MusicRoom = () => {
     }
   };
 
-  const handleLogin = async () => {
-    const { signIn } = await import("next-auth/react");
-    signIn("spotify", { callbackUrl: "/music-room" });
+  const handleLogin = () => {
+    const { signIn } = require("next-auth/react");
+    signIn("spotify", { callbackUrl: window.location.origin + "/music-room" });
   };
 
   const handleLogout = () => {
@@ -173,13 +173,25 @@ const MusicRoom = () => {
   }
 
   return (
-    <Button
-      onClick={handleLogout}
-      className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
-    >
-      <FaSignOutAlt size={16} />
-      <span>Sign Out</span>
-    </Button>
+    <div className="flex items-center gap-4">
+      {userProfile && (
+        <div className="flex items-center gap-2 text-sm">
+          <img
+            src={userProfile.images?.[0]?.url || "/default-avatar.png"}
+            alt={userProfile.display_name}
+            className="w-8 h-8 rounded-full"
+          />
+          <span className="font-medium">{userProfile.display_name}</span>
+        </div>
+      )}
+      <Button
+        onClick={handleLogout}
+        className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+      >
+        <FaSignOutAlt size={16} />
+        <span>Sign Out</span>
+      </Button>
+    </div>
   );
 };
 
