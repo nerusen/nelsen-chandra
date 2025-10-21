@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
-import type { JWT, Account, Session } from "next-auth";
+import type { Account, Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import SpotifyProvider from "next-auth/providers/spotify";
