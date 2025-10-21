@@ -80,8 +80,9 @@ const MusicRoom = () => {
     }
   };
 
-  const handleLogin = () => {
-    window.location.href = "/api/auth/signin/spotify";
+  const handleLogin = async () => {
+    const { signIn } = await import("next-auth/react");
+    signIn("spotify");
   };
 
   const handleLogout = () => {
