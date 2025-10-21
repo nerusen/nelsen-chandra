@@ -5,6 +5,12 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import SpotifyProvider from "next-auth/providers/spotify";
 
+interface SpotifyProfile {
+  display_name: string;
+  email: string;
+  images: { url: string }[];
+}
+
 // Custom TikTok Provider
 function TikTokProvider(options: any) {
   return {
@@ -148,9 +154,10 @@ const authOptions = {
     },
     async jwt({ token, account }: { token: JWT; account?: Account | null }) {
       if (account?.provider === "spotify") {
-        token.name = account.profile.display_name;
-        token.email = account.profile.email;
-        token.picture = account.profile.images?.[0]?.url;
+        const profile = account.profile as SpotifyProfile;
+        token.name = profile.display_name;
+        token.email = profile.email;
+        token.picture = profile.images?.[0]?.url;
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000;
@@ -183,4 +190,4 @@ const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
 
-      
+          
