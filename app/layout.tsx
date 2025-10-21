@@ -50,7 +50,7 @@ const RootLayout = async ({
       <Script
         defer
         src="https://cloud.umami.is/script.js"
-        data-website-id="91c868c5-2a89-4a1d-b292-56c40ea30137"
+        data-website-id="c18dabb9-377f-433b-aa9b-da056ba5005f"
 
         // data-domains="satriabahari.site"
         // data-website-id="8e2c9f27-a12b-48ca-8130-808ebe377aca"
