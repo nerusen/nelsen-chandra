@@ -55,7 +55,7 @@ export const STACKS: SkillProps = {
   },
   AdobePhotoshop: {
     icon: <SiAdobephotoshop size={iconSize} />,
-    background: "bg-blue-950",
+    background: "bg-blue-900",
     color: "text-blue-600",
     isActive: true,
   },
