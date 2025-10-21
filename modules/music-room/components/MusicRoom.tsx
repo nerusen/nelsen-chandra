@@ -187,9 +187,9 @@ const MusicRoom = () => {
         )}
         <Button
           onClick={handleLogout}
-          className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm"
+          className="flex items-center gap-1 rounded-md bg-red-600 px-3 py-1 font-medium text-red-50 transition duration-100 hover:bg-red-500 active:scale-90"
         >
-          <FaSignOutAlt size={14} />
+          <FaSignOutAlt size={16} />
           Sign Out
         </Button>
       </div>
