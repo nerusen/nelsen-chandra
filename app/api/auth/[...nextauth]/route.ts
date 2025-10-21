@@ -16,7 +16,7 @@ function TikTokProvider(options: any) {
   return {
     id: "tiktok",
     name: "TikTok",
-    type: "oauth",
+    type: "oauth" as const,
     authorization: {
       url: "https://www.tiktok.com/auth/authorize/",
       params: {
@@ -191,5 +191,3 @@ const authOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-
-        
