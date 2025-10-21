@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import type { JWT, Account, Session } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import SpotifyProvider from "next-auth/providers/spotify";
@@ -24,13 +25,13 @@ const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, account }: { token: JWT; account?: Account | null }) {
       if (account?.provider === "spotify") {
         token.accessToken = account.access_token;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (token?.accessToken) {
         (session as any).accessToken = token.accessToken;
       }
@@ -44,4 +45,3 @@ const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
 
-    
