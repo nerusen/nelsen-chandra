@@ -17,8 +17,8 @@ const YouTubeSection = () => {
   const [showOverlay, setShowOverlay] = useState(true);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  // Replace with actual YouTube video ID
-  const videoId = "dQw4w9WgXcQ"; // Example: Rick Astley - Never Gonna Give You Up
+  // YouTube video ID
+  const videoId = "EwzWg-Joxq0";
   const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
   const handlePlay = () => {
