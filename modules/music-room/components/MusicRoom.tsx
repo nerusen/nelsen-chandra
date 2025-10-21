@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { FaSpotify } from "react-icons/fa";
 
 import Container from "@/common/components/elements/Container";
 import Button from "@/common/components/elements/Button";
@@ -141,7 +142,8 @@ const MusicRoom = () => {
           <p className="text-neutral-600 dark:text-neutral-400 mb-6">
             {t("loginDescription")}
           </p>
-          <Button onClick={handleLogin} className="bg-green-600 hover:bg-green-700">
+          <Button onClick={handleLogin} className="bg-green-600 hover:bg-green-700 flex items-center gap-2">
+            <FaSpotify size={20} />
             Login with Spotify
           </Button>
         </div>
