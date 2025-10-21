@@ -172,45 +172,24 @@ const MusicRoom = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* User Profile and Logout */}
-      <div className="flex justify-end items-center gap-4">
-        {userProfile && (
-          <div className="flex items-center gap-2 text-sm">
-            <img
-              src={userProfile.images?.[0]?.url || "/default-avatar.png"}
-              alt={userProfile.display_name}
-              className="w-8 h-8 rounded-full"
-            />
-            <span className="font-medium">{userProfile.display_name}</span>
-          </div>
-        )}
-        <Button
-          onClick={handleLogout}
-          className="flex cursor-pointer items-center gap-1 rounded-md bg-red-600 px-3 py-1 font-medium text-red-50 transition duration-100 hover:bg-red-500 active:scale-90"
-        >
-          <FaSignOutAlt size={16} />
-          Sign Out
-        </Button>
-      </div>
-
-      {/* Owner's Profile and Playlists */}
-      <div>
-        <h2 className="text-xl font-bold mb-4">{t("ownerContent")}</h2>
-        {ownerProfile && <ProfileCard profile={ownerProfile} title={t("ownerProfile")} />}
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold mb-3">{t("ownerPlaylists")}</h3>
-          <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
-            {ownerPlaylists.map((playlist) => (
-              <PlaylistCard key={playlist.id} playlist={playlist} />
-            ))}
-          </div>
+    <div className="flex items-center gap-4">
+      {userProfile && (
+        <div className="flex items-center gap-2 text-sm">
+          <img
+            src={userProfile.images?.[0]?.url || "/default-avatar.png"}
+            alt={userProfile.display_name}
+            className="w-8 h-8 rounded-full"
+          />
+          <span className="font-medium">{userProfile.display_name}</span>
         </div>
-      </div>
-
-      <Breakline />
-
-
+      )}
+      <Button
+        onClick={handleLogout}
+        className="flex cursor-pointer items-center gap-1 rounded-md bg-red-600 px-3 py-1 font-medium text-red-50 transition duration-100 hover:bg-red-500 active:scale-90"
+      >
+        <FaSignOutAlt size={16} />
+        Sign Out
+      </Button>
     </div>
   );
 };
