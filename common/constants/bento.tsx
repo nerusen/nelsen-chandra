@@ -86,7 +86,7 @@ export const BENTO: BentoItemProps[] = [
     href: "/music-room",
     colSpan: 1,
     className: "from-green-600 to-green-800",
-    isShow: true,
+    isShow: false,
   },
   {
     title: "Services",
