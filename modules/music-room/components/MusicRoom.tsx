@@ -1,9 +1,9 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { FaSpotify } from "react-icons/fa";
+import { FaSpotify, FaSignOutAlt } from "react-icons/fa";
 
 import Container from "@/common/components/elements/Container";
 import Button from "@/common/components/elements/Button";
@@ -84,40 +84,46 @@ const MusicRoom = () => {
     window.location.href = "/api/auth/signin/spotify";
   };
 
-  const ProfileCard = ({ profile, title }: { profile: SpotifyProfile; title: string }) => (
-    <Card className="p-6">
-      <h3 className="text-xl font-semibold mb-4">{title}</h3>
-      <div className="flex items-center space-x-4">
+  const handleLogout = () => {
+    signOut();
+  };
+
+  const ProfileCard = ({ profile, title, isUser = false }: { profile: SpotifyProfile; title: string; isUser?: boolean }) => (
+    <Card className="p-4">
+      <h3 className="text-lg font-semibold mb-3">{title}</h3>
+      <div className="flex items-center space-x-3">
         {profile.images?.[0] && (
           <img
             src={profile.images[0].url}
             alt={profile.display_name}
-            className="w-16 h-16 rounded-full"
+            className="w-12 h-12 rounded-full"
           />
         )}
         <div>
-          <h4 className="font-medium">{profile.display_name}</h4>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">
-            {profile.followers?.total} followers
-          </p>
+          <h4 className="font-medium text-sm">{profile.display_name}</h4>
+          {!isUser && (
+            <p className="text-xs text-neutral-600 dark:text-neutral-400">
+              {profile.followers?.total} followers
+            </p>
+          )}
         </div>
       </div>
     </Card>
   );
 
   const PlaylistCard = ({ playlist }: { playlist: Playlist }) => (
-    <Card className="p-4 hover:shadow-lg transition-shadow">
-      <div className="flex items-center space-x-4">
+    <Card className="p-3 hover:shadow-lg transition-shadow">
+      <div className="flex items-center space-x-3 mb-3">
         {playlist.images?.[0] && (
           <img
             src={playlist.images[0].url}
             alt={playlist.name}
-            className="w-16 h-16 rounded-lg"
+            className="w-12 h-12 rounded-lg flex-shrink-0"
           />
         )}
-        <div className="flex-1">
-          <h4 className="font-medium truncate">{playlist.name}</h4>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400 truncate">
+        <div className="flex-1 min-w-0">
+          <h4 className="font-medium text-sm truncate">{playlist.name}</h4>
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 truncate">
             {playlist.description}
           </p>
           <p className="text-xs text-neutral-500">
@@ -126,25 +132,37 @@ const MusicRoom = () => {
         </div>
         <Button
           onClick={() => window.open(playlist.external_urls.spotify, "_blank")}
-          className="text-sm"
+          className="text-xs px-2 py-1 flex-shrink-0"
         >
-          Open in Spotify
+          Open
         </Button>
       </div>
+      <iframe
+        src={`https://open.spotify.com/embed/playlist/${playlist.id}`}
+        width="100%"
+        height="152"
+        frameBorder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+        className="rounded-lg"
+      ></iframe>
     </Card>
   );
 
   if (!isLoggedIn) {
     return (
       <Container>
-        <div className="text-center py-12">
-          <h2 className="text-2xl font-bold mb-4">{t("loginRequired")}</h2>
-          <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+        <div className="text-center py-8">
+          <h2 className="text-xl font-bold mb-3">{t("loginRequired")}</h2>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
             {t("loginDescription")}
           </p>
-          <Button onClick={handleLogin} className="bg-green-600 hover:bg-green-700 flex items-center gap-2">
-            <FaSpotify size={20} />
-            Login with Spotify
+          <Button
+            onClick={handleLogin}
+            className="flex w-full items-center justify-center border !bg-black py-2.5 shadow-sm transition duration-300 hover:scale-105 active:scale-100 text-white"
+          >
+            <FaSpotify size={18} className="text-green-400" />
+            <span>Login with Spotify</span>
           </Button>
         </div>
       </Container>
@@ -153,14 +171,25 @@ const MusicRoom = () => {
 
   return (
     <Container>
-      <div className="space-y-8">
+      <div className="space-y-6">
+        {/* Logout Button */}
+        <div className="flex justify-end">
+          <Button
+            onClick={handleLogout}
+            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm"
+          >
+            <FaSignOutAlt size={14} />
+            Sign Out
+          </Button>
+        </div>
+
         {/* Owner's Profile and Playlists */}
         <div>
-          <h2 className="text-2xl font-bold mb-6">{t("ownerContent")}</h2>
+          <h2 className="text-xl font-bold mb-4">{t("ownerContent")}</h2>
           {ownerProfile && <ProfileCard profile={ownerProfile} title={t("ownerProfile")} />}
-          <div className="mt-6">
-            <h3 className="text-xl font-semibold mb-4">{t("ownerPlaylists")}</h3>
-            <div className="grid gap-4 md:grid-cols-2">
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold mb-3">{t("ownerPlaylists")}</h3>
+            <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {ownerPlaylists.map((playlist) => (
                 <PlaylistCard key={playlist.id} playlist={playlist} />
               ))}
@@ -170,22 +199,10 @@ const MusicRoom = () => {
 
         <Breakline />
 
-        {/* User's Profile and Playlists */}
+        {/* User's Profile */}
         <div>
-          <h2 className="text-2xl font-bold mb-6">{t("userContent")}</h2>
-          {userProfile && <ProfileCard profile={userProfile} title={t("userProfile")} />}
-          <div className="mt-6">
-            <h3 className="text-xl font-semibold mb-4">{t("userPlaylists")}</h3>
-            {loading ? (
-              <p>Loading your playlists...</p>
-            ) : (
-              <div className="grid gap-4 md:grid-cols-2">
-                {userPlaylists.map((playlist) => (
-                  <PlaylistCard key={playlist.id} playlist={playlist} />
-                ))}
-              </div>
-            )}
-          </div>
+          <h2 className="text-xl font-bold mb-4">{t("userContent")}</h2>
+          {userProfile && <ProfileCard profile={userProfile} title={t("userProfile")} isUser={true} />}
         </div>
       </div>
     </Container>
