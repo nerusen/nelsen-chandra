@@ -138,9 +138,9 @@ const MusicRoom = () => {
         </Button>
       </div>
       <iframe
-        src={`https://open.spotify.com/embed/playlist/${playlist.id}`}
+        src={`https://open.spotify.com/embed/playlist/${playlist.id}?utm_source=generator&theme=0`}
         width="100%"
-        height="152"
+        height="352"
         frameBorder="0"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
@@ -170,42 +170,40 @@ const MusicRoom = () => {
   }
 
   return (
-    <Container>
-      <div className="space-y-6">
-        {/* Logout Button */}
-        <div className="flex justify-end">
-          <Button
-            onClick={handleLogout}
-            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm"
-          >
-            <FaSignOutAlt size={14} />
-            Sign Out
-          </Button>
-        </div>
+    <div className="space-y-6">
+      {/* Logout Button */}
+      <div className="flex justify-end">
+        <Button
+          onClick={handleLogout}
+          className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm"
+        >
+          <FaSignOutAlt size={14} />
+          Sign Out
+        </Button>
+      </div>
 
-        {/* Owner's Profile and Playlists */}
-        <div>
-          <h2 className="text-xl font-bold mb-4">{t("ownerContent")}</h2>
-          {ownerProfile && <ProfileCard profile={ownerProfile} title={t("ownerProfile")} />}
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-3">{t("ownerPlaylists")}</h3>
-            <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {ownerPlaylists.map((playlist) => (
-                <PlaylistCard key={playlist.id} playlist={playlist} />
-              ))}
-            </div>
+      {/* Owner's Profile and Playlists */}
+      <div>
+        <h2 className="text-xl font-bold mb-4">{t("ownerContent")}</h2>
+        {ownerProfile && <ProfileCard profile={ownerProfile} title={t("ownerProfile")} />}
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold mb-3">{t("ownerPlaylists")}</h3>
+          <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
+            {ownerPlaylists.map((playlist) => (
+              <PlaylistCard key={playlist.id} playlist={playlist} />
+            ))}
           </div>
         </div>
-
-        <Breakline />
-
-        {/* User's Profile */}
-        <div>
-          <h2 className="text-xl font-bold mb-4">{t("userContent")}</h2>
-          {userProfile && <ProfileCard profile={userProfile} title={t("userProfile")} isUser={true} />}
-        </div>
       </div>
-    </Container>
+
+      <Breakline />
+
+      {/* User's Profile */}
+      <div>
+        <h2 className="text-xl font-bold mb-4">{t("userContent")}</h2>
+        {userProfile && <ProfileCard profile={userProfile} title={t("userProfile")} isUser={true} />}
+      </div>
+    </div>
   );
 };
 
