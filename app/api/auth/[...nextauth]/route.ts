@@ -25,6 +25,9 @@ const authOptions = {
       },
     }),
   ],
+  pages: {
+    signIn: "/music-room",
+  },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }: any) {
       // Allow OAuth without email verification
@@ -50,3 +53,4 @@ const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
 
+      
