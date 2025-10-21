@@ -137,15 +137,17 @@ const MusicRoom = () => {
           Open
         </Button>
       </div>
-      <iframe
-        src={`https://open.spotify.com/embed/playlist/${playlist.id}?utm_source=generator&theme=0`}
-        width="100%"
-        height="352"
-        frameBorder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"
-        className="rounded-lg"
-      ></iframe>
+      <div className="relative overflow-hidden rounded-lg">
+        <iframe
+          src={`https://open.spotify.com/embed/playlist/${playlist.id}?utm_source=generator&theme=0`}
+          width="100%"
+          height="352"
+          frameBorder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+          className="rounded-lg"
+        ></iframe>
+      </div>
     </Card>
   );
 
@@ -171,8 +173,18 @@ const MusicRoom = () => {
 
   return (
     <div className="space-y-6">
-      {/* Logout Button */}
-      <div className="flex justify-end">
+      {/* User Profile and Logout */}
+      <div className="flex justify-end items-center gap-4">
+        {userProfile && (
+          <div className="flex items-center gap-2 text-sm">
+            <img
+              src={userProfile.images?.[0]?.url || "/default-avatar.png"}
+              alt={userProfile.display_name}
+              className="w-8 h-8 rounded-full"
+            />
+            <span className="font-medium">{userProfile.display_name}</span>
+          </div>
+        )}
         <Button
           onClick={handleLogout}
           className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm"
@@ -198,11 +210,7 @@ const MusicRoom = () => {
 
       <Breakline />
 
-      {/* User's Profile */}
-      <div>
-        <h2 className="text-xl font-bold mb-4">{t("userContent")}</h2>
-        {userProfile && <ProfileCard profile={userProfile} title={t("userProfile")} isUser={true} />}
-      </div>
+
     </div>
   );
 };
