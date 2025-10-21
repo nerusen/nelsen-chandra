@@ -151,6 +151,20 @@
       "tooltip_signout": "Keluar"
     }
   },
+  "MusicRoomPage": {
+    "title": "Ruang Musik",
+    "description": "Jelajahi musik dan temukan playlist baru."
+  },
+  "MusicRoom": {
+    "loginRequired": "Login Diperlukan",
+    "loginDescription": "Silakan login dengan Spotify untuk mengakses Ruang Musik dan melihat konten musik.",
+    "ownerContent": "Musik Unggulan",
+    "ownerProfile": "Profil Artis",
+    "ownerPlaylists": "Playlist Unggulan",
+    "userContent": "Musik Anda",
+    "userProfile": "Profil Anda",
+    "userPlaylists": "Playlist Anda"
+  },
   "ContactPage": {
     "title": "Kontak",
     "description": "Mari kita terhubung",
@@ -210,6 +224,7 @@
     "Projects": "Proyek",
     "Dashboard": "Dasbor",
     "Chat Room": "Ruang Obrolan",
+    "Music Room": "Ruang Musik",
     "Contact": "Kontak",
     "Smart Talk": "Smart Talk"
   },

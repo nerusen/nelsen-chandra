@@ -151,6 +151,20 @@
       "tooltip_signout": "Sign out"
     }
   },
+  "MusicRoomPage": {
+    "title": "Music Room",
+    "description": "Explore music and discover new playlists."
+  },
+  "MusicRoom": {
+    "loginRequired": "Login Required",
+    "loginDescription": "Please login with Spotify to access the Music Room and view music content.",
+    "ownerContent": "Featured Music",
+    "ownerProfile": "Artist Profile",
+    "ownerPlaylists": "Featured Playlists",
+    "userContent": "Your Music",
+    "userProfile": "Your Profile",
+    "userPlaylists": "Your Playlists"
+  },
   "ContactPage": {
     "title": "Contact",
     "description": "Let`s get in touch",
@@ -210,6 +224,7 @@
     "Projects": "Projects",
     "Dashboard": "Dashboard",
     "Chat Room": "Chat Room",
+    "Music Room": "Music Room",
     "Contact": "Contact",
     "Smart Talk": "Smart Talk"
   },
