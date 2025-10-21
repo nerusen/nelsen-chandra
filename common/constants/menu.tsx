@@ -72,14 +72,6 @@ export const MENU_ITEMS: MenuItemProps[] = [
     eventName: "Pages: Music Room",
   },
   {
-    title: "Music Room",
-    href: "/music-room",
-    icon: <MusicRoomIcon size={iconSize} />,
-    isShow: true,
-    isExternal: false,
-    eventName: "Pages: Music Room",
-  },
-  {
     title: "Contact",
     href: "/contact",
     icon: <ContactIcon size={iconSize} />,
