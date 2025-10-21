@@ -2,7 +2,9 @@ import clsx from "clsx";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { BsGithub as GithubIcon } from "react-icons/bs";
+import { BsTiktok as TiktokIcon } from "react-icons/bs";
 import { FcGoogle as GoogleIcon } from "react-icons/fc";
+import { FaSpotify as SpotifyIcon } from "react-icons/fa";
 
 import Button from "@/common/components/elements/Button";
 
@@ -13,6 +15,20 @@ const Providers = [
     bgColor: "!bg-white",
     textColor: "text-black",
     eventName: "sign_in: Google",
+  },
+  {
+    id: "tiktok",
+    icon: <TiktokIcon size={18} className="text-black" />,
+    bgColor: "!bg-[#0A0A0A]",
+    textColor: "text-white",
+    eventName: "sign_in: TikTok",
+  },
+  {
+    id: "spotify",
+    icon: <SpotifyIcon size={18} className="text-green-400" />,
+    bgColor: "!bg-[#161616]",
+    textColor: "text-white",
+    eventName: "sign_in: Spotify",
   },
   {
     id: "github",
