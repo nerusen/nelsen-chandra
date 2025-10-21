@@ -7,6 +7,7 @@ import {
 } from "react-icons/bi";
 import { PiChatTeardropDotsBold as ChatRoomIcon } from "react-icons/pi";
 import { PiCertificate as AchievementIcon } from "react-icons/pi";
+import { IoMdMusicalNote as MusicRoomIcon } from "react-icons/io";
 
 import ChatPreview from "@/modules/home/components/Bento/ChatPreview";
 import MarqueeIcons from "@/modules/home/components/Bento/MarqueeIcons";
@@ -74,6 +75,17 @@ export const BENTO: BentoItemProps[] = [
     href: "/chat",
     colSpan: 1,
     className: "from-gray-700 to-gray-900",
+    isShow: true,
+  },
+  {
+    title: "Music Room",
+    description: "Explore music and discover playlists.",
+    label: "Music",
+    icon: <MusicRoomIcon size={size} />,
+    visual: <ChatPreview />, // Placeholder, can be replaced with music preview later
+    href: "/music-room",
+    colSpan: 1,
+    className: "from-green-600 to-green-800",
     isShow: true,
   },
   {
