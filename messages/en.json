@@ -35,6 +35,11 @@
       "title": "Education",
       "sub_title": "My educational journey."
     },
+    "youtube": {
+      "title": "YouTube Video",
+      "sub_title": "Check out my latest video content.",
+      "show_more": "Show More"
+    },
     "resume_download_button": "Download Resume",
     "portfolio_download_button": "Download Portfolio"
   },

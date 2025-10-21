@@ -35,6 +35,11 @@
       "title": "Pendidikan",
       "sub_title": "Perjalanan pendidikan saya."
     },
+    "youtube": {
+      "title": "Video YouTube",
+      "sub_title": "Lihat konten video terbaru saya.",
+      "show_more": "Tampilkan Lebih"
+    },
     "resume_download_button": "Unduh CV",
     "portfolio_download_button": "Unduh Portofolio"
   },
