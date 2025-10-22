@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import Card from "@/common/components/elements/Card";
+import Breakline from "@/common/components/elements/Breakline";
 
 interface SpotifyProfile {
   id: string;
@@ -108,21 +109,22 @@ const MusicRoomContent = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <>
       {/* Owner's Profile and Playlists */}
       <div>
         <h2 className="text-xl font-bold mb-4">{t("ownerContent")}</h2>
         {ownerProfile && <ProfileCard profile={ownerProfile} title={t("ownerProfile")} />}
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold mb-3">{t("ownerPlaylists")}</h3>
-          <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
-            {ownerPlaylists.map((playlist) => (
-              <PlaylistCard key={playlist.id} playlist={playlist} />
-            ))}
-          </div>
+      </div>
+      <Breakline className="my-8" />
+      <div>
+        <h3 className="text-lg font-semibold mb-4">{t("ownerPlaylists")}</h3>
+        <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
+          {ownerPlaylists.map((playlist) => (
+            <PlaylistCard key={playlist.id} playlist={playlist} />
+          ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -20,9 +20,7 @@ const MusicRoomPage = () => {
       <PageHeading title="Music Room" description="Explore music and playlists in the Music Room">
         <MusicRoom />
       </PageHeading>
-      <div className="mt-8">
-        <MusicRoomContent />
-      </div>
+      <MusicRoomContent />
     </Container>
   );
 };
