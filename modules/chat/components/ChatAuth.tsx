@@ -18,7 +18,7 @@ const Providers = [
   },
   {
     id: "tiktok",
-    icon: <TiktokIcon size={18} className="text-black" />,
+    icon: <TiktokIcon size={18} className="text-white" />,
     bgColor: "!bg-[#0A0A0A]",
     textColor: "text-white",
     eventName: "sign_in: TikTok",
