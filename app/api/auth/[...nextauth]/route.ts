@@ -22,7 +22,7 @@ function TikTokProvider(options: any) {
       params: {
         scope: "user.info.basic",
         response_type: "code",
-        client_key: process.env.TIKTOK_CLIENT_ID,
+        client_key: options.clientId,
       },
     },
     token: {
@@ -45,7 +45,11 @@ function TikTokProvider(options: any) {
         const tokens = await response.json();
 
         if (!response.ok) {
-          console.error("TikTok token error:", tokens);
+          console.error("TikTok token error:", {
+            status: response.status,
+            statusText: response.statusText,
+            body: tokens
+          });
           throw new Error(`Failed to fetch access token: ${response.status} ${response.statusText}`);
         }
 
@@ -64,19 +68,25 @@ function TikTokProvider(options: any) {
         const userInfo = await response.json();
 
         if (!response.ok) {
-          console.error("TikTok userinfo error:", userInfo);
+          console.error("TikTok userinfo error:", {
+            status: response.status,
+            statusText: response.statusText,
+            body: userInfo
+          });
           throw new Error(`Failed to fetch user info: ${response.status} ${response.statusText}`);
         }
 
-        return userInfo.data?.user || userInfo.data;
+        // TikTok API returns user data directly in data field
+        return userInfo.data;
       },
     },
     profile(profile: any) {
+      console.log("TikTok profile data:", profile);
       return {
-        id: profile.open_id,
-        name: profile.display_name,
+        id: profile.open_id || profile.union_id,
+        name: profile.display_name || profile.nickname,
         email: profile.email || null,
-        image: profile.avatar_url,
+        image: profile.avatar_url || profile.avatar_url_100,
       };
     },
     options,
