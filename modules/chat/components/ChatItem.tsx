@@ -142,7 +142,7 @@ const ChatItem = ({
                   <AdminIcon size={13} />
                   <span className="text-[10px]">Author</span>
                 </div>
-                <div className="flex items-center gap-[2px] rounded-full bg-blue-800/20 px-1.5 py-0.5 font-medium text-blue-600 ">
+                <div className="flex items-center gap-[2px] rounded-full bg-blue-700/20 px-1.5 py-0.5 font-medium text-blue-600 ">
                   <VerifiedIcon size={13} />
                   <span className="text-[10px]">Verified</span>
                 </div>
@@ -165,7 +165,7 @@ const ChatItem = ({
             "rounded-xl px-4 py-2 relative",
             condition
               ? "author-gradient-border"
-              : "bg-neutral-200 dark:bg-neutral-950 dark:text-neutral-50",
+              : "bg-neutral-200 dark:bg-neutral-850 dark:text-neutral-50",
             isEditing && "blur-none",
           )}>
             {isEditing ? (
@@ -174,7 +174,7 @@ const ChatItem = ({
                   type="text"
                   value={editMessage}
                   onChange={(e) => setEditMessage(e.target.value)}
-                  className="bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded px-2 py-1 text-sm opacity-50"
+                  className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded px-1 py-1 text-sm opacity-50"
                   placeholder="Edit your message..."
                   autoFocus
                   onKeyDown={(e) => {
