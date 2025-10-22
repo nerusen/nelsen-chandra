@@ -130,30 +130,32 @@ const ChatItem = ({
       >
         <div
           className={clsx(
-            "flex items-center gap-x-2",
-            condition && "flex-row-reverse",
+            "flex flex-col md:flex-row md:items-center gap-x-2 gap-y-1",
+            condition && "md:flex-row-reverse",
           )}
         >
-          <div className="text-sm dark:text-neutral-200">{name}</div>
-          {condition && (
-            <>
-              <div className="flex items-center gap-[2px] rounded-full bg-teal-500/20 px-1.5 py-0.5 font-medium text-teal-300 ">
-                <AdminIcon size={13} />
-                <span className="text-[10px]">Author</span>
-              </div>
-              <div className="flex items-center gap-[2px] rounded-full bg-blue-500/20 px-1.5 py-0.5 font-medium text-blue-400 ">
-                <VerifiedIcon size={13} />
-                <span className="text-[10px]">Verified</span>
-              </div>
-            </>
-          )}
+          <div className="flex items-center gap-x-2">
+            <div className="text-sm dark:text-neutral-200">{name}</div>
+            {condition && (
+              <>
+                <div className="flex items-center gap-[2px] rounded-full bg-teal-500/20 px-1.5 py-0.5 font-medium text-teal-300 ">
+                  <AdminIcon size={13} />
+                  <span className="text-[10px]">Author</span>
+                </div>
+                <div className="flex items-center gap-[2px] rounded-full bg-blue-500/20 px-1.5 py-0.5 font-medium text-blue-400 ">
+                  <VerifiedIcon size={13} />
+                  <span className="text-[10px]">Verified</span>
+                </div>
+              </>
+            )}
+          </div>
           <div className="hidden md:flex">
             <ChatTime datetime={created_at} />
           </div>
         </div>
         <div
           className={clsx(
-            "group ml-1.5 mr-2 flex w-fit items-center gap-3",
+            "group flex w-fit items-center gap-3",
             condition && "flex-row-reverse",
           )}
           onMouseEnter={() => setIsHover(true)}
