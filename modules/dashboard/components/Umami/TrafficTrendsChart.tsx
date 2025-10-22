@@ -60,6 +60,7 @@ const TrafficTrendsChart = ({ data }: DataProps) => {
 
   const options: ChartOptions<"bar"> = {
     responsive: true,
+    maintainAspectRatio: false,
     animation: false,
     plugins: {
       legend: {
@@ -90,7 +91,7 @@ const TrafficTrendsChart = ({ data }: DataProps) => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-3xl">
+    <div className="mx-auto w-full max-w-3xl h-80 md:h-96">
       <Bar data={chartData} options={options} />
     </div>
   );
