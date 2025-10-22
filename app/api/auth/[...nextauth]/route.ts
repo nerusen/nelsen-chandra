@@ -11,88 +11,6 @@ interface SpotifyProfile {
   images: { url: string }[];
 }
 
-// Custom TikTok Provider
-function TikTokProvider(options: any) {
-  return {
-    id: "tiktok",
-    name: "TikTok",
-    type: "oauth" as const,
-    authorization: {
-      url: "https://www.tiktok.com/auth/authorize/",
-      params: {
-        scope: "user.info.basic",
-        response_type: "code",
-        client_key: options.clientId,
-      },
-    },
-    token: {
-      url: "https://open-api-sandbox.tiktok.com/oauth/access_token/",
-      async request({ client, params, checks, provider }: any) {
-        const response = await fetch(provider.token.url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: new URLSearchParams({
-            client_key: client.client_id,
-            client_secret: client.client_secret,
-            code: params.code,
-            grant_type: "authorization_code",
-            redirect_uri: client.redirect_uri,
-          }),
-        });
-
-        const tokens = await response.json();
-
-        if (!response.ok) {
-          console.error("TikTok token error:", {
-            status: response.status,
-            statusText: response.statusText,
-            body: tokens
-          });
-          throw new Error(`Failed to fetch access token: ${response.status} ${response.statusText}`);
-        }
-
-        return {
-          tokens,
-        };
-      },
-    },
-    userinfo: {
-      url: "https://open-api-sandbox.tiktok.com/user/info/",
-      async request({ tokens, client }: any) {
-        const response = await fetch(`${this.url}?access_token=${tokens.access_token}&open_id=${tokens.open_id}`, {
-          method: "GET",
-        });
-
-        const userInfo = await response.json();
-
-        if (!response.ok) {
-          console.error("TikTok userinfo error:", {
-            status: response.status,
-            statusText: response.statusText,
-            body: userInfo
-          });
-          throw new Error(`Failed to fetch user info: ${response.status} ${response.statusText}`);
-        }
-
-        // TikTok API returns user data directly in data field
-        return userInfo.data;
-      },
-    },
-    profile(profile: any) {
-      console.log("TikTok profile data:", profile);
-      return {
-        id: profile.open_id || profile.union_id,
-        name: profile.display_name || profile.nickname,
-        email: profile.email || null,
-        image: profile.avatar_url || profile.avatar_url_100,
-      };
-    },
-    options,
-  };
-}
-
 async function refreshAccessToken(token: JWT) {
   try {
     const url = "https://accounts.spotify.com/api/token";
@@ -148,10 +66,6 @@ const authOptions = {
           scope: "user-read-private user-read-email playlist-read-private playlist-read-collaborative",
         },
       },
-    }),
-    TikTokProvider({
-      clientId: process.env.TIKTOK_CLIENT_ID as string,
-      clientSecret: process.env.TIKTOK_CLIENT_SECRET as string,
     }),
   ],
   pages: {
