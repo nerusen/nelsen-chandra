@@ -1,11 +1,9 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import Card from "@/common/components/elements/Card";
-import Breakline from "@/common/components/elements/Breakline";
 
 interface SpotifyProfile {
   id: string;
@@ -24,23 +22,13 @@ interface Playlist {
 }
 
 const MusicRoomContent = () => {
-  const { data: session, status } = useSession();
   const t = useTranslations("MusicRoom");
   const [ownerProfile, setOwnerProfile] = useState<SpotifyProfile | null>(null);
   const [ownerPlaylists, setOwnerPlaylists] = useState<Playlist[]>([]);
-  const [userProfile, setUserProfile] = useState<SpotifyProfile | null>(null);
-  const [userPlaylists, setUserPlaylists] = useState<Playlist[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const isLoggedIn = status === "authenticated" && session?.user;
 
   useEffect(() => {
-    if (isLoggedIn) {
-      fetchSpotifyData();
-    } else {
-      fetchOwnerData();
-    }
-  }, [isLoggedIn]);
+    fetchOwnerData();
+  }, []);
 
   const fetchOwnerData = async () => {
     try {
@@ -56,28 +44,7 @@ const MusicRoomContent = () => {
     }
   };
 
-  const fetchSpotifyData = async () => {
-    setLoading(true);
-    try {
-      // Fetch owner's public data
-      await fetchOwnerData();
-
-      // Fetch user's private data
-      const userProfileRes = await fetch("/api/spotify/profile");
-      const userProfileData = await userProfileRes.json();
-      setUserProfile(userProfileData);
-
-      const userPlaylistsRes = await fetch("/api/spotify/playlists");
-      const userPlaylistsData = await userPlaylistsRes.json();
-      setUserPlaylists(userPlaylistsData.items || []);
-    } catch (error) {
-      console.error("Error fetching Spotify data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const ProfileCard = ({ profile, title, isUser = false }: { profile: SpotifyProfile; title: string; isUser?: boolean }) => (
+  const ProfileCard = ({ profile, title }: { profile: SpotifyProfile; title: string }) => (
     <Card className="p-4">
       <h3 className="text-lg font-semibold mb-3">{title}</h3>
       <div className="flex items-center space-x-3">
@@ -90,11 +57,9 @@ const MusicRoomContent = () => {
         )}
         <div>
           <h4 className="font-medium text-sm">{profile.display_name}</h4>
-          {!isUser && (
-            <p className="text-xs text-neutral-600 dark:text-neutral-400">
-              {profile.followers?.total} followers
-            </p>
-          )}
+          <p className="text-xs text-neutral-600 dark:text-neutral-400">
+            {profile.followers?.total} followers
+          </p>
         </div>
       </div>
     </Card>
@@ -142,26 +107,6 @@ const MusicRoomContent = () => {
     </Card>
   );
 
-  if (!isLoggedIn) {
-    return (
-      <div className="space-y-6">
-        {/* Owner's Profile and Playlists */}
-        <div>
-          <h2 className="text-xl font-bold mb-4">{t("ownerContent")}</h2>
-          {ownerProfile && <ProfileCard profile={ownerProfile} title={t("ownerProfile")} />}
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-3">{t("ownerPlaylists")}</h3>
-            <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
-              {ownerPlaylists.map((playlist) => (
-                <PlaylistCard key={playlist.id} playlist={playlist} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       {/* Owner's Profile and Playlists */}
@@ -172,22 +117,6 @@ const MusicRoomContent = () => {
           <h3 className="text-lg font-semibold mb-3">{t("ownerPlaylists")}</h3>
           <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
             {ownerPlaylists.map((playlist) => (
-              <PlaylistCard key={playlist.id} playlist={playlist} />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <Breakline />
-
-      {/* User's Profile and Playlists */}
-      <div>
-        <h2 className="text-xl font-bold mb-4">{t("userContent")}</h2>
-        {userProfile && <ProfileCard profile={userProfile} title={t("userProfile")} isUser />}
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold mb-3">{t("userPlaylists")}</h3>
-          <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
-            {userPlaylists.map((playlist) => (
               <PlaylistCard key={playlist.id} playlist={playlist} />
             ))}
           </div>
