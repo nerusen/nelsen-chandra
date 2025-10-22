@@ -78,15 +78,16 @@ const ChatInput = ({
             disabled={isSending}
             ref={inputRef}
             autoFocus
-            className="flex-grow rounded-md border p-2 focus:outline-none dark:border-neutral-600"
+            className="flex-grow rounded-md border p-2 focus:outline-none dark:border-[#3A3A3A] dark:bg-[#1F1F1F]"
           />
           <button
             type="submit"
             onClick={handleSendMessage}
             className={clsx(
-              "ml-2 rounded-md bg-emerald-500 p-3 text-white transition duration-100 hover:bg-emerald-400 active:scale-90 dark:bg-emerald-600 dark:hover:bg-emerald-500",
-              !message.trim() &&
-                "cursor-not-allowed !bg-neutral-300 active:scale-100 dark:!bg-neutral-700",
+              "ml-2 rounded-md p-3 text-white transition duration-100 active:scale-90",
+              message.trim()
+                ? "bg-emerald-500 hover:bg-emerald-400 dark:bg-emerald-600 dark:hover:bg-emerald-500"
+                : "cursor-not-allowed bg-[#1F1F1F] border border-[#3A3A3A] active:scale-100",
             )}
             disabled={isSending || !message.trim()}
             data-umami-event="click_send_message"
