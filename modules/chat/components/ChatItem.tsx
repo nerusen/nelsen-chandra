@@ -174,7 +174,7 @@ const ChatItem = ({
                   type="text"
                   value={editMessage}
                   onChange={(e) => setEditMessage(e.target.value)}
-                  className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded px-1 py-1 text-sm opacity-50"
+                  className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded px-2 py-1 text-sm opacity-50"
                   placeholder="Edit your message..."
                   autoFocus
                   onKeyDown={(e) => {
