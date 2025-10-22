@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
-import { MdAdminPanelSettings as AdminIcon } from "react-icons/md";
+import { MdCode as AdminIcon } from "react-icons/md";
 import { MdVerified as VerifiedIcon } from "react-icons/md";
 import { FiTrash2 as DeleteIcon } from "react-icons/fi";
 import { BsFillReplyAllFill as ReplyIcon } from "react-icons/bs";
@@ -140,7 +140,7 @@ const ChatItem = ({
               <>
                 <div className="flex items-center gap-[2px] rounded-full bg-teal-500/20 px-1.5 py-0.5 font-medium text-teal-300 ">
                   <AdminIcon size={13} />
-                  <span className="text-[10px]">Author</span>
+                  <span className="text-[10px]">Dev</span>
                 </div>
                 <div className="flex items-center gap-[2px] rounded-full bg-blue-500/20 px-1.5 py-0.5 font-medium text-blue-400 ">
                   <VerifiedIcon size={13} />
