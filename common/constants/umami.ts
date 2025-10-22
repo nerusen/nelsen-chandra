@@ -15,16 +15,16 @@ export const UMAMI_ACCOUNT = {
   is_active: true,
   websites: [
     {
-      domain: "nerusen.web.id",
+      domain: "nerusen.my.id",
       website_id: process.env.UMAMI_WEBSITE_ID_SITE,
       umami_url:
-        "https://cloud.umami.is/share/v2GWNdkrP99ih6gw",
+        "https://cloud.umami.is/share/BvFG8SxvT8qsY8dC",
     },
     {
-      domain: "nelsen.my.id",
+      domain: "nelsen.web.id",
       website_id: process.env.UMAMI_WEBSITE_ID_MYID,
       umami_url:
-        "https://cloud.umami.is/share/BvFG8SxvT8qsY8dC",
+        "https://cloud.umami.is/share/v2GWNdkrP99ih6gw",
     },
   ],
 };
