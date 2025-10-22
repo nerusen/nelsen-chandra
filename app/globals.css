@@ -57,7 +57,7 @@
 }
 
 .dark .author-gradient-border {
-  background: #121212;
+  background: #2C2C2C;
   color: white;
 
 }
@@ -70,7 +70,7 @@
   position: absolute;
   height: calc(100% + 2px);
   width: calc(100% + 2px);
-  background-image: conic-gradient(from var(--angle), #121212, #ffffff, #121212, #121212, #121212);
+  background-image: conic-gradient(from var(--angle), #2C2C2C, #ffffff, #2C2C2C, #2C2C2C, #2C2C2C);
   top: -1px;
   left: -1px;
   z-index: -1;
