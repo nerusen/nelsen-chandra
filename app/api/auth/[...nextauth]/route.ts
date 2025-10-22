@@ -22,6 +22,7 @@ function TikTokProvider(options: any) {
       params: {
         scope: "user.info.basic",
         response_type: "code",
+        client_key: process.env.TIKTOK_CLIENT_ID,
       },
     },
     token: {
@@ -44,7 +45,8 @@ function TikTokProvider(options: any) {
         const tokens = await response.json();
 
         if (!response.ok) {
-          throw new Error("Failed to fetch access token");
+          console.error("TikTok token error:", tokens);
+          throw new Error(`Failed to fetch access token: ${response.status} ${response.statusText}`);
         }
 
         return {
@@ -62,10 +64,11 @@ function TikTokProvider(options: any) {
         const userInfo = await response.json();
 
         if (!response.ok) {
-          throw new Error("Failed to fetch user info");
+          console.error("TikTok userinfo error:", userInfo);
+          throw new Error(`Failed to fetch user info: ${response.status} ${response.statusText}`);
         }
 
-        return userInfo.data.user;
+        return userInfo.data?.user || userInfo.data;
       },
     },
     profile(profile: any) {
