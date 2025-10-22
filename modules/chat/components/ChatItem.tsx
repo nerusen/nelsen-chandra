@@ -165,7 +165,7 @@ const ChatItem = ({
             "rounded-xl px-4 py-2 relative",
             condition
               ? "author-gradient-border"
-              : "bg-neutral-200 dark:bg-neutral-900 dark:text-neutral-50",
+              : "bg-neutral-200 dark:bg-[#1E1E1E] dark:text-neutral-50",
             isEditing && "blur-none",
           )}>
             {isEditing ? (
