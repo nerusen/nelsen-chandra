@@ -12,14 +12,14 @@ const Providers = [
   {
     id: "google",
     icon: <GoogleIcon size={18} />,
-    bgColor: "!bg-white",
-    textColor: "text-black",
+    bgColor: "!bg-[#161616]",
+    textColor: "text-white",
     eventName: "sign_in: Google",
   },
   {
     id: "tiktok",
     icon: <TiktokIcon size={18} className="text-white" />,
-    bgColor: "!bg-[#0A0A0A]",
+    bgColor: "!bg-[#161616]",
     textColor: "text-white",
     eventName: "sign_in: TikTok",
   },
@@ -33,7 +33,7 @@ const Providers = [
   {
     id: "github",
     icon: <GithubIcon size={18} />,
-    bgColor: "!bg-black",
+    bgColor: "!bg-[#161616]",
     textColor: "text-white",
     eventName: "sign_in: Github",
   },
