@@ -35,18 +35,20 @@ const MusicRoom = () => {
   const [userPlaylists, setUserPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const isLoggedIn = status === "authenticated" && session?.user && (session as any).accessToken;
+  const isLoggedIn = status === "authenticated" && session?.user;
+  const isSpotifyUser = (session as any)?.provider === "spotify" || (session as any)?.accessToken;
 
   useEffect(() => {
     console.log("Session status:", status);
     console.log("Session data:", session);
     console.log("Access token present:", !!(session as any)?.accessToken);
-    if (isLoggedIn) {
+    console.log("Is Spotify user:", isSpotifyUser);
+    if (isLoggedIn && isSpotifyUser) {
       fetchSpotifyData();
     } else {
       fetchOwnerData();
     }
-  }, [isLoggedIn, status, session]);
+  }, [isLoggedIn, isSpotifyUser, status, session]);
 
   const fetchOwnerData = async () => {
     try {
@@ -154,6 +156,27 @@ const MusicRoom = () => {
       </div>
     </Card>
   );
+
+  if (isLoggedIn && !isSpotifyUser) {
+    return (
+      <Container>
+        <div className="text-center py-8">
+          <h2 className="text-xl font-bold mb-3">Sign Out First, Login with Spotify</h2>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+            You are currently logged in with {session?.user?.name ? session.user.name : 'another account'}.
+            To access the Music Room features, please sign out first and then log in with Spotify.
+          </p>
+          <Button
+            onClick={handleLogout}
+            className="flex w-full items-center justify-center border !bg-red-600 py-2.5 shadow-sm transition duration-300 hover:scale-105 active:scale-100 text-white"
+          >
+            <FaSignOutAlt size={18} />
+            <span>Sign Out</span>
+          </Button>
+        </div>
+      </Container>
+    );
+  }
 
   if (!isLoggedIn) {
     return (
