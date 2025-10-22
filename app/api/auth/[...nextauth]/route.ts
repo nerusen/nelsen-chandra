@@ -69,20 +69,41 @@ const authOptions = {
     }),
   ],
   pages: {
-    signIn: "/music-room",
-    error: "/music-room",
+    signIn: "/chat",
+    error: "/chat",
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }: any) {
       // Allow OAuth without email verification
       return true;
     },
-    async jwt({ token, account }: { token: JWT; account?: Account | null }) {
+    async jwt({ token, account, profile }: { token: JWT; account?: Account | null; profile?: any }) {
+      // Handle Google provider
+      if (account?.provider === "google") {
+        token.name = profile?.name;
+        token.email = profile?.email;
+        token.picture = profile?.picture;
+        token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
+        token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000;
+      }
+
+      // Handle Github provider
+      if (account?.provider === "github") {
+        token.name = profile?.name || profile?.login;
+        token.email = profile?.email;
+        token.picture = profile?.avatar_url;
+        token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
+        token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000;
+      }
+
+      // Handle Spotify provider
       if (account?.provider === "spotify") {
-        const profile = account.profile as SpotifyProfile;
-        token.name = profile.display_name;
-        token.email = profile.email;
-        token.picture = profile.images?.[0]?.url;
+        const spotifyProfile = account.profile as SpotifyProfile;
+        token.name = spotifyProfile.display_name;
+        token.email = spotifyProfile.email;
+        token.picture = spotifyProfile.images?.[0]?.url;
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000;
@@ -102,11 +123,15 @@ const authOptions = {
         if (token?.email) session.user.email = token.email;
         if (token?.picture) session.user.image = token.picture;
       }
+
+      // Store access token for all providers
       if (token?.accessToken) {
         (session as any).accessToken = token.accessToken;
         (session as any).refreshToken = token.refreshToken;
         (session as any).accessTokenExpires = token.accessTokenExpires;
+        (session as any).provider = token.provider || account?.provider;
       }
+
       return session;
     },
   },
