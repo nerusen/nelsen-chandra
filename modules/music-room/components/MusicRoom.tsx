@@ -173,25 +173,74 @@ const MusicRoom = () => {
   }
 
   return (
-    <div className="flex items-center gap-4">
-      {userProfile && (
-        <div className="flex items-center gap-2 text-sm">
-          <img
-            src={userProfile.images?.[0]?.url || "/default-avatar.png"}
-            alt={userProfile.display_name}
-            className="w-8 h-8 rounded-full"
-          />
-          <span className="font-medium">{userProfile.display_name}</span>
+    <Container>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          {userProfile && (
+            <div className="flex items-center gap-2">
+              <img
+                src={userProfile.images?.[0]?.url || "/default-avatar.png"}
+                alt={userProfile.display_name}
+                className="w-10 h-10 rounded-full border-2 border-neutral-300 dark:border-neutral-600"
+              />
+              <div>
+                <h2 className="text-lg font-semibold">{userProfile.display_name}</h2>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                  Connected to Spotify
+                </p>
+              </div>
+            </div>
+          )}
         </div>
+        <Button
+          onClick={handleLogout}
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+        >
+          <FaSignOutAlt size={16} />
+          <span>Sign Out</span>
+        </Button>
+      </div>
+
+      {loading ? (
+        <div className="text-center py-8">
+          <p className="text-neutral-600 dark:text-neutral-400">Loading your music...</p>
+        </div>
+      ) : (
+        <>
+          {/* Owner Profile Section */}
+          {ownerProfile && (
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold mb-4">Featured Artist</h3>
+              <ProfileCard profile={ownerProfile} title="Artist Profile" />
+            </div>
+          )}
+
+          {/* User Playlists Section */}
+          {userPlaylists.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold mb-4">Your Playlists</h3>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {userPlaylists.map((playlist) => (
+                  <PlaylistCard key={playlist.id} playlist={playlist} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Owner Playlists Section */}
+          {ownerPlaylists.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold mb-4">Featured Playlists</h3>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {ownerPlaylists.map((playlist) => (
+                  <PlaylistCard key={playlist.id} playlist={playlist} />
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
-      <Button
-        onClick={handleLogout}
-        className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
-      >
-        <FaSignOutAlt size={16} />
-        <span>Sign Out</span>
-      </Button>
-    </div>
+    </Container>
   );
 };
 
