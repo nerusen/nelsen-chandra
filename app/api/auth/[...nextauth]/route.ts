@@ -86,6 +86,7 @@ const authOptions = {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000;
+        token.provider = account.provider;
       }
 
       // Handle Github provider
@@ -96,6 +97,7 @@ const authOptions = {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000;
+        token.provider = account.provider;
       }
 
       // Handle Spotify provider
@@ -107,6 +109,7 @@ const authOptions = {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000;
+        token.provider = account.provider;
       }
 
       // Return previous token if the access token has not expired yet
@@ -129,7 +132,7 @@ const authOptions = {
         (session as any).accessToken = token.accessToken;
         (session as any).refreshToken = token.refreshToken;
         (session as any).accessTokenExpires = token.accessTokenExpires;
-        (session as any).provider = token.provider || account?.provider;
+        (session as any).provider = token.provider;
       }
 
       return session;
@@ -141,3 +144,4 @@ const authOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+
