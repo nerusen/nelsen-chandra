@@ -20,10 +20,19 @@ const ChatUserInfo = ({ isWidget = false }: { isWidget?: boolean }) => {
         isWidget && "text-xs",
       )}
     >
-      <div className="flex flex-wrap gap-1 text-neutral-500">
-        <p>{t("signed_label")}</p>
-        <p className="font-medium">{userName}</p>
-        <p>({userEmail})</p>
+      <div className="flex items-center gap-2 text-neutral-500">
+        {session.user?.image && (
+          <img
+            src={session.user.image}
+            alt={userName || "User"}
+            className="w-6 h-6 rounded-full"
+          />
+        )}
+        <div className="flex flex-wrap gap-1">
+          <p>{t("signed_label")}</p>
+          <p className="font-medium">{userName}</p>
+          <p>({userEmail})</p>
+        </div>
       </div>
       {!isWidget && (
         <div className="flex items-center gap-2">
