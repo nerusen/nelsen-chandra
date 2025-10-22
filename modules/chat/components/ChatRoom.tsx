@@ -24,7 +24,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
   const [isReply, setIsReply] = useState({ is_reply: false, name: "" });
   const [showPopupFor, setShowPopupFor] = useState<string | null>(null);
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const supabase = createClient();
 
@@ -105,7 +105,10 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
     }
     console.log("Chat data:", data);
     console.log("Chat loading:", isLoading);
-  }, [data, error, isLoading]);
+    console.log("Session status:", status);
+    console.log("Session data:", session);
+    console.log("Access token present:", !!(session as any)?.accessToken);
+  }, [data, error, isLoading, status, session]);
 
   useEffect(() => {
     const channel = supabase
@@ -175,7 +178,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
           showPopupFor={showPopupFor}
         />
       )}
-      {session ? (
+      {session && status === "authenticated" && (session as any).accessToken ? (
         <ChatInput
           onSendMessage={handleSendMessage}
           onCancelReply={handleCancelReply}
