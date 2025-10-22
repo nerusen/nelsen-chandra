@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import {
-  BsMoonFill as DarkModeIcon,
-  BsSunFill as LightModeIcon,
-} from "react-icons/bs";
+  MdDarkMode as DarkModeIcon,
+  MdLightMode as LightModeIcon,
+} from "react-icons/md";
 
 const ThemeToggle = () => {
   const { resolvedTheme, setTheme } = useTheme();
