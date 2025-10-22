@@ -35,15 +35,18 @@ const MusicRoom = () => {
   const [userPlaylists, setUserPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const isLoggedIn = status === "authenticated" && session?.user;
+  const isLoggedIn = status === "authenticated" && session?.user && (session as any).accessToken;
 
   useEffect(() => {
+    console.log("Session status:", status);
+    console.log("Session data:", session);
+    console.log("Access token present:", !!(session as any)?.accessToken);
     if (isLoggedIn) {
       fetchSpotifyData();
     } else {
       fetchOwnerData();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, status, session]);
 
   const fetchOwnerData = async () => {
     try {
