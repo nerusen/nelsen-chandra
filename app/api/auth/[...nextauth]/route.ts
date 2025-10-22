@@ -25,7 +25,7 @@ function TikTokProvider(options: any) {
       },
     },
     token: {
-      url: "https://open-api.tiktok.com/oauth/access_token/",
+      url: "https://open-api-sandbox.tiktok.com/oauth/access_token/",
       async request({ client, params, checks, provider }: any) {
         const response = await fetch(provider.token.url, {
           method: "POST",
@@ -53,12 +53,10 @@ function TikTokProvider(options: any) {
       },
     },
     userinfo: {
-      url: "https://open-api.tiktok.com/user/info/",
+      url: "https://open-api-sandbox.tiktok.com/user/info/",
       async request({ tokens, client }: any) {
         const response = await fetch(`${this.url}?access_token=${tokens.access_token}&open_id=${tokens.open_id}`, {
-          headers: {
-            "Authorization": `Bearer ${tokens.access_token}`,
-          },
+          method: "GET",
         });
 
         const userInfo = await response.json();
