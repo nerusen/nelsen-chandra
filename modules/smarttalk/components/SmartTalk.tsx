@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import Container from "@/common/components/elements/Container";
 import Button from "@/common/components/elements/Button";
@@ -11,6 +12,21 @@ import { SmartTalkRoom } from "./SmartTalkRoom";
 const SmartTalk = () => {
   const { data: session, status } = useSession();
   const t = useTranslations("SmartTalkPage");
+  const [chatHeight, setChatHeight] = useState('600px');
+
+  useEffect(() => {
+    const handleResize = () => {
+      const newHeight = `${window.innerHeight - 300}px`;
+      setChatHeight(newHeight);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   if (status === "loading") {
     return (
@@ -52,7 +68,10 @@ const SmartTalk = () => {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div
+      className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden"
+      style={{ height: chatHeight }}
+    >
       <SmartTalkRoom />
     </div>
   );
