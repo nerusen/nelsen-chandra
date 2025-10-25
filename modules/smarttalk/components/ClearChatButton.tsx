@@ -72,43 +72,45 @@ const ClearChatButton = ({ onClear, isVisible }: ClearChatButtonProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
             onClick={() => setShowConfirm(false)}
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className={`rounded-lg border p-6 shadow-lg ${
+              className={`w-full max-w-sm rounded-lg border shadow-lg ${
                 isDark
                   ? 'bg-neutral-800 border-neutral-700'
                   : 'bg-white border-neutral-300'
               }`}
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-lg font-semibold mb-4 text-center">
-                Clear Chat History?
-              </h3>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6 text-center">
-                This will permanently delete all your chat messages with the AI. This action cannot be undone.
-              </p>
-              <div className="flex gap-3 justify-center">
-                <button
-                  onClick={() => setShowConfirm(false)}
-                  className={`px-4 py-2 rounded-lg border transition-colors ${
-                    isDark
-                      ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-700'
-                      : 'border-neutral-400 text-neutral-700 hover:bg-neutral-200'
-                  }`}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleClearChat}
-                  className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors"
-                >
-                  Clear Chat
-                </button>
+              <div className="p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-center">
+                  Clear Chat History?
+                </h3>
+                <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mb-4 sm:mb-6 text-center">
+                  This will permanently delete all your chat messages with the AI. This action cannot be undone.
+                </p>
+                <div className="flex gap-2 sm:gap-3 justify-center">
+                  <button
+                    onClick={() => setShowConfirm(false)}
+                    className={`px-3 sm:px-4 py-2 rounded-lg border text-sm transition-colors ${
+                      isDark
+                        ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-700'
+                        : 'border-neutral-400 text-neutral-700 hover:bg-neutral-200'
+                    }`}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleClearChat}
+                    className="px-3 sm:px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors text-sm"
+                  >
+                    Clear Chat
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>

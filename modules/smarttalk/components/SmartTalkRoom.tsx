@@ -172,7 +172,7 @@ export const SmartTalkRoom = () => {
     if (data) {
       setMessages(data);
       // Check if welcome message exists, if not, send it
-      const hasWelcomeMessage = data.some(msg => msg.is_ai && msg.message.includes("Hello") && msg.message.includes("AI assistant"));
+      const hasWelcomeMessage = data.some((msg: MessageProps) => msg.is_ai && msg.message.includes("Hello") && msg.message.includes("AI assistant"));
       if (!hasWelcomeMessage && session?.user?.email) {
         sendWelcomeMessage();
       }
