@@ -60,7 +60,7 @@ const SmartTalkInput = ({
   };
 
   return (
-    <div className="border-t border-neutral-200 dark:border-neutral-700 p-4">
+    <div className="border-t border-neutral-200 dark:border-neutral-700 p-4 bg-white dark:bg-neutral-900">
       {replyName && (
         <div className="flex items-center justify-between mb-2 p-2 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
           <span className="text-sm text-neutral-600 dark:text-neutral-400">
@@ -82,7 +82,7 @@ const SmartTalkInput = ({
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder={t("placeholder")}
-            className="w-full resize-none rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:border-neutral-500 dark:focus:border-neutral-400 focus:outline-none"
+            className="w-full resize-none rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-3 text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:border-neutral-500 dark:focus:border-neutral-400 focus:outline-none"
             rows={1}
             disabled={isCooldown}
           />
@@ -90,7 +90,7 @@ const SmartTalkInput = ({
         <Button
           type="submit"
           disabled={!message.trim() || isCooldown}
-          className={`px-4 py-2 rounded-lg transition-colors ${
+          className={`px-4 py-3 rounded-lg transition-colors ${
             !message.trim() || isCooldown
               ? "bg-neutral-300 dark:bg-neutral-600 text-neutral-500 dark:text-neutral-400 cursor-not-allowed"
               : "bg-neutral-700 dark:bg-neutral-300 text-white dark:text-neutral-700 hover:bg-neutral-800 dark:hover:bg-neutral-200"

@@ -51,7 +51,11 @@ const SmartTalk = () => {
     );
   }
 
-  return <SmartTalkRoom />;
+  return (
+    <div className="flex flex-col h-full">
+      <SmartTalkRoom />
+    </div>
+  );
 };
 
 export default SmartTalk;

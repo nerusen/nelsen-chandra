@@ -17,13 +17,15 @@ import { createClient } from "@/common/utils/client";
 import useNotif from "@/hooks/useNotif";
 
 export const SmartTalkRoom = () => {
-  const { data, isLoading, error } = useSWR("/api/smart-talk", fetcher);
+  const { data: session } = useSession();
+  const { data, isLoading, error } = useSWR(
+    session?.user?.email ? `/api/smart-talk?email=${session.user.email}` : null,
+    fetcher
+  );
 
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [isReply, setIsReply] = useState({ is_reply: false, name: "" });
   const [showPopupFor, setShowPopupFor] = useState<string | null>(null);
-
-  const { data: session } = useSession();
 
   const supabase = createClient();
 
@@ -166,15 +168,17 @@ export const SmartTalkRoom = () => {
   }, [supabase]);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex flex-col h-full">
       {isLoading ? (
         <SmartTalkItemSkeleton />
       ) : (
-        <SmartTalkList
-          messages={messages}
-          onClickReply={handleClickReply}
-          showPopupFor={showPopupFor}
-        />
+        <div className="flex-1 overflow-y-auto">
+          <SmartTalkList
+            messages={messages}
+            onClickReply={handleClickReply}
+            showPopupFor={showPopupFor}
+          />
+        </div>
       )}
       {session ? (
         <SmartTalkInput

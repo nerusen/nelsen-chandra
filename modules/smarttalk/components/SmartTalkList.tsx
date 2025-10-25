@@ -17,12 +17,16 @@ const SmartTalkList = ({
   const { data: session } = useSession();
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-2">
+    <div className="h-full p-4 space-y-4">
       {messages.length === 0 ? (
         <div className="flex items-center justify-center h-full">
-          <div className="text-center">
-            <p className="text-neutral-500 dark:text-neutral-400">
-              No messages yet. Start a conversation!
+          <div className="text-center space-y-4">
+            <div className="text-6xl">💬</div>
+            <h2 className="text-2xl font-semibold text-neutral-700 dark:text-neutral-300">
+              Welcome to Smart Talk
+            </h2>
+            <p className="text-neutral-500 dark:text-neutral-400 max-w-md">
+              Start a conversation with our AI assistant. Ask questions, get help, or just chat!
             </p>
           </div>
         </div>
