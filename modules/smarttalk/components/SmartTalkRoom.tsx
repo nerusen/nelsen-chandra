@@ -80,7 +80,7 @@ export const SmartTalkRoom = () => {
       await axios.post("/api/smart-talk", newMessageData);
       notif("Message sent successfully");
 
-      // Always add thinking message for AI response
+      // Add thinking message with a short delay to simulate processing
       const thinkingId = uuidv4();
       setThinkingMessageId(thinkingId);
       const thinkingMessage = {
@@ -96,10 +96,14 @@ export const SmartTalkRoom = () => {
         is_ai: true,
         is_thinking: true,
       };
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        thinkingMessage as MessageProps,
-      ]);
+
+      // Add thinking message after a short delay
+      setTimeout(() => {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          thinkingMessage as MessageProps,
+        ]);
+      }, 200); // 200ms delay before showing thinking message
 
       // Get AI response
       await getAIResponse(message, thinkingId);
