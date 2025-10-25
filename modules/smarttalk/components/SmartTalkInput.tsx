@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { FiSend } from "react-icons/fi";
+import { FiSend as SendIcon } from "react-icons/fi";
 import { MdCancel } from "react-icons/md";
+import { IoCloseCircle as CloseIcon } from "react-icons/io5";
 
 import Button from "@/common/components/elements/Button";
 
@@ -60,48 +61,45 @@ const SmartTalkInput = ({
   };
 
   return (
-    <div className="border-t border-neutral-200 dark:border-neutral-700 p-4 bg-white dark:bg-neutral-900">
+    <div className="border-t border-neutral-300 py-4 dark:border-neutral-700 px-4">
       {replyName && (
         <div className="flex items-center justify-between mb-2 p-2 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
           <span className="text-sm text-neutral-600 dark:text-neutral-400">
             Replying to {replyName}
           </span>
-          <Button
-            onClick={onCancelReply}
-            className="text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300"
-          >
-            <MdCancel size={16} />
-          </Button>
+          <CloseIcon
+            size={14}
+            onClick={() => onCancelReply()}
+            className="cursor-pointer"
+          />
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="flex items-end space-x-2">
-        <div className="flex-1">
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder={t("placeholder")}
-            className="w-full resize-none rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-3 text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:border-neutral-500 dark:focus:border-neutral-400 focus:outline-none"
-            rows={1}
-            disabled={isCooldown}
-          />
-        </div>
-        <Button
+      <form onSubmit={handleSubmit} className="flex">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder={t("placeholder")}
+          className="flex-grow rounded-md border p-2 focus:outline-none dark:border-[#3A3A3A] dark:bg-[#1F1F1F] disabled:opacity-50"
+          disabled={isCooldown}
+        />
+        <button
           type="submit"
           disabled={!message.trim() || isCooldown}
-          className={`px-4 py-3 rounded-lg transition-colors ${
-            !message.trim() || isCooldown
-              ? "bg-neutral-300 dark:bg-neutral-600 text-neutral-500 dark:text-neutral-400 cursor-not-allowed"
-              : "bg-neutral-700 dark:bg-neutral-300 text-white dark:text-neutral-700 hover:bg-neutral-800 dark:hover:bg-neutral-200"
+          className={`ml-2 rounded-md p-3 text-white transition duration-100 active:scale-90 ${
+            message.trim() && !isCooldown
+              ? "bg-emerald-500 hover:bg-emerald-400 dark:bg-emerald-600 dark:hover:bg-emerald-500"
+              : "cursor-not-allowed bg-[#1F1F1F] border border-[#3A3A3A] active:scale-100"
           }`}
         >
           {isCooldown ? (
             <span className="text-xs">{Math.ceil(cooldownTime / 1000)}s</span>
           ) : (
-            <FiSend size={16} />
+            <SendIcon size={18} />
           )}
-        </Button>
+        </button>
       </form>
     </div>
   );

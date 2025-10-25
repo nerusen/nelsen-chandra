@@ -10,6 +10,7 @@ import SmartTalkAuth from "./SmartTalkAuth";
 import SmartTalkInput from "./SmartTalkInput";
 import SmartTalkList from "./SmartTalkList";
 import SmartTalkItemSkeleton from "./SmartTalkItemSkeleton";
+import ClearChatButton from "./ClearChatButton";
 
 import { MessageProps } from "@/common/types/chat";
 import { fetcher } from "@/services/fetcher";
@@ -38,6 +39,10 @@ export const SmartTalkRoom = () => {
 
   const handleCancelReply = () => {
     setIsReply({ is_reply: false, name: "" });
+  };
+
+  const handleClearChat = () => {
+    setMessages([]);
   };
 
   const handleSendMessage = async (message: string) => {
@@ -168,7 +173,7 @@ export const SmartTalkRoom = () => {
   }, [supabase]);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full relative">
       {isLoading ? (
         <SmartTalkItemSkeleton />
       ) : (
@@ -179,6 +184,12 @@ export const SmartTalkRoom = () => {
             showPopupFor={showPopupFor}
           />
         </div>
+      )}
+      {session && messages.length > 0 && (
+        <ClearChatButton
+          onClear={handleClearChat}
+          isVisible={true}
+        />
       )}
       {session ? (
         <SmartTalkInput
