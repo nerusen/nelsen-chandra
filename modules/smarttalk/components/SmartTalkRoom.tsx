@@ -28,6 +28,7 @@ export const SmartTalkRoom = () => {
   const [isReply, setIsReply] = useState({ is_reply: false, name: "" });
   const [showPopupFor, setShowPopupFor] = useState<string | null>(null);
   const [thinkingMessageId, setThinkingMessageId] = useState<string | null>(null);
+  const [hasSentWelcome, setHasSentWelcome] = useState(false);
 
   const supabase = createClient();
 
@@ -46,6 +47,7 @@ export const SmartTalkRoom = () => {
     try {
       await axios.delete("/api/smart-talk", { data: { email: session?.user?.email } });
       setMessages([]);
+      setHasSentWelcome(false); // Reset welcome message flag
       notif("Chat cleared successfully");
     } catch (error) {
       console.error("Error clearing chat:", error);
@@ -84,8 +86,6 @@ export const SmartTalkRoom = () => {
       const userMessages = messages.filter(msg => msg.email === session?.user?.email && !msg.is_ai);
       if (userMessages.length === 0) {
         setShowPopupFor(messageId);
-        // Send welcome message from AI
-        await sendWelcomeMessage();
       } else {
         // Add thinking message for AI response
         const thinkingId = uuidv4();
@@ -171,13 +171,14 @@ export const SmartTalkRoom = () => {
   useEffect(() => {
     if (data) {
       setMessages(data);
-      // Check if welcome message exists, if not, send it
+      // Check if welcome message exists, if not, send it only once
       const hasWelcomeMessage = data.some((msg: MessageProps) => msg.is_ai && msg.message.includes("Hello") && msg.message.includes("AI assistant"));
-      if (!hasWelcomeMessage && session?.user?.email) {
+      if (!hasWelcomeMessage && session?.user?.email && !hasSentWelcome) {
+        setHasSentWelcome(true);
         sendWelcomeMessage();
       }
     }
-  }, [data, session?.user?.email]);
+  }, [data, session?.user?.email, hasSentWelcome]);
 
   // Debug logging
   useEffect(() => {
