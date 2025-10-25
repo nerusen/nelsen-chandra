@@ -12,7 +12,6 @@ interface SmartTalkItemProps {
 
 const SmartTalkItem = ({ message, isUser }: SmartTalkItemProps) => {
   const [displayedText, setDisplayedText] = useState(message.is_thinking ? "Sedang berpikir..." : message.message);
-  const [isTyping, setIsTyping] = useState(false);
 
   const timeAgo = formatDistanceToNow(new Date(message.created_at), {
     addSuffix: true,
@@ -28,23 +27,8 @@ const SmartTalkItem = ({ message, isUser }: SmartTalkItemProps) => {
         index = (index + 1) % dots.length;
       }, 500);
       return () => clearInterval(interval);
-    } else if (message.is_ai && !message.is_thinking) {
-      // Typewriter effect for AI messages
-      setIsTyping(true);
-      setDisplayedText("");
-      let index = 0;
-      const text = message.message;
-      const interval = setInterval(() => {
-        if (index < text.length) {
-          setDisplayedText(text.slice(0, index + 1));
-          index++;
-        } else {
-          setIsTyping(false);
-          clearInterval(interval);
-        }
-      }, 30); // Adjust speed here
-      return () => clearInterval(interval);
     } else {
+      // Display message directly without typewriter effect
       setDisplayedText(message.message);
     }
   }, [message.message, message.is_thinking, message.is_ai, message.id]);
@@ -81,7 +65,6 @@ const SmartTalkItem = ({ message, isUser }: SmartTalkItemProps) => {
           )}
           <p className="text-sm leading-relaxed whitespace-pre-wrap">
             {displayedText}
-            {isTyping && <span className="animate-pulse">|</span>}
           </p>
           <div className="flex items-center justify-between mt-2">
             <span className="text-xs text-neutral-400">{timeAgo}</span>

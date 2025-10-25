@@ -185,8 +185,11 @@ export const SmartTalkRoom = () => {
         },
         (payload) => {
           const newMessage = payload.new as MessageProps;
+          console.log("New message received via real-time:", newMessage);
+
           // If this is an AI message and we have a thinking message, replace it
           if (newMessage.is_ai && thinkingMessageId) {
+            console.log("Replacing thinking message with AI response");
             setMessages((prevMessages) =>
               prevMessages.map((msg) =>
                 msg.id === thinkingMessageId ? newMessage : msg
@@ -195,6 +198,7 @@ export const SmartTalkRoom = () => {
             setThinkingMessageId(null);
           } else {
             // Regular message insertion
+            console.log("Adding new message to list");
             setMessages((prevMessages) => [
               ...prevMessages,
               newMessage,
