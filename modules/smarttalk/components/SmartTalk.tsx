@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import Container from "@/common/components/elements/Container";
 import Button from "@/common/components/elements/Button";
-import SmartTalkRoom from "./SmartTalkRoom";
+import { SmartTalkRoom } from "./SmartTalkRoom";
 
 const SmartTalk = () => {
   const { data: session, status } = useSession();
