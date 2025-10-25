@@ -1,0 +1,142 @@
+import React from "react";
+import { FaGooglePlusG } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import {
+  SiAdobephotoshop,
+  SiReact,
+  SiReplit,
+  SiAdobelightroom,
+  SiAdobeillustrator,
+  SiBehance,
+  SiCanva,
+  SiCss3,
+  SiFirebase,
+  SiGithub,
+  SiGooglecloud,
+  SiGooglefonts,
+  SiHtml5,
+  SiJavascript,
+  SiNextdotjs,
+  SiSupabase,
+  SiTailwindcss,
+  SiTypescript,
+  SiVercel,
+} from "react-icons/si";
+
+export type SkillProps = {
+  [key: string]: {
+    icon: JSX.Element;
+    background: string;
+    color: string;
+    isActive?: boolean;
+  };
+};
+
+const iconSize = 26;
+
+export const STACKS: SkillProps = {
+  HTML: {
+    icon: <SiHtml5 size={iconSize} />,
+    background: "bg-orange-500",
+    color: "text-orange-500",
+    isActive: true,
+  },
+  CSS: {
+    icon: <SiCss3 size={iconSize} />,
+    background: "bg-blue-500",
+    color: "text-blue-500",
+    isActive: true,
+  },
+  TailwindCSS: {
+    icon: <SiTailwindcss size={iconSize} />,
+    background: "bg-cyan-400",
+    color: "text-cyan-400",
+    isActive: true,
+  },
+  AdobePhotoshop: {
+    icon: <SiAdobephotoshop size={iconSize} />,
+    background: "bg-blue-900",
+    color: "text-blue-600",
+    isActive: true,
+  },
+  Canva: {
+    icon: <SiCanva size={iconSize} />,
+    background: "bg-violet-600",
+    color: "text-blue-500",
+    isActive: true,
+  },
+
+  Vercel: {
+    icon: <SiVercel size={iconSize} />,
+    background: "bg-neutral-800",
+    color: "text-white",
+    isActive: true,
+  },
+  Github: {
+    icon: <SiGithub size={iconSize} />,
+    background: "bg-gray-800",
+    color: "text-white",
+    isActive: true,
+  },
+  Firebase: {
+    icon: <SiFirebase size={iconSize} />,
+    background: "bg-yellow-500",
+    color: "text-yellow-500",
+    isActive: false,
+  },
+  Supabase: {
+    icon: <SiSupabase size={iconSize} />,
+    background: "bg-green-500",
+    color: "text-green-500",
+    isActive: false,
+  },
+  Behance: {
+    icon: <SiBehance size={iconSize} />,
+    background: "bg-blue-600",
+    color: "text-blue-600",
+    isActive: true,
+  },
+  GoogleCloud: {
+    icon: <SiGooglecloud size={iconSize} />,
+    background: "bg-blue-500",
+    color: "text-blue-500",
+    isActive: true,
+  },
+  GoogleFonts: {
+    icon: <SiGooglefonts size={iconSize} />,
+    background: "bg-red-500",
+    color: "text-red-500",
+    isActive: false,
+  },
+
+  GooglePlus: {
+    icon: <FaGooglePlusG size={iconSize} />,
+    background: "bg-red-500",
+    color: "text-red-500",
+    isActive: false,
+  },
+  Google: {
+    icon: <FcGoogle size={iconSize} />,
+    background: "bg-neutral-800",
+    color: "text-gray-800",
+    isActive: true,
+  },
+  JavaScript: {
+    icon: <SiJavascript size={iconSize} />,
+    background: "bg-yellow-500",
+    color: "text-yellow-500",
+    isActive: false,
+  },
+  TypeScript: {
+    icon: <SiTypescript size={iconSize} />,
+    background: "bg-blue-600",
+    color: "text-blue-600",
+    isActive: false,
+  },
+  'Next.js': {
+    icon: <SiNextdotjs size={iconSize} />,
+    background: "bg-neutral-800",
+    color: "text-white",
+    isActive: true,
+  },
+};
