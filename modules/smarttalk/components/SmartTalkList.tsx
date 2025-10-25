@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import SmartTalkItem from "./SmartTalkItem";
@@ -15,9 +16,40 @@ const SmartTalkList = ({
   showPopupFor,
 }: SmartTalkListProps) => {
   const { data: session } = useSession();
+  const chatListRef = useRef<HTMLDivElement | null>(null);
+  const [hasScrolledUp, setHasScrolledUp] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (chatListRef.current) {
+        const { scrollHeight, clientHeight, scrollTop } = chatListRef.current;
+        const isScrolledToBottom = scrollHeight - clientHeight <= scrollTop + 5;
+
+        if (isScrolledToBottom) {
+          setHasScrolledUp(false);
+        } else {
+          setHasScrolledUp(true);
+        }
+      }
+    };
+
+    chatListRef.current?.addEventListener("scroll", handleScroll);
+
+    const currentChatListRef = chatListRef.current;
+
+    return () => {
+      currentChatListRef?.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (chatListRef.current && !hasScrolledUp) {
+      chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
+    }
+  }, [messages, hasScrolledUp]);
 
   return (
-    <div className="h-full p-4 space-y-4">
+    <div ref={chatListRef} className="flex-1 overflow-y-auto p-4 space-y-4">
       {messages.length === 0 ? (
         <div className="flex items-center justify-center h-full">
           <div className="text-center space-y-4">

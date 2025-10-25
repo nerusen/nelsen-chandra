@@ -216,13 +216,11 @@ export const SmartTalkRoom = () => {
       {isLoading ? (
         <SmartTalkItemSkeleton />
       ) : (
-        <div className="flex-1 overflow-y-auto">
-          <SmartTalkList
-            messages={messages}
-            onClickReply={handleClickReply}
-            showPopupFor={showPopupFor}
-          />
-        </div>
+        <SmartTalkList
+          messages={messages}
+          onClickReply={handleClickReply}
+          showPopupFor={showPopupFor}
+        />
       )}
       {session && messages.length > 0 && (
         <ClearChatButton
