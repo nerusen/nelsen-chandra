@@ -141,6 +141,22 @@ export const SmartTalkRoom = () => {
     }
   };
 
+  // Add a timeout to remove thinking message if AI response takes too long
+  useEffect(() => {
+    if (thinkingMessageId) {
+      const timeout = setTimeout(() => {
+        console.log("AI response timeout - removing thinking message");
+        setMessages((prevMessages) =>
+          prevMessages.filter((msg) => msg.id !== thinkingMessageId)
+        );
+        setThinkingMessageId(null);
+        notif("AI response timed out. Please try again.");
+      }, 30000); // 30 seconds timeout
+
+      return () => clearTimeout(timeout);
+    }
+  }, [thinkingMessageId, notif]);
+
   useEffect(() => {
     if (data) {
       setMessages(data);
