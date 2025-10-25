@@ -19,7 +19,7 @@ interface LayoutsProps {
 const Layouts = ({ children }: LayoutsProps) => {
   const pathname = usePathname();
 
-  const isShowChatButton = pathname !== "/chat";
+  const isShowChatButton = pathname !== "/chat" && pathname !== "/smart-talk";
 
   useEffect(() => {
     AOS.init({
@@ -42,3 +42,4 @@ const Layouts = ({ children }: LayoutsProps) => {
 };
 
 export default Layouts;
+
