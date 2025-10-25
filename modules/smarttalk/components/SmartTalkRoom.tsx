@@ -90,7 +90,7 @@ export const SmartTalkRoom = () => {
           image: "/images/satria.jpg", // AI avatar
           message: "Sedang berpikir...",
           is_reply: false,
-          reply_to: null,
+          reply_to: undefined,
           is_show: true,
           created_at: new Date().toISOString(),
           is_ai: true,
