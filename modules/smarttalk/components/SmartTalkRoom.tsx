@@ -60,7 +60,7 @@ export const SmartTalkRoom = () => {
       notif("Message sent successfully");
 
       // Check if this is the user's first message
-      const userMessages = messages.filter(msg => msg.email === session.user.email && !msg.is_ai);
+      const userMessages = messages.filter(msg => msg.email === session?.user?.email && !msg.is_ai);
       if (userMessages.length === 0) {
         setShowPopupFor(messageId);
         // Send welcome message from AI
