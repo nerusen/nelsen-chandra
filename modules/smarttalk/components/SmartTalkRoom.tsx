@@ -27,6 +27,7 @@ export const SmartTalkRoom = () => {
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [isReply, setIsReply] = useState({ is_reply: false, name: "" });
   const [showPopupFor, setShowPopupFor] = useState<string | null>(null);
+  const [thinkingMessageId, setThinkingMessageId] = useState<string | null>(null);
 
   const supabase = createClient();
 
@@ -78,10 +79,31 @@ export const SmartTalkRoom = () => {
         setShowPopupFor(messageId);
         // Send welcome message from AI
         await sendWelcomeMessage();
-      }
+      } else {
+        // Add thinking message for AI response
+        const thinkingId = uuidv4();
+        setThinkingMessageId(thinkingId);
+        const thinkingMessage = {
+          id: thinkingId,
+          name: "AI Assistant",
+          email: "ai@smarttalk.com",
+          image: "/images/satria.jpg", // AI avatar
+          message: "Sedang berpikir...",
+          is_reply: false,
+          reply_to: null,
+          is_show: true,
+          created_at: new Date().toISOString(),
+          is_ai: true,
+          is_thinking: true,
+        };
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          thinkingMessage as MessageProps,
+        ]);
 
-      // Get AI response
-      await getAIResponse(message);
+        // Get AI response
+        await getAIResponse(message, thinkingId);
+      }
     } catch (error) {
       console.error("Error:", error);
       notif("Failed to send message");
@@ -117,16 +139,23 @@ export const SmartTalkRoom = () => {
     }
   };
 
-  const getAIResponse = async (userMessage: string) => {
+  const getAIResponse = async (userMessage: string, thinkingId: string) => {
     try {
       const response = await axios.post("/api/smart-talk", {
         userMessage,
         email: session?.user?.email,
       });
-      // AI response will be handled by the real-time subscription
+
+      // Remove thinking message when AI response arrives via real-time
+      setThinkingMessageId(null);
     } catch (error) {
       console.error("Error getting AI response:", error);
       notif("Failed to get AI response");
+      // Remove thinking message on error
+      setMessages((prevMessages) =>
+        prevMessages.filter((msg) => msg.id !== thinkingId)
+      );
+      setThinkingMessageId(null);
     }
   };
 
@@ -154,10 +183,22 @@ export const SmartTalkRoom = () => {
           table: "smart_talk_messages",
         },
         (payload) => {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            payload.new as MessageProps,
-          ]);
+          const newMessage = payload.new as MessageProps;
+          // If this is an AI message and we have a thinking message, replace it
+          if (newMessage.is_ai && thinkingMessageId) {
+            setMessages((prevMessages) =>
+              prevMessages.map((msg) =>
+                msg.id === thinkingMessageId ? newMessage : msg
+              )
+            );
+            setThinkingMessageId(null);
+          } else {
+            // Regular message insertion
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              newMessage,
+            ]);
+          }
         },
       )
       .on(
@@ -180,7 +221,7 @@ export const SmartTalkRoom = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [supabase]);
+  }, [supabase, thinkingMessageId]);
 
   return (
     <div className="flex flex-col h-full relative">
