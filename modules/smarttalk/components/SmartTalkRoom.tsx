@@ -28,7 +28,6 @@ export const SmartTalkRoom = () => {
   const [isReply, setIsReply] = useState({ is_reply: false, name: "" });
   const [showPopupFor, setShowPopupFor] = useState<string | null>(null);
   const [thinkingMessageId, setThinkingMessageId] = useState<string | null>(null);
-  const [hasSentWelcome, setHasSentWelcome] = useState(false);
 
   const supabase = createClient();
 
@@ -47,7 +46,6 @@ export const SmartTalkRoom = () => {
     try {
       await axios.delete("/api/smart-talk", { data: { email: session?.user?.email } });
       setMessages([]);
-      setHasSentWelcome(false); // Reset welcome message flag
       notif("Chat cleared successfully");
     } catch (error) {
       console.error("Error clearing chat:", error);
@@ -82,35 +80,29 @@ export const SmartTalkRoom = () => {
       await axios.post("/api/smart-talk", newMessageData);
       notif("Message sent successfully");
 
-      // Check if this is the user's first message (excluding welcome message)
-      const userMessages = messages.filter(msg => msg.email === session?.user?.email && !msg.is_ai);
-      if (userMessages.length === 0) {
-        setShowPopupFor(messageId);
-      } else {
-        // Add thinking message for AI response
-        const thinkingId = uuidv4();
-        setThinkingMessageId(thinkingId);
-        const thinkingMessage = {
-          id: thinkingId,
-          name: "AI Assistant",
-          email: "ai@smarttalk.com",
-          image: "/images/satria.jpg", // AI avatar
-          message: "Sedang berpikir...",
-          is_reply: false,
-          reply_to: undefined,
-          is_show: true,
-          created_at: new Date().toISOString(),
-          is_ai: true,
-          is_thinking: true,
-        };
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          thinkingMessage as MessageProps,
-        ]);
+      // Always add thinking message for AI response
+      const thinkingId = uuidv4();
+      setThinkingMessageId(thinkingId);
+      const thinkingMessage = {
+        id: thinkingId,
+        name: "AI Assistant",
+        email: "ai@smarttalk.com",
+        image: "/images/satria.jpg", // AI avatar
+        message: "Sedang berpikir...",
+        is_reply: false,
+        reply_to: undefined,
+        is_show: true,
+        created_at: new Date().toISOString(),
+        is_ai: true,
+        is_thinking: true,
+      };
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        thinkingMessage as MessageProps,
+      ]);
 
-        // Get AI response
-        await getAIResponse(message, thinkingId);
-      }
+      // Get AI response
+      await getAIResponse(message, thinkingId);
     } catch (error) {
       console.error("Error:", error);
       notif("Failed to send message");
@@ -121,30 +113,7 @@ export const SmartTalkRoom = () => {
     }
   };
 
-  const sendWelcomeMessage = async () => {
-    if (!session?.user) return;
 
-    const welcomeMessage = `Hello ${session.user.name}! I'm your AI assistant. I'm here to help you with any questions or just chat about interesting topics. How can I assist you today?`;
-
-    const aiMessageData = {
-      id: uuidv4(),
-      name: "AI Assistant",
-      email: "ai@smarttalk.com",
-      image: null,
-      message: welcomeMessage,
-      is_reply: false,
-      reply_to: null,
-      is_show: true,
-      created_at: new Date().toISOString(),
-      is_ai: true,
-    };
-
-    try {
-      await axios.post("/api/smart-talk", aiMessageData);
-    } catch (error) {
-      console.error("Error sending welcome message:", error);
-    }
-  };
 
   const getAIResponse = async (userMessage: string, thinkingId: string) => {
     try {
@@ -171,14 +140,8 @@ export const SmartTalkRoom = () => {
   useEffect(() => {
     if (data) {
       setMessages(data);
-      // Check if welcome message exists, if not, send it only once
-      const hasWelcomeMessage = data.some((msg: MessageProps) => msg.is_ai && msg.message.includes("Hello") && msg.message.includes("AI assistant"));
-      if (!hasWelcomeMessage && session?.user?.email && !hasSentWelcome) {
-        setHasSentWelcome(true);
-        sendWelcomeMessage();
-      }
     }
-  }, [data, session?.user?.email, hasSentWelcome]);
+  }, [data]);
 
   // Debug logging
   useEffect(() => {
