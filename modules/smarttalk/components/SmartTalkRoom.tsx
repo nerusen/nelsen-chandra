@@ -141,14 +141,15 @@ export const SmartTalkRoom = () => {
 
   const getAIResponse = async (userMessage: string, thinkingId: string) => {
     try {
+      console.log("Sending AI response request for message:", userMessage);
       const response = await axios.post("/api/smart-talk", {
         userMessage,
         email: session?.user?.email,
       });
 
+      console.log("AI response request sent successfully, response:", response.data);
       // The AI response will be handled by the real-time subscription
       // No need to manually remove thinking message here
-      console.log("AI response request sent successfully");
     } catch (error) {
       console.error("Error getting AI response:", error);
       notif("Failed to get AI response");
