@@ -2,6 +2,9 @@ import clsx from "clsx";
 import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import { MessageProps } from "@/common/types/chat";
 
@@ -63,9 +66,60 @@ const SmartTalkItem = ({ message, isUser }: SmartTalkItemProps) => {
               <span className="text-xs text-neutral-300 font-medium">AI Assistant</span>
             </div>
           )}
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">
-            {displayedText}
-          </p>
+          <div className="text-sm leading-relaxed prose prose-sm max-w-none dark:prose-invert">
+            <ReactMarkdown
+              components={{
+                code({ node, inline, className, children, ...props }) {
+                  const match = /language-(\w+)/.exec(className || "");
+                  return !inline && match ? (
+                    <SyntaxHighlighter
+                      style={oneDark}
+                      language={match[1]}
+                      PreTag="div"
+                      className="rounded-md text-xs"
+                      {...props}
+                    >
+                      {String(children).replace(/\n$/, "")}
+                    </SyntaxHighlighter>
+                  ) : (
+                    <code
+                      className="bg-neutral-600 px-1 py-0.5 rounded text-xs font-mono"
+                      {...props}
+                    >
+                      {children}
+                    </code>
+                  );
+                },
+                strong({ children }) {
+                  return <strong className="font-semibold text-neutral-100">{children}</strong>;
+                },
+                em({ children }) {
+                  return <em className="italic text-neutral-200">{children}</em>;
+                },
+                p({ children }) {
+                  return <p className="mb-2 last:mb-0">{children}</p>;
+                },
+                ul({ children }) {
+                  return <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>;
+                },
+                ol({ children }) {
+                  return <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>;
+                },
+                li({ children }) {
+                  return <li className="text-neutral-200">{children}</li>;
+                },
+                blockquote({ children }) {
+                  return (
+                    <blockquote className="border-l-4 border-neutral-500 pl-4 italic text-neutral-300 my-2">
+                      {children}
+                    </blockquote>
+                  );
+                },
+              }}
+            >
+              {displayedText}
+            </ReactMarkdown>
+          </div>
           <div className="flex items-center justify-between mt-2">
             <span className="text-xs text-neutral-400">{timeAgo}</span>
             {isUser && (
