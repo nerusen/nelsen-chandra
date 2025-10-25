@@ -29,6 +29,32 @@ export const GET = async (req: Request) => {
   }
 };
 
+export const DELETE = async (req: Request) => {
+  const supabase = createClient();
+  try {
+    const { email } = await req.json();
+
+    if (!email) {
+      return NextResponse.json(
+        { message: "Email parameter is required" },
+        { status: 400 },
+      );
+    }
+
+    await supabase
+      .from("smart_talk_messages")
+      .delete()
+      .eq("user_email", email);
+
+    return NextResponse.json("Chat cleared successfully", { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
+};
+
 export const POST = async (req: Request) => {
   const supabase = createClient();
 
