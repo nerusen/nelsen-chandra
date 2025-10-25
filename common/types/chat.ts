@@ -11,6 +11,7 @@ export interface MessageProps {
   is_show?: boolean;
   is_pinned?: boolean;
   is_ai?: boolean;
+  is_thinking?: boolean;
   user_email?: string;
 }
 
