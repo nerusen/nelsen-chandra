@@ -135,7 +135,11 @@ async function getAIResponse(userMessage: string): Promise<string> {
         messages: [
           {
             role: "system",
-            content: "You are a helpful AI assistant in a chat application called Smart Talk. Be friendly, informative, and engaging. Keep responses concise but helpful.",
+            content: `You are a helpful AI assistant in a chat application called Smart Talk. Be friendly, informative, and engaging. Keep responses concise but helpful.
+
+Current date and time: ${new Date().toISOString()}
+
+When asked about dates, calculations, or time-related questions, always provide specific, calculated answers with real dates and numbers. Do not use placeholders like [Tanggal 100 hari ke depan] - always calculate and provide the actual date.`,
           },
           {
             role: "user",
