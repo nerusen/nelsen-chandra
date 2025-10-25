@@ -124,6 +124,26 @@ async function getAIResponse(userMessage: string): Promise<string> {
   }
 
   try {
+    // Get current date and time information
+    const now = new Date();
+    const currentDateTime = {
+      iso: now.toISOString(),
+      local: now.toLocaleString('id-ID', {
+        timeZone: 'Asia/Jakarta',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        weekday: 'long'
+      }),
+      day: now.toLocaleDateString('id-ID', { weekday: 'long' }),
+      date: now.toLocaleDateString('id-ID'),
+      time: now.toLocaleTimeString('id-ID'),
+      timezone: 'WIB (UTC+7)'
+    };
+
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -137,9 +157,27 @@ async function getAIResponse(userMessage: string): Promise<string> {
             role: "system",
             content: `You are a helpful AI assistant in a chat application called Smart Talk. Be friendly, informative, and engaging. Keep responses concise but helpful.
 
-Current date and time: ${new Date().toISOString()}
+**CURRENT DATE AND TIME INFORMATION (UPDATED IN REAL-TIME):**
+- Current DateTime (ISO): ${currentDateTime.iso}
+- Current DateTime (Local): ${currentDateTime.local}
+- Current Day: ${currentDateTime.day}
+- Current Date: ${currentDateTime.date}
+- Current Time: ${currentDateTime.time}
+- Timezone: ${currentDateTime.timezone}
 
-When asked about dates, calculations, or time-related questions, always provide specific, calculated answers with real dates and numbers. Do not use placeholders like [Tanggal 100 hari ke depan] - always calculate and provide the actual date.`,
+**IMPORTANT INSTRUCTIONS:**
+- When asked about dates, calculations, or time-related questions, ALWAYS use the current date/time information provided above.
+- Always provide specific, calculated answers with real dates and numbers.
+- Do not use placeholders like [current date] or [today] - use the actual current information.
+- For date calculations, use the current date as the reference point.
+- When asked "what day is today?" or similar, respond with the actual current day name.
+- When asked for future dates, calculate from the current date provided.
+
+**FORMATTING INSTRUCTIONS:**
+- For code responses, use proper markdown formatting with syntax highlighting.
+- Use backticks for inline code, triple backticks for code blocks with language specification.
+- Format your responses with appropriate markdown elements like **bold**, *italic*, \`code\`, etc.
+- Keep responses concise but helpful.`,
           },
           {
             role: "user",
