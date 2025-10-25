@@ -42,8 +42,15 @@ export const SmartTalkRoom = () => {
     setIsReply({ is_reply: false, name: "" });
   };
 
-  const handleClearChat = () => {
-    setMessages([]);
+  const handleClearChat = async () => {
+    try {
+      await axios.delete("/api/smart-talk", { data: { email: session?.user?.email } });
+      setMessages([]);
+      notif("Chat cleared successfully");
+    } catch (error) {
+      console.error("Error clearing chat:", error);
+      notif("Failed to clear chat");
+    }
   };
 
   const handleSendMessage = async (message: string) => {
@@ -73,7 +80,7 @@ export const SmartTalkRoom = () => {
       await axios.post("/api/smart-talk", newMessageData);
       notif("Message sent successfully");
 
-      // Check if this is the user's first message
+      // Check if this is the user's first message (excluding welcome message)
       const userMessages = messages.filter(msg => msg.email === session?.user?.email && !msg.is_ai);
       if (userMessages.length === 0) {
         setShowPopupFor(messageId);
@@ -162,8 +169,15 @@ export const SmartTalkRoom = () => {
   };
 
   useEffect(() => {
-    if (data) setMessages(data);
-  }, [data]);
+    if (data) {
+      setMessages(data);
+      // Check if welcome message exists, if not, send it
+      const hasWelcomeMessage = data.some(msg => msg.is_ai && msg.message.includes("Hello") && msg.message.includes("AI assistant"));
+      if (!hasWelcomeMessage && session?.user?.email) {
+        sendWelcomeMessage();
+      }
+    }
+  }, [data, session?.user?.email]);
 
   // Debug logging
   useEffect(() => {
