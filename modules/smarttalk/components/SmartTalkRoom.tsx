@@ -62,6 +62,12 @@ export const SmartTalkRoom = () => {
       is_ai: false, // User message
     };
 
+    // Optimistic update - add message immediately to UI
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      newMessageData as MessageProps,
+    ]);
+
     try {
       await axios.post("/api/smart-talk", newMessageData);
       notif("Message sent successfully");
@@ -79,6 +85,10 @@ export const SmartTalkRoom = () => {
     } catch (error) {
       console.error("Error:", error);
       notif("Failed to send message");
+      // Remove optimistic message on error
+      setMessages((prevMessages) =>
+        prevMessages.filter((msg) => msg.id !== messageId)
+      );
     }
   };
 
