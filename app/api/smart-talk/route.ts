@@ -60,11 +60,14 @@ export const POST = async (req: Request) => {
 
   try {
     const body = await req.json();
+    console.log("POST request body:", body);
 
     // Check if this is an AI response request
     if (body.userMessage && body.email) {
+      console.log("Processing AI response request for user:", body.email);
       // Get AI response from OpenRouter
       const aiResponse = await getAIResponse(body.userMessage);
+      console.log("AI response generated:", aiResponse);
 
       const aiMessageData = {
         id: crypto.randomUUID(),
@@ -80,7 +83,13 @@ export const POST = async (req: Request) => {
         user_email: body.email,
       };
 
-      await supabase.from("smart_talk_messages").insert([aiMessageData]);
+      console.log("Inserting AI message:", aiMessageData);
+      const { data, error } = await supabase.from("smart_talk_messages").insert([aiMessageData]);
+      if (error) {
+        console.error("Error inserting AI message:", error);
+        throw error;
+      }
+      console.log("AI message inserted successfully:", data);
       return NextResponse.json("AI response saved successfully", { status: 200 });
     }
 
@@ -90,10 +99,16 @@ export const POST = async (req: Request) => {
       user_email: body.email, // Add user_email for filtering
     };
 
-    await supabase.from("smart_talk_messages").insert([messageData]);
+    console.log("Inserting regular message:", messageData);
+    const { data, error } = await supabase.from("smart_talk_messages").insert([messageData]);
+    if (error) {
+      console.error("Error inserting regular message:", error);
+      throw error;
+    }
+    console.log("Regular message inserted successfully:", data);
     return NextResponse.json("Message saved successfully", { status: 200 });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error in POST:", error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 },
