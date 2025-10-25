@@ -146,8 +146,9 @@ export const SmartTalkRoom = () => {
         email: session?.user?.email,
       });
 
-      // Remove thinking message when AI response arrives via real-time
-      setThinkingMessageId(null);
+      // The AI response will be handled by the real-time subscription
+      // No need to manually remove thinking message here
+      console.log("AI response request sent successfully");
     } catch (error) {
       console.error("Error getting AI response:", error);
       notif("Failed to get AI response");

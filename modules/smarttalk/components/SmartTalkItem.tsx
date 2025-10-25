@@ -47,7 +47,7 @@ const SmartTalkItem = ({ message, isUser }: SmartTalkItemProps) => {
     } else {
       setDisplayedText(message.message);
     }
-  }, [message.message, message.is_thinking, message.is_ai]);
+  }, [message.message, message.is_thinking, message.is_ai, message.id]);
 
   return (
     <div
