@@ -126,8 +126,16 @@ export const SmartTalkRoom = () => {
       });
 
       console.log("AI response request sent successfully, response:", response.data);
-      // The AI response will be handled by the real-time subscription
-      // No need to manually remove thinking message here
+
+      // Wait a bit for the real-time subscription to handle the response
+      setTimeout(() => {
+        if (thinkingMessageId === thinkingId) {
+          console.log("AI response not received via real-time, checking manually");
+          // If still thinking after 3 seconds, check if AI response was inserted
+          checkForAIResponse(thinkingId);
+        }
+      }, 3000);
+
     } catch (error) {
       console.error("Error getting AI response:", error);
       notif("Failed to get AI response");
@@ -136,6 +144,35 @@ export const SmartTalkRoom = () => {
         prevMessages.filter((msg) => msg.id !== thinkingId)
       );
       setThinkingMessageId(null);
+    }
+  };
+
+  const checkForAIResponse = async (thinkingId: string) => {
+    try {
+      // Fetch latest messages to see if AI response was added
+      const response = await axios.get(`/api/smart-talk?email=${session?.user?.email}`);
+      const latestMessages = response.data;
+
+      // Find AI messages that came after the thinking message
+      const thinkingMessage = messages.find(msg => msg.id === thinkingId);
+      if (thinkingMessage) {
+        const aiMessages = latestMessages.filter((msg: MessageProps) =>
+          msg.is_ai && new Date(msg.created_at) > new Date(thinkingMessage.created_at)
+        );
+
+        if (aiMessages.length > 0) {
+          console.log("Found AI response manually:", aiMessages[0]);
+          // Replace thinking message with AI response
+          setMessages((prevMessages) =>
+            prevMessages.map((msg) =>
+              msg.id === thinkingId ? aiMessages[0] : msg
+            )
+          );
+          setThinkingMessageId(null);
+        }
+      }
+    } catch (error) {
+      console.error("Error checking for AI response:", error);
     }
   };
 
@@ -240,16 +277,18 @@ export const SmartTalkRoom = () => {
   }, [supabase, thinkingMessageId]);
 
   return (
-    <>
-      {isLoading ? (
-        <SmartTalkItemSkeleton />
-      ) : (
-        <SmartTalkList
-          messages={messages}
-          onClickReply={handleClickReply}
-          showPopupFor={showPopupFor}
-        />
-      )}
+    <div className="flex flex-col h-full">
+      <div className="flex-1 overflow-hidden">
+        {isLoading ? (
+          <SmartTalkItemSkeleton />
+        ) : (
+          <SmartTalkList
+            messages={messages}
+            onClickReply={handleClickReply}
+            showPopupFor={showPopupFor}
+          />
+        )}
+      </div>
       {session && messages.length > 0 && (
         <ClearChatButton
           onClear={handleClearChat}
@@ -265,6 +304,6 @@ export const SmartTalkRoom = () => {
       ) : (
         <SmartTalkAuth />
       )}
-    </>
+    </div>
   );
 };
