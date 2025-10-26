@@ -4,14 +4,16 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "../../elements/Image";
 import Button from "../../elements/Button";
+import { useMenu } from "@/common/stores/menu";
 
 const SmartTalkUserInfo = () => {
   const { data: session } = useSession();
+  const { hideMenu } = useMenu();
 
   if (!session) {
     return (
       <div className="mt-4 px-4">
-        <Link href="/login">
+        <Link href="/login" onClick={hideMenu}>
           <Button className="w-full rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200">
             Login
           </Button>
