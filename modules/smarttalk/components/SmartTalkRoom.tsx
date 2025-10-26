@@ -141,6 +141,20 @@ export const SmartTalkRoom = () => {
     }
   };
 
+  // Function to manually trigger AI response if real-time fails
+  const triggerAIResponse = async (userMessage: string, thinkingId: string) => {
+    try {
+      console.log("Manually triggering AI response for:", userMessage);
+      const response = await axios.post("/api/smart-talk", {
+        userMessage,
+        email: session?.user?.email,
+      });
+      console.log("Manual AI response triggered:", response.data);
+    } catch (error) {
+      console.error("Error in manual AI response:", error);
+    }
+  };
+
   // Add a timeout to remove thinking message if AI response takes too long
   useEffect(() => {
     if (thinkingMessageId) {
@@ -156,6 +170,26 @@ export const SmartTalkRoom = () => {
       return () => clearTimeout(timeout);
     }
   }, [thinkingMessageId, notif]);
+
+  // Fallback mechanism: if thinking message persists too long, trigger AI response manually
+  useEffect(() => {
+    if (thinkingMessageId) {
+      const fallbackTimeout = setTimeout(async () => {
+        console.log("Fallback: Manually triggering AI response");
+        const thinkingMessage = messages.find(msg => msg.id === thinkingMessageId);
+        if (thinkingMessage) {
+          // Find the user message that triggered this thinking message
+          const userMessages = messages.filter(msg => !msg.is_ai && !msg.is_thinking);
+          const lastUserMessage = userMessages[userMessages.length - 1];
+          if (lastUserMessage) {
+            await triggerAIResponse(lastUserMessage.message, thinkingMessageId);
+          }
+        }
+      }, 5000); // 5 seconds fallback
+
+      return () => clearTimeout(fallbackTimeout);
+    }
+  }, [thinkingMessageId, messages]);
 
   useEffect(() => {
     if (data) {
