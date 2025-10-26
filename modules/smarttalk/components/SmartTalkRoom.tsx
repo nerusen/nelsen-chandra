@@ -262,7 +262,7 @@ export const SmartTalkRoom = () => {
   }, [supabase, thinkingMessageId]);
 
   return (
-    <div className="flex flex-col h-full relative">
+    <>
       {isLoading ? (
         <SmartTalkItemSkeleton />
       ) : (
@@ -287,6 +287,6 @@ export const SmartTalkRoom = () => {
       ) : (
         <SmartTalkAuth />
       )}
-    </div>
+    </>
   );
 };
