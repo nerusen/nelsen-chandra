@@ -68,10 +68,8 @@ const SmartTalk = () => {
   }
 
   return (
-    <div className="flex flex-col" style={{ height: chatHeight }}>
-      <div className="flex-1 overflow-hidden">
-        <SmartTalkRoom />
-      </div>
+    <div className="flex flex-col h-full">
+      <SmartTalkRoom />
     </div>
   );
 };
