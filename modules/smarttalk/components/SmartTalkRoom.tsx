@@ -288,12 +288,10 @@ export const SmartTalkRoom = () => {
         />
       )}
       {session && messages.length > 0 && (
-        <div className="relative">
-          <ClearChatButton
-            onClear={handleClearChat}
-            isVisible={true}
-          />
-        </div>
+        <ClearChatButton
+          onClear={handleClearChat}
+          isVisible={true}
+        />
       )}
       {session ? (
         <SmartTalkInput
