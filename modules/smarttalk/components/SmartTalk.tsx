@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BiLogIn as LoginIcon } from "react-icons/bi";
 
 import Container from "@/common/components/elements/Container";
 import Button from "@/common/components/elements/Button";
@@ -54,10 +55,12 @@ const SmartTalk = () => {
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/login">
-            <Button className="px-6 py-2 bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-700 hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors">
-              Login to Start Chatting
-            </Button>
+          <Link
+            href="/login"
+            className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+          >
+            <LoginIcon />
+            <span className="inline">Login to Start Chatting</span>
           </Link>
         </div>
       </div>
