@@ -19,6 +19,7 @@ const SmartTalkPage = () => {
 
   return (
     <Container data-aos="fade-up">
+      <PageHeading title={t("title")} description={t("description")} />
       <SmartTalk />
     </Container>
   );
