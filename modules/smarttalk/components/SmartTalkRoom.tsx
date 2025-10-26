@@ -97,15 +97,13 @@ export const SmartTalkRoom = () => {
         is_thinking: true,
       };
 
-      // Add thinking message after a short delay
-      setTimeout(() => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          thinkingMessage as MessageProps,
-        ]);
-      }, 200); // 200ms delay before showing thinking message
+      // Add thinking message immediately
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        thinkingMessage as MessageProps,
+      ]);
 
-      // Get AI response
+      // Get AI response - only call once
       await getAIResponse(message, thinkingId);
     } catch (error) {
       console.error("Error:", error);
@@ -170,26 +168,6 @@ export const SmartTalkRoom = () => {
       return () => clearTimeout(timeout);
     }
   }, [thinkingMessageId, notif]);
-
-  // Fallback mechanism: if thinking message persists too long, trigger AI response manually
-  useEffect(() => {
-    if (thinkingMessageId) {
-      const fallbackTimeout = setTimeout(async () => {
-        console.log("Fallback: Manually triggering AI response");
-        const thinkingMessage = messages.find(msg => msg.id === thinkingMessageId);
-        if (thinkingMessage) {
-          // Find the user message that triggered this thinking message
-          const userMessages = messages.filter(msg => !msg.is_ai && !msg.is_thinking);
-          const lastUserMessage = userMessages[userMessages.length - 1];
-          if (lastUserMessage) {
-            await triggerAIResponse(lastUserMessage.message, thinkingMessageId);
-          }
-        }
-      }, 5000); // 5 seconds fallback
-
-      return () => clearTimeout(fallbackTimeout);
-    }
-  }, [thinkingMessageId, messages]);
 
   useEffect(() => {
     if (data) {
