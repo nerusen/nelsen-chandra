@@ -65,6 +65,29 @@ export const POST = async (req: Request) => {
     // Check if this is an AI response request
     if (body.userMessage && body.email) {
       console.log("Processing AI response request for user:", body.email);
+
+      // Check if AI response already exists for this user message to prevent duplicates
+      const { data: existingMessages } = await supabase
+        .from("smart_talk_messages")
+        .select("id, created_at")
+        .eq("user_email", body.email)
+        .eq("is_ai", true)
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      if (existingMessages && existingMessages.length > 0) {
+        // Check if the last AI message was sent within the last 5 seconds
+        const lastAIMessage = existingMessages[0];
+        const lastMessageTime = new Date(lastAIMessage.created_at);
+        const now = new Date();
+        const timeDiff = now.getTime() - lastMessageTime.getTime();
+
+        if (timeDiff < 5000) { // 5 seconds
+          console.log("AI response already sent recently, skipping duplicate");
+          return NextResponse.json("AI response already sent", { status: 200 });
+        }
+      }
+
       // Get AI response from OpenRouter
       const aiResponse = await getAIResponse(body.userMessage);
       console.log("AI response generated:", aiResponse);
