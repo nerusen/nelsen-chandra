@@ -80,7 +80,7 @@ export const SmartTalkRoom = () => {
       await axios.post("/api/smart-talk", newMessageData);
       notif("Message sent successfully");
 
-      // Add thinking message with a short delay to simulate processing
+      // Add thinking message immediately
       const thinkingId = uuidv4();
       setThinkingMessageId(thinkingId);
       const thinkingMessage = {
@@ -127,14 +127,8 @@ export const SmartTalkRoom = () => {
 
       console.log("AI response request sent successfully, response:", response.data);
 
-      // Wait a bit for the real-time subscription to handle the response
-      setTimeout(() => {
-        if (thinkingMessageId === thinkingId) {
-          console.log("AI response not received via real-time, checking manually");
-          // If still thinking after 3 seconds, check if AI response was inserted
-          checkForAIResponse(thinkingId);
-        }
-      }, 3000);
+      // Wait for real-time subscription to handle the response
+      // The real-time listener will replace the thinking message with the actual AI response
 
     } catch (error) {
       console.error("Error getting AI response:", error);
@@ -147,48 +141,7 @@ export const SmartTalkRoom = () => {
     }
   };
 
-  const checkForAIResponse = async (thinkingId: string) => {
-    try {
-      // Fetch latest messages to see if AI response was added
-      const response = await axios.get(`/api/smart-talk?email=${session?.user?.email}`);
-      const latestMessages = response.data;
 
-      // Find AI messages that came after the thinking message
-      const thinkingMessage = messages.find(msg => msg.id === thinkingId);
-      if (thinkingMessage) {
-        const aiMessages = latestMessages.filter((msg: MessageProps) =>
-          msg.is_ai && new Date(msg.created_at) > new Date(thinkingMessage.created_at)
-        );
-
-        if (aiMessages.length > 0) {
-          console.log("Found AI response manually:", aiMessages[0]);
-          // Replace thinking message with AI response
-          setMessages((prevMessages) =>
-            prevMessages.map((msg) =>
-              msg.id === thinkingId ? aiMessages[0] : msg
-            )
-          );
-          setThinkingMessageId(null);
-        }
-      }
-    } catch (error) {
-      console.error("Error checking for AI response:", error);
-    }
-  };
-
-  // Function to manually trigger AI response if real-time fails
-  const triggerAIResponse = async (userMessage: string, thinkingId: string) => {
-    try {
-      console.log("Manually triggering AI response for:", userMessage);
-      const response = await axios.post("/api/smart-talk", {
-        userMessage,
-        email: session?.user?.email,
-      });
-      console.log("Manual AI response triggered:", response.data);
-    } catch (error) {
-      console.error("Error in manual AI response:", error);
-    }
-  };
 
   // Add a timeout to remove thinking message if AI response takes too long
   useEffect(() => {
@@ -200,7 +153,7 @@ export const SmartTalkRoom = () => {
         );
         setThinkingMessageId(null);
         notif("AI response timed out. Please try again.");
-      }, 30000); // 30 seconds timeout
+      }, 15000); // 15 seconds timeout
 
       return () => clearTimeout(timeout);
     }
