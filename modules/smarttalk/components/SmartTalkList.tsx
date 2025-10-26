@@ -99,6 +99,7 @@ const SmartTalkList = ({
             );
           })
       )}
+      </div>
       <ScrollToBottomButton
         onClick={handleScrollToBottom}
         isVisible={showScrollButton}
