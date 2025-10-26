@@ -114,17 +114,6 @@ const MenuItem = ({
               {icon}
             </div>
             <div className="flex-grow">{t(title)}</div>
-            {session && title === "Smart Talk" && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleSignOut();
-                }}
-                className="ml-2 text-xs text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
-              >
-                Logout
-              </button>
-            )}
           </>
         )}
       </div>

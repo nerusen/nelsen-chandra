@@ -6,6 +6,7 @@ import Copyright from "../../elements/Copyright";
 import Breakline from "../../elements/Breakline";
 import Profile from "./Profile";
 import Menu from "./Menu";
+import SmartTalkUserInfo from "./SmartTalkUserInfo";
 
 export default function Sidebar() {
   const filteredMenu = MENU_ITEMS?.filter((item) => item?.isShow);
@@ -17,6 +18,7 @@ export default function Sidebar() {
           <Breakline />
           <div className="hidden lg:block">
             <Menu list={filteredMenu} />
+            <SmartTalkUserInfo />
           </div>
           <Breakline />
           <Copyright />
