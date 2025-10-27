@@ -20,7 +20,7 @@ import useNotif from "@/hooks/useNotif";
 export const SmartTalkRoom = () => {
   const { data: session } = useSession();
   const { data, isLoading, error } = useSWR(
-    session?.user?.email ? `/api/smart-talk?email=${session.user.email}` : null,
+    session?.user?.email ? `/api/smart-talk?email=${session?.user?.email}` : null,
     fetcher
   );
 
@@ -263,7 +263,7 @@ export const SmartTalkRoom = () => {
               pollInterval = setInterval(async () => {
                 try {
                   if (session?.user?.email && thinkingMessageId) {
-                    const response = await fetch(`/api/smart-talk?email=${session.user.email}`);
+                    const response = await fetch(`/api/smart-talk?email=${session?.user?.email}`);
                     const data = await response.json();
 
                     // Find recent AI response
