@@ -113,6 +113,13 @@ export const SmartTalkRoom = () => {
       setMessages((prevMessages) =>
         prevMessages.filter((msg) => msg.id !== messageId)
       );
+      // Also remove thinking message on error
+      if (thinkingMessageId) {
+        setMessages((prevMessages) =>
+          prevMessages.filter((msg) => msg.id !== thinkingMessageId)
+        );
+        setThinkingMessageId(null);
+      }
     }
   };
 
@@ -155,7 +162,7 @@ export const SmartTalkRoom = () => {
         );
         setThinkingMessageId(null);
         notif("AI response timed out. Please try again.");
-      }, 60000); // Increased to 60 seconds for more buffer time
+      }, 45000); // Reduced to 45 seconds for better UX
 
       return () => clearTimeout(timeout);
     }
@@ -204,27 +211,33 @@ export const SmartTalkRoom = () => {
           console.log("Message user_email:", newMessage.user_email);
           console.log("Session user_email:", session?.user?.email);
 
+          // Filter messages for this user
+          if (newMessage.user_email !== session?.user?.email) {
+            console.log("Message not for this user, ignoring");
+            return;
+          }
+
           console.log("Message is for this user, processing");
 
-            // If this is an AI message and we have a thinking message, replace it
-            if (newMessage.is_ai && thinkingMessageId) {
-              console.log("Replacing thinking message with AI response");
-              setMessages((prevMessages) =>
-                prevMessages.map((msg) =>
-                  msg.id === thinkingMessageId ? newMessage : msg
-                )
-              );
-              setThinkingMessageId(null);
-            } else {
-              // Regular message insertion
-              console.log("Adding new message to list");
-              setMessages((prevMessages) => [
-                ...prevMessages,
-                newMessage,
-              ]);
-            }
-          },
-        )
+          // If this is an AI message and we have a thinking message, replace it
+          if (newMessage.is_ai && thinkingMessageId) {
+            console.log("Replacing thinking message with AI response");
+            setMessages((prevMessages) =>
+              prevMessages.map((msg) =>
+                msg.id === thinkingMessageId ? newMessage : msg
+              )
+            );
+            setThinkingMessageId(null);
+          } else {
+            // Regular message insertion
+            console.log("Adding new message to list");
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              newMessage,
+            ]);
+          }
+        },
+      )
         .on(
           "postgres_changes",
           {
@@ -236,6 +249,12 @@ export const SmartTalkRoom = () => {
           (payload) => {
             const updatedMessage = payload.new as MessageProps;
             console.log("Real-time UPDATE received:", updatedMessage);
+
+            // Filter messages for this user
+            if (updatedMessage.user_email !== session?.user?.email) {
+              console.log("Update not for this user, ignoring");
+              return;
+            }
 
             setMessages((prevMessages) =>
               prevMessages.map((msg) =>
@@ -266,9 +285,9 @@ export const SmartTalkRoom = () => {
                     const response = await fetch(`/api/smart-talk?email=${session?.user?.email}`);
                     const data = await response.json();
 
-                    // Find recent AI response
+                    // Find recent AI response (within last 45 seconds to match timeout)
                     const aiResponse = data.find((msg: MessageProps) =>
-                      msg.is_ai && new Date(msg.created_at) > new Date(Date.now() - 30000)
+                      msg.is_ai && new Date(msg.created_at) > new Date(Date.now() - 45000)
                     );
 
                     if (aiResponse) {
@@ -315,7 +334,7 @@ export const SmartTalkRoom = () => {
         clearInterval(pollInterval);
       }
     };
-  }, [supabase, session?.user?.email]); // Stable dependencies
+  }, [supabase, session?.user?.email]); // Stable dependencies - removed thinkingMessageId
 
   return (
     <div className="flex flex-col h-full">

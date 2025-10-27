@@ -117,7 +117,9 @@ const SmartTalkInput = ({
           <button
             type="button"
             onClick={onClearChat}
-            className="rounded-md p-3 text-neutral-500 hover:text-red-500 dark:text-neutral-400 dark:hover:text-red-400 transition-colors active:scale-90"
+            className={`rounded-md p-3 text-white transition duration-100 active:scale-90 ${
+              "bg-red-500 hover:bg-red-400 dark:bg-red-600 dark:hover:bg-red-500"
+            }`}
             title="Clear Chat"
           >
             <BsTrash size={18} />
