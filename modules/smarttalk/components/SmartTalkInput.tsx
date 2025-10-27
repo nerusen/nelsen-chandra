@@ -7,17 +7,22 @@ import { MdCancel } from "react-icons/md";
 import { IoCloseCircle as CloseIcon } from "react-icons/io5";
 
 import Button from "@/common/components/elements/Button";
+import ModelSelector from "./ModelSelector";
 
 interface SmartTalkInputProps {
   onSendMessage: (message: string) => void;
   onCancelReply: () => void;
   replyName?: string;
+  selectedModel: string;
+  onModelChange: (model: string) => void;
 }
 
 const SmartTalkInput = ({
   onSendMessage,
   onCancelReply,
   replyName,
+  selectedModel,
+  onModelChange,
 }: SmartTalkInputProps) => {
   const [message, setMessage] = useState("");
   const [isCooldown, setIsCooldown] = useState(false);
@@ -62,6 +67,11 @@ const SmartTalkInput = ({
 
   return (
     <div className="border-t border-neutral-300 py-4 dark:border-neutral-700 px-4">
+      <ModelSelector
+        selectedModel={selectedModel}
+        onModelChange={onModelChange}
+      />
+
       {replyName && (
         <div className="flex items-center justify-between mb-2 p-2 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
           <span className="text-sm text-neutral-600 dark:text-neutral-400">

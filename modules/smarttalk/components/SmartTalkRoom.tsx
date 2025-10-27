@@ -28,6 +28,7 @@ export const SmartTalkRoom = () => {
   const [isReply, setIsReply] = useState({ is_reply: false, name: "" });
   const [showPopupFor, setShowPopupFor] = useState<string | null>(null);
   const [thinkingMessageId, setThinkingMessageId] = useState<string | null>(null);
+  const [selectedModel, setSelectedModel] = useState("anthropic/claude-3.5-sonnet");
 
   const supabase = createClient();
 
@@ -104,7 +105,7 @@ export const SmartTalkRoom = () => {
       ]);
 
       // Get AI response - only call once
-      await getAIResponse(message, thinkingId);
+      await getAIResponse(message, thinkingId, selectedModel);
     } catch (error) {
       console.error("Error:", error);
       notif("Failed to send message");
@@ -117,12 +118,13 @@ export const SmartTalkRoom = () => {
 
 
 
-  const getAIResponse = async (userMessage: string, thinkingId: string) => {
+  const getAIResponse = async (userMessage: string, thinkingId: string, model: string) => {
     try {
       console.log("Sending AI response request for message:", userMessage);
       const response = await axios.post("/api/smart-talk", {
         userMessage,
         email: session?.user?.email,
+        model,
       });
 
       console.log("AI response request sent successfully, response:", response.data);
@@ -276,6 +278,8 @@ export const SmartTalkRoom = () => {
           onSendMessage={handleSendMessage}
           onCancelReply={handleCancelReply}
           replyName={isReply.name}
+          selectedModel={selectedModel}
+          onModelChange={setSelectedModel}
         />
       ) : (
         <SmartTalkAuth />
