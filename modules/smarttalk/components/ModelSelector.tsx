@@ -9,14 +9,14 @@ interface ModelSelectorProps {
 }
 
 const models = [
-  { id: "anthropic/claude-3.5-sonnet", name: "Claude 3.5 Sonnet" },
-  { id: "openai/gpt-3.5-turbo", name: "GPT-3.5 Turbo" },
-  { id: "meta-llama/llama-3.1-8b-instruct", name: "Llama 3.1 8B" },
-  { id: "google/gemini-flash-1.5", name: "Gemini Flash 1.5" },
-  { id: "microsoft/wizardlm-2-8x22b", name: "WizardLM 2 8x22B" },
-  { id: "mistralai/mistral-7b-instruct", name: "Mistral 7B" },
-  { id: "cohere/command-r-plus", name: "Command R+" },
-  { id: "anthropic/claude-3-haiku", name: "Claude 3 Haiku" },
+  { id: "meta-llama/llama-3.1-70b-instruct:free", name: "Llama 3.1 70B (General)" },
+  { id: "google/gemini-pro-1.5:free", name: "Gemini Pro 1.5 (Advanced)" },
+  { id: "microsoft/wizardlm-2-8x22b:free", name: "WizardLM 2 8x22B (Coding)" },
+  { id: "mistralai/mixtral-8x7b-instruct:free", name: "Mixtral 8x7B (Reasoning)" },
+  { id: "meta-llama/llama-3.1-8b-instruct:free", name: "Llama 3.1 8B (Fast)" },
+  { id: "google/gemini-flash-1.5:free", name: "Gemini Flash 1.5 (Speed)" },
+  { id: "mistralai/mistral-7b-instruct:free", name: "Mistral 7B (Balanced)" },
+  { id: "openchat/openchat-7b:free", name: "OpenChat 7B (Conversational)" },
 ];
 
 const ModelSelector = ({ selectedModel, onModelChange }: ModelSelectorProps) => {
