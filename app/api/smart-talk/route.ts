@@ -110,7 +110,14 @@ export const POST = async (req: Request) => {
         metadata: null,
       };
 
-      console.log("Inserting AI message:", aiMessageData);
+      console.log("Inserting AI message:", {
+        id: aiMessageData.id,
+        user_email: aiMessageData.user_email,
+        is_ai: aiMessageData.is_ai,
+        message_length: aiMessageData.message?.length || 0,
+        created_at: aiMessageData.created_at
+      });
+
       const { data, error } = await supabase.from("smart_talk_messages").insert([aiMessageData]);
       if (error) {
         console.error("Error inserting AI message:", error);
