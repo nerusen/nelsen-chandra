@@ -155,7 +155,7 @@ export const SmartTalkRoom = () => {
         );
         setThinkingMessageId(null);
         notif("AI response timed out. Please try again.");
-      }, 30000); // Increased to 30 seconds
+      }, 60000); // Increased to 60 seconds for more buffer time
 
       return () => clearTimeout(timeout);
     }
@@ -197,17 +197,19 @@ export const SmartTalkRoom = () => {
             schema: "public",
             table: "smart_talk_messages",
           },
-          (payload) => {
-            const newMessage = payload.new as MessageProps;
-            console.log("Real-time INSERT received:", newMessage);
+        (payload) => {
+          const newMessage = payload.new as MessageProps;
+          console.log("Real-time INSERT received:", newMessage);
+          console.log("Message user_email:", newMessage.user_email);
+          console.log("Session user_email:", session?.user?.email);
 
-            // Filter messages for this user
-            if (newMessage.user_email !== session?.user?.email) {
-              console.log("Message not for this user, ignoring");
-              return;
-            }
+          // Filter messages for this user
+          if (newMessage.user_email !== session?.user?.email) {
+            console.log("Message not for this user, ignoring");
+            return;
+          }
 
-            console.log("Message is for this user, processing");
+          console.log("Message is for this user, processing");
 
             // If this is an AI message and we have a thinking message, replace it
             if (newMessage.is_ai && thinkingMessageId) {
