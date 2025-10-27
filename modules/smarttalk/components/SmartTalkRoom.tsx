@@ -177,8 +177,6 @@ export const SmartTalkRoom = () => {
   useEffect(() => {
     if (!session?.user?.email) return;
 
-    console.log("Setting up real-time subscription for user:", session.user.email);
-
     const channel = supabase
       .channel("realtime smart-talk")
       .on(
@@ -187,18 +185,11 @@ export const SmartTalkRoom = () => {
           event: "INSERT",
           schema: "public",
           table: "smart_talk_messages",
+          filter: `user_email=eq.${session.user.email}`,
         },
         (payload) => {
           const newMessage = payload.new as MessageProps;
-          console.log("Real-time INSERT received:", newMessage);
-
-          // Filter messages for this user
-          if (newMessage.user_email !== session?.user?.email) {
-            console.log("Message not for this user, ignoring");
-            return;
-          }
-
-          console.log("Message is for this user, processing");
+          console.log("New message received via real-time:", newMessage);
 
           // If this is an AI message and we have a thinking message, replace it
           if (newMessage.is_ai && thinkingMessageId) {
@@ -225,30 +216,19 @@ export const SmartTalkRoom = () => {
           event: "UPDATE",
           schema: "public",
           table: "smart_talk_messages",
+          filter: `user_email=eq.${session.user.email}`,
         },
         (payload) => {
-          const updatedMessage = payload.new as MessageProps;
-          console.log("Real-time UPDATE received:", updatedMessage);
-
-          // Filter messages for this user
-          if (updatedMessage.user_email !== session?.user?.email) {
-            console.log("Update not for this user, ignoring");
-            return;
-          }
-
           setMessages((prevMessages) =>
             prevMessages.map((msg) =>
-              msg.id === updatedMessage.id ? updatedMessage : msg,
+              msg.id === payload.new.id ? (payload.new as MessageProps) : msg,
             ),
           );
         },
       )
-      .subscribe((status) => {
-        console.log("Real-time subscription status:", status);
-      });
+      .subscribe();
 
     return () => {
-      console.log("Cleaning up real-time subscription");
       supabase.removeChannel(channel);
     };
   }, [supabase, thinkingMessageId, session?.user?.email]);
