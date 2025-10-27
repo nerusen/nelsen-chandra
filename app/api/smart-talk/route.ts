@@ -89,7 +89,7 @@ export const POST = async (req: Request) => {
       }
 
       // Get AI response from OpenRouter
-      const aiResponse = await getAIResponse(body.userMessage);
+      const aiResponse = await getAIResponse(body.userMessage, body.model || "anthropic/claude-3.5-sonnet");
       console.log("AI response generated:", aiResponse);
 
       const aiMessageData = {
@@ -139,7 +139,7 @@ export const POST = async (req: Request) => {
   }
 };
 
-async function getAIResponse(userMessage: string): Promise<string> {
+async function getAIResponse(userMessage: string, model: string = "anthropic/claude-3.5-sonnet"): Promise<string> {
   const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
   if (!OPENROUTER_API_KEY) {
@@ -174,7 +174,7 @@ async function getAIResponse(userMessage: string): Promise<string> {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "anthropic/claude-3.5-sonnet",
+        model: model,
         messages: [
           {
             role: "system",
