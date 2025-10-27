@@ -10,13 +10,13 @@ interface ModelSelectorProps {
 
 const models = [
   { id: "minimax/minimax-01", name: "MiniMax M2" },
-  { id: "meta-llama/llama-3.3-70b-instruct:free", name: "Llama 3.3 8B Instruct" },
-  { id: "qwen/qwen3-235b-a22b:free", name: "Qwen3 Coder 480B A35B" },
-  { id: "google/gemini-2.0-flash-exp:free", name: "Gemini 2.0 Flash Experimental" },
-  { id: "moonshotai/kimi-k2-0711:free", name: "Kimi K2 0711" },
-  { id: "deepseek/deepseek-chat:free", name: "DeepSeek V3.1" },
-  { id: "deepseek/deepseek-r1:free", name: "DeepSeek R1 0528" },
-  { id: "tng/deepseek-r1-t2-chimera:free", name: "DeepSeek R1T2 Chimera" },
+  { id: "meta-llama/llama-3.3-70b-instruct:free", name: "Llama 3.3 70B Instruct" },
+  { id: "qwen/qwen2.5-coder-32b-instruct:free", name: "Qwen2.5 Coder 32B" },
+  { id: "google/gemini-2.0-flash-exp:free", name: "Gemini 2.0 Flash Exp" },
+  { id: "moonshotai/moonlight-16b-a3b-instruct:free", name: "Moonlight 16B A3B" },
+  { id: "deepseek/deepseek-chat:free", name: "DeepSeek V3" },
+  { id: "deepseek/deepseek-r1:free", name: "DeepSeek R1" },
+  { id: "tng/deepseek-r1-t2-chimera:free", name: "DeepSeek R1 T2 Chimera" },
 ];
 
 const ModelSelector = ({ selectedModel, onModelChange }: ModelSelectorProps) => {
