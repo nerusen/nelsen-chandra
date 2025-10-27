@@ -175,6 +175,8 @@ export const SmartTalkRoom = () => {
   }, [data, error, isLoading]);
 
   useEffect(() => {
+    if (!session?.user?.email) return;
+
     const channel = supabase
       .channel("realtime smart-talk")
       .on(
@@ -183,6 +185,7 @@ export const SmartTalkRoom = () => {
           event: "INSERT",
           schema: "public",
           table: "smart_talk_messages",
+          filter: `user_email=eq.${session.user.email}`,
         },
         (payload) => {
           const newMessage = payload.new as MessageProps;
@@ -213,6 +216,7 @@ export const SmartTalkRoom = () => {
           event: "UPDATE",
           schema: "public",
           table: "smart_talk_messages",
+          filter: `user_email=eq.${session.user.email}`,
         },
         (payload) => {
           setMessages((prevMessages) =>
@@ -227,7 +231,7 @@ export const SmartTalkRoom = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [supabase, thinkingMessageId]);
+  }, [supabase, thinkingMessageId, session?.user?.email]);
 
   return (
     <div className="flex flex-col h-full">
