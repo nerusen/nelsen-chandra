@@ -306,10 +306,10 @@ export const SmartTalkRoom = () => {
             // Log detailed error information
             if (err) {
               console.error('❌ Detailed error:', {
-                message: err.message,
-                details: err.details,
-                hint: err.hint,
-                code: err.code
+                message: err.message || err,
+                details: (err as any).details || 'No details',
+                hint: (err as any).hint || 'No hint',
+                code: (err as any).code || 'No code'
               });
             }
 
