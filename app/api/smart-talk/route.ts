@@ -89,7 +89,7 @@ export const POST = async (req: Request) => {
       }
 
       // Get AI response from OpenRouter
-      const aiResponse = await getAIResponse(body.userMessage, body.model || "meta-llama/llama-3.1-70b-instruct:free");
+      const aiResponse = await getAIResponse(body.userMessage, body.model || "minimax/minimax-01");
       console.log("AI response generated:", aiResponse);
 
       const aiMessageData = {
@@ -139,7 +139,7 @@ export const POST = async (req: Request) => {
   }
 };
 
-async function getAIResponse(userMessage: string, model: string = "meta-llama/llama-3.1-70b-instruct:free"): Promise<string> {
+async function getAIResponse(userMessage: string, model: string = "minimax/minimax-01"): Promise<string> {
   const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
   if (!OPENROUTER_API_KEY) {
