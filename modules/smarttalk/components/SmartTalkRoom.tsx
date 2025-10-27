@@ -189,25 +189,20 @@ export const SmartTalkRoom = () => {
 
     const setupSubscription = () => {
       channel = supabase
-        .channel(`realtime-smart-talk-${Date.now()}`) // Unique channel name
+        .channel(`realtime-smart-talk-${session.user.email}-${Date.now()}`) // More unique channel name
         .on(
           "postgres_changes",
           {
             event: "INSERT",
             schema: "public",
             table: "smart_talk_messages",
+            filter: `user_email=eq.${session.user.email}`, // Add filter at subscription level
           },
         (payload) => {
           const newMessage = payload.new as MessageProps;
           console.log("Real-time INSERT received:", newMessage);
           console.log("Message user_email:", newMessage.user_email);
           console.log("Session user_email:", session?.user?.email);
-
-          // Filter messages for this user
-          if (newMessage.user_email !== session?.user?.email) {
-            console.log("Message not for this user, ignoring");
-            return;
-          }
 
           console.log("Message is for this user, processing");
 
@@ -236,16 +231,11 @@ export const SmartTalkRoom = () => {
             event: "UPDATE",
             schema: "public",
             table: "smart_talk_messages",
+            filter: `user_email=eq.${session.user.email}`, // Add filter at subscription level
           },
           (payload) => {
             const updatedMessage = payload.new as MessageProps;
             console.log("Real-time UPDATE received:", updatedMessage);
-
-            // Filter messages for this user
-            if (updatedMessage.user_email !== session?.user?.email) {
-              console.log("Update not for this user, ignoring");
-              return;
-            }
 
             setMessages((prevMessages) =>
               prevMessages.map((msg) =>
