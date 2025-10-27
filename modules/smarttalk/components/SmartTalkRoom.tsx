@@ -128,6 +128,13 @@ export const SmartTalkRoom = () => {
   const getAIResponse = async (userMessage: string, thinkingId: string, model: string) => {
     try {
       console.log("Sending AI response request for message:", userMessage);
+      console.log("Request payload:", {
+        userMessage: userMessage.substring(0, 50) + "...",
+        email: session?.user?.email,
+        model,
+        thinkingId
+      });
+
       const response = await axios.post("/api/smart-talk", {
         userMessage,
         email: session?.user?.email,
@@ -138,6 +145,34 @@ export const SmartTalkRoom = () => {
 
       // Wait for real-time subscription to handle the response
       // The real-time listener will replace the thinking message with the actual AI response
+
+      // Add a fallback: if no real-time response after 10 seconds, poll once
+      setTimeout(async () => {
+        if (thinkingMessageId === thinkingId) { // Still thinking after 10 seconds
+          console.log("🔄 Fallback: Polling for AI response after 10 seconds...");
+          try {
+            const pollResponse = await fetch(`/api/smart-talk?email=${session?.user?.email}`);
+            const data = await pollResponse.json();
+
+            // Find the most recent AI message
+            const aiResponse = data
+              .filter((msg: MessageProps) => msg.is_ai)
+              .sort((a: MessageProps, b: MessageProps) =>
+                new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+              )[0];
+
+            if (aiResponse && thinkingMessageId === thinkingId) {
+              console.log("🎯 Found AI response via fallback polling, replacing thinking message");
+              setMessages(prev => prev.map(msg =>
+                msg.id === thinkingId ? aiResponse : msg
+              ));
+              setThinkingMessageId(null);
+            }
+          } catch (error) {
+            console.error("❌ Fallback polling error:", error);
+          }
+        }
+      }, 10000); // 10 seconds fallback
 
     } catch (error) {
       console.error("Error getting AI response:", error);
@@ -193,6 +228,7 @@ export const SmartTalkRoom = () => {
     supabase
       .from('smart_talk_messages')
       .select('count', { count: 'exact', head: true })
+      .eq('user_email', session?.user?.email) // Add user filter to connection test
       .then(({ count, error }) => {
         if (error) {
           console.error('❌ Supabase connection test failed:', error);
@@ -227,7 +263,8 @@ export const SmartTalkRoom = () => {
               id: newMessage.id,
               is_ai: newMessage.is_ai,
               user_email: newMessage.user_email,
-              message: newMessage.message?.substring(0, 50) + "..."
+              message: newMessage.message?.substring(0, 50) + "...",
+              created_at: newMessage.created_at
             });
 
             // Double-check user filtering (belt and suspenders)
