@@ -76,13 +76,13 @@ export const POST = async (req: Request) => {
         .limit(1);
 
       if (existingMessages && existingMessages.length > 0) {
-        // Check if the last AI message was sent within the last 5 seconds
+        // Check if the last AI message was sent within the last 10 seconds
         const lastAIMessage = existingMessages[0];
         const lastMessageTime = new Date(lastAIMessage.created_at);
         const now = new Date();
         const timeDiff = now.getTime() - lastMessageTime.getTime();
 
-        if (timeDiff < 5000) { // 5 seconds
+        if (timeDiff < 10000) { // 10 seconds
           console.log("AI response already sent recently, skipping duplicate");
           return NextResponse.json("AI response already sent", { status: 200 });
         }
@@ -113,6 +113,10 @@ export const POST = async (req: Request) => {
         throw error;
       }
       console.log("AI message inserted successfully:", data);
+
+      // Add a small delay to ensure real-time subscription picks up the change
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       return NextResponse.json("AI response saved successfully", { status: 200 });
     }
 
