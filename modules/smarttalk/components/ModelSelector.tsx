@@ -9,14 +9,18 @@ interface ModelSelectorProps {
 }
 
 const models = [
-  { id: "minimax/minimax-01", name: "MiniMax M2" },
-  { id: "meta-llama/llama-3.3-70b-instruct:free", name: "Llama 3.3 70B Instruct" },
-  { id: "qwen/qwen2.5-coder-32b-instruct:free", name: "Qwen2.5 Coder 32B" },
-  { id: "google/gemini-2.0-flash-exp:free", name: "Gemini 2.0 Flash Exp" },
-  { id: "moonshotai/moonlight-16b-a3b-instruct:free", name: "Moonlight 16B A3B" },
-  { id: "deepseek/deepseek-chat:free", name: "DeepSeek V3" },
+  { id: "minimax/minimax-m2:free", name: "MiniMax M2" },
+  { id: "meta-llama/llama-3.3-70b-instruct:free", name: "Llama 3.3 70B" },
+  { id: "qwen/qwen3-coder:free", name: "Qwen3 Coder" },
+  { id: "qwen/qwen3-235b-a22b:free", name: "Qwen3 235B" },
+  { id: "google/gemini-2.0-flash-exp:free", name: "Gemini 2.0 Flash" },
+  { id: "google/gemma-3-27b-it:free", name: "Gemma 3 27B" },
+  { id: "openai/gpt-oss-20b:free", name: "ChatGPT 20B" },
+  { id: "moonshotai/kimi-dev-72b:free", name: "Kimi Dev 72B" },
+  { id: "deepseek/deepseek-chat-v3-0324:free", name: "DeepSeek V3" },
+  { id: "deepseek/deepseek-chat-v3.1:free", name: "DeepSeek V3.1" },
   { id: "deepseek/deepseek-r1:free", name: "DeepSeek R1" },
-  { id: "tng/deepseek-r1-t2-chimera:free", name: "DeepSeek R1 T2 Chimera" },
+  { id: "tngtech/deepseek-r1t2-chimera:free", name: "DeepSeek R1 T2 Chimera" },
 ];
 
 const ModelSelector = ({ selectedModel, onModelChange }: ModelSelectorProps) => {
