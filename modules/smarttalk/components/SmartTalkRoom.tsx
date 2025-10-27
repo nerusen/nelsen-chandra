@@ -183,76 +183,89 @@ export const SmartTalkRoom = () => {
     console.log("Smart Talk loading:", isLoading);
   }, [data, error, isLoading]);
 
-  // Real-time subscription with error handling and fallback polling
+  // Enhanced real-time subscription with better error handling and fallback polling
   useEffect(() => {
     if (!session?.user?.email) return;
 
-    console.log("Setting up real-time subscription for user:", session?.user?.email);
+    console.log("🔄 Setting up enhanced real-time subscription for user:", session?.user?.email);
 
     let channel: any = null;
     let pollInterval: NodeJS.Timeout | null = null;
     let retryCount = 0;
-    const maxRetries = 3;
+    const maxRetries = 5; // Increased retries
 
     const setupSubscription = () => {
+      // Create unique channel name to avoid conflicts
+      const channelName = `realtime-smart-talk-${session?.user?.email}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
       channel = supabase
-        .channel(`realtime-smart-talk-${session?.user?.email}-${Date.now()}`) // More unique channel name
+        .channel(channelName)
         .on(
           "postgres_changes",
           {
             event: "INSERT",
             schema: "public",
             table: "smart_talk_messages",
-            filter: `user_email=eq.${session?.user?.email}`, // Add filter at subscription level
+            filter: `user_email=eq.${session?.user?.email}`,
           },
-        (payload) => {
-          const newMessage = payload.new as MessageProps;
-          console.log("Real-time INSERT received:", newMessage);
-          console.log("Message user_email:", newMessage.user_email);
-          console.log("Session user_email:", session?.user?.email);
+          (payload) => {
+            const newMessage = payload.new as MessageProps;
+            console.log("📨 Real-time INSERT received:", {
+              id: newMessage.id,
+              is_ai: newMessage.is_ai,
+              user_email: newMessage.user_email,
+              message: newMessage.message?.substring(0, 50) + "..."
+            });
 
-          // Filter messages for this user
-          if (newMessage.user_email !== session?.user?.email) {
-            console.log("Message not for this user, ignoring");
-            return;
-          }
+            // Double-check user filtering (belt and suspenders)
+            if (newMessage.user_email !== session?.user?.email) {
+              console.log("🚫 Message not for this user, ignoring");
+              return;
+            }
 
-          console.log("Message is for this user, processing");
+            console.log("✅ Message is for this user, processing");
 
-          // If this is an AI message and we have a thinking message, replace it
-          if (newMessage.is_ai && thinkingMessageId) {
-            console.log("Replacing thinking message with AI response");
-            setMessages((prevMessages) =>
-              prevMessages.map((msg) =>
-                msg.id === thinkingMessageId ? newMessage : msg
-              )
-            );
-            setThinkingMessageId(null);
-          } else {
-            // Regular message insertion
-            console.log("Adding new message to list");
-            setMessages((prevMessages) => [
-              ...prevMessages,
-              newMessage,
-            ]);
-          }
-        },
-      )
+            // If this is an AI message and we have a thinking message, replace it
+            if (newMessage.is_ai && thinkingMessageId) {
+              console.log("🔄 Replacing thinking message with AI response");
+              setMessages((prevMessages) =>
+                prevMessages.map((msg) =>
+                  msg.id === thinkingMessageId ? newMessage : msg
+                )
+              );
+              setThinkingMessageId(null);
+              console.log("✅ AI response successfully displayed");
+            } else if (!newMessage.is_ai) {
+              // Regular user message insertion
+              console.log("💬 Adding new user message to list");
+              setMessages((prevMessages) => [
+                ...prevMessages,
+                newMessage,
+              ]);
+            } else {
+              // AI message without thinking state (shouldn't happen but handle it)
+              console.log("🤖 Adding AI message without thinking state");
+              setMessages((prevMessages) => [
+                ...prevMessages,
+                newMessage,
+              ]);
+            }
+          },
+        )
         .on(
           "postgres_changes",
           {
             event: "UPDATE",
             schema: "public",
             table: "smart_talk_messages",
-            filter: `user_email=eq.${session?.user?.email}`, // Add filter at subscription level
+            filter: `user_email=eq.${session?.user?.email}`,
           },
           (payload) => {
             const updatedMessage = payload.new as MessageProps;
-            console.log("Real-time UPDATE received:", updatedMessage);
+            console.log("🔄 Real-time UPDATE received:", updatedMessage.id);
 
-            // Filter messages for this user
             if (updatedMessage.user_email !== session?.user?.email) {
-              console.log("Update not for this user, ignoring");
+              console.log("🚫 Update not for this user, ignoring");
               return;
             }
 
@@ -264,24 +277,26 @@ export const SmartTalkRoom = () => {
           },
         )
         .subscribe((status, err) => {
-          console.log("Real-time subscription status:", status, err);
+          console.log("🔗 Real-time subscription status:", status, err ? `Error: ${err.message}` : "");
 
           if (status === 'SUBSCRIBED') {
-            console.log('Successfully subscribed to real-time');
+            console.log('✅ Successfully subscribed to real-time');
             retryCount = 0; // Reset retry count on success
             if (pollInterval) {
               clearInterval(pollInterval);
               pollInterval = null;
+              console.log('🛑 Stopped polling since real-time is working');
             }
-          } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-            console.error('Real-time subscription failed:', status, err);
+          } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
+            console.error('❌ Real-time subscription failed:', status, err);
 
             // Fallback to polling if real-time fails
             if (!pollInterval && retryCount < maxRetries) {
-              console.log('Falling back to polling...');
+              console.log('🔄 Falling back to polling...');
               pollInterval = setInterval(async () => {
                 try {
                   if (session?.user?.email && thinkingMessageId) {
+                    console.log('🔍 Polling for AI response...');
                     const response = await fetch(`/api/smart-talk?email=${session?.user?.email}`);
                     const data = await response.json();
 
@@ -291,7 +306,7 @@ export const SmartTalkRoom = () => {
                     );
 
                     if (aiResponse) {
-                      console.log('Found AI response via polling, replacing thinking message');
+                      console.log('🎯 Found AI response via polling, replacing thinking message');
                       setMessages(prev => prev.map(msg =>
                         msg.id === thinkingMessageId ? aiResponse : msg
                       ));
@@ -299,34 +314,43 @@ export const SmartTalkRoom = () => {
                       if (pollInterval) {
                         clearInterval(pollInterval);
                         pollInterval = null;
+                        console.log('🛑 Stopped polling after finding AI response');
                       }
                     }
                   }
                 } catch (error) {
-                  console.error('Polling error:', error);
+                  console.error('❌ Polling error:', error);
                 }
-              }, 3000); // Poll every 3 seconds
+              }, 2000); // Poll every 2 seconds (faster)
             }
 
-            // Retry subscription
+            // Retry subscription with exponential backoff
             if (retryCount < maxRetries) {
               retryCount++;
-              console.log(`Retrying subscription (${retryCount}/${maxRetries})...`);
+              const delay = Math.min(1000 * Math.pow(2, retryCount), 30000); // Max 30 seconds
+              console.log(`🔄 Retrying subscription (${retryCount}/${maxRetries}) in ${delay}ms...`);
               setTimeout(() => {
                 if (channel) {
                   supabase.removeChannel(channel);
+                  channel = null;
                 }
                 setupSubscription();
-              }, 2000 * retryCount); // Exponential backoff
+              }, delay);
+            } else {
+              console.error('💀 Max retries reached, real-time subscription failed permanently');
             }
           }
         });
     };
 
-    setupSubscription();
+    // Add a small delay before setting up subscription to ensure component is fully mounted
+    const initTimeout = setTimeout(() => {
+      setupSubscription();
+    }, 100);
 
     return () => {
-      console.log("Cleaning up real-time subscription and polling");
+      console.log("🧹 Cleaning up real-time subscription and polling");
+      clearTimeout(initTimeout);
       if (channel) {
         supabase.removeChannel(channel);
       }
@@ -334,7 +358,7 @@ export const SmartTalkRoom = () => {
         clearInterval(pollInterval);
       }
     };
-  }, [supabase, session?.user?.email]); // Stable dependencies - removed thinkingMessageId
+  }, [supabase, session?.user?.email]); // Stable dependencies
 
   return (
     <div className="flex flex-col h-full">
