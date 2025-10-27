@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 
 import { MessageProps } from "@/common/types/chat";
 
@@ -15,6 +16,12 @@ interface SmartTalkItemProps {
 
 const SmartTalkItem = ({ message, isUser }: SmartTalkItemProps) => {
   const [displayedText, setDisplayedText] = useState(message.is_thinking ? "Sedang berpikir..." : message.message);
+  const [showThinking, setShowThinking] = useState(false);
+
+  // Extract thinking content from message
+  const thinkingMatch = message.message.match(/<think>([\s\S]*?)<\/think>/);
+  const thinkingContent = thinkingMatch ? thinkingMatch[1] : null;
+  const cleanMessage = message.message.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
 
   const timeAgo = formatDistanceToNow(new Date(message.created_at), {
     addSuffix: true,
@@ -32,9 +39,9 @@ const SmartTalkItem = ({ message, isUser }: SmartTalkItemProps) => {
       return () => clearInterval(interval);
     } else {
       // Display message directly without typewriter effect
-      setDisplayedText(message.message);
+      setDisplayedText(cleanMessage);
     }
-  }, [message.message, message.is_thinking, message.is_ai, message.id]);
+  }, [message.message, message.is_thinking, message.is_ai, message.id, cleanMessage]);
 
   return (
     <div
@@ -120,6 +127,25 @@ const SmartTalkItem = ({ message, isUser }: SmartTalkItemProps) => {
             >
               {displayedText}
             </ReactMarkdown>
+
+            {/* Thinking content toggle */}
+            {thinkingContent && !message.is_thinking && (
+              <div className="mt-3">
+                <button
+                  onClick={() => setShowThinking(!showThinking)}
+                  className="flex items-center space-x-2 px-3 py-1 bg-neutral-700 hover:bg-neutral-600 rounded-md text-xs text-neutral-300 hover:text-neutral-200 transition-colors border border-neutral-600"
+                >
+                  <span>Think</span>
+                  {showThinking ? <FiChevronUp size={12} /> : <FiChevronDown size={12} />}
+                </button>
+
+                {showThinking && (
+                  <div className="mt-2 p-3 bg-neutral-900 rounded-md border border-neutral-700 text-xs text-neutral-400">
+                    <div className="whitespace-pre-wrap">{thinkingContent}</div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <div className="flex items-center justify-between mt-2">
             <span className="text-xs text-neutral-400">{timeAgo}</span>
