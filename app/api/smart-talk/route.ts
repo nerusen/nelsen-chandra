@@ -103,7 +103,11 @@ export const POST = async (req: Request) => {
         is_show: true,
         created_at: new Date().toISOString(),
         is_ai: true,
-        user_email: body.email,
+        is_thinking: false, // Pastikan is_thinking false untuk AI response
+        user_email: body.email, // SANGAT PENTING: harus sama dengan user yang sedang chat
+        conversation_id: body.conversationId || null,
+        message_type: "text",
+        metadata: null,
       };
 
       console.log("Inserting AI message:", aiMessageData);
@@ -114,16 +118,22 @@ export const POST = async (req: Request) => {
       }
       console.log("AI message inserted successfully:", data);
 
-      // Add a small delay to ensure real-time subscription picks up the change
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      return NextResponse.json("AI response saved successfully", { status: 200 });
+      // Return success response with message IDs
+      return NextResponse.json({
+        success: true,
+        aiMessageId: aiMessageData.id,
+        message: "AI response saved successfully"
+      }, { status: 200 });
     }
 
-    // Regular message insertion
+    // Regular message insertion (user message)
     const messageData = {
       ...body,
       user_email: body.email, // Add user_email for filtering
+      is_thinking: false, // Pastikan is_thinking false untuk user messages
+      conversation_id: body.conversationId || null,
+      message_type: "text",
+      metadata: null,
     };
 
     console.log("Inserting regular message:", messageData);
@@ -133,11 +143,15 @@ export const POST = async (req: Request) => {
       throw error;
     }
     console.log("Regular message inserted successfully:", data);
-    return NextResponse.json("Message saved successfully", { status: 200 });
+    return NextResponse.json({
+      success: true,
+      userMessageId: messageData.id,
+      message: "Message saved successfully"
+    }, { status: 200 });
   } catch (error) {
     console.error("Error in POST:", error);
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { message: "Internal Server Error", error: (error as Error).message },
       { status: 500 },
     );
   }
