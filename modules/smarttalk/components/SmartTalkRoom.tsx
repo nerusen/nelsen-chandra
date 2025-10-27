@@ -267,12 +267,7 @@ export const SmartTalkRoom = () => {
           showPopupFor={showPopupFor}
         />
       )}
-      {session && messages.length > 0 && (
-        <ClearChatButton
-          onClear={handleClearChat}
-          isVisible={true}
-        />
-      )}
+
       {session ? (
         <SmartTalkInput
           onSendMessage={handleSendMessage}
@@ -280,6 +275,7 @@ export const SmartTalkRoom = () => {
           replyName={isReply.name}
           selectedModel={selectedModel}
           onModelChange={setSelectedModel}
+          onClearChat={handleClearChat}
         />
       ) : (
         <SmartTalkAuth />

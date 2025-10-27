@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { FiSend as SendIcon } from "react-icons/fi";
 import { MdCancel } from "react-icons/md";
 import { IoCloseCircle as CloseIcon } from "react-icons/io5";
+import { BsTrash } from "react-icons/bs";
 
 import Button from "@/common/components/elements/Button";
 import ModelSelector from "./ModelSelector";
@@ -15,6 +16,7 @@ interface SmartTalkInputProps {
   replyName?: string;
   selectedModel: string;
   onModelChange: (model: string) => void;
+  onClearChat?: () => void;
 }
 
 const SmartTalkInput = ({
@@ -23,6 +25,7 @@ const SmartTalkInput = ({
   replyName,
   selectedModel,
   onModelChange,
+  onClearChat,
 }: SmartTalkInputProps) => {
   const [message, setMessage] = useState("");
   const [isCooldown, setIsCooldown] = useState(false);
@@ -85,7 +88,7 @@ const SmartTalkInput = ({
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="flex">
+      <form onSubmit={handleSubmit} className="flex items-center gap-2">
         <input
           type="text"
           value={message}
@@ -98,7 +101,7 @@ const SmartTalkInput = ({
         <button
           type="submit"
           disabled={!message.trim() || isCooldown}
-          className={`ml-2 rounded-md p-3 text-white transition duration-100 active:scale-90 ${
+          className={`rounded-md p-3 text-white transition duration-100 active:scale-90 ${
             message.trim() && !isCooldown
               ? "bg-emerald-500 hover:bg-emerald-400 dark:bg-emerald-600 dark:hover:bg-emerald-500"
               : "cursor-not-allowed bg-[#1F1F1F] border border-[#3A3A3A] active:scale-100"
@@ -110,6 +113,16 @@ const SmartTalkInput = ({
             <SendIcon size={18} />
           )}
         </button>
+        {onClearChat && (
+          <button
+            type="button"
+            onClick={onClearChat}
+            className="rounded-md p-3 text-neutral-500 hover:text-red-500 dark:text-neutral-400 dark:hover:text-red-400 transition-colors active:scale-90"
+            title="Clear Chat"
+          >
+            <BsTrash size={18} />
+          </button>
+        )}
       </form>
     </div>
   );
