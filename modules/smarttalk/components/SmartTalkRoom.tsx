@@ -189,6 +189,18 @@ export const SmartTalkRoom = () => {
 
     console.log("🔄 Setting up enhanced real-time subscription for user:", session?.user?.email);
 
+    // Test Supabase connection first
+    supabase
+      .from('smart_talk_messages')
+      .select('count', { count: 'exact', head: true })
+      .then(({ count, error }) => {
+        if (error) {
+          console.error('❌ Supabase connection test failed:', error);
+        } else {
+          console.log('✅ Supabase connection test passed, message count:', count);
+        }
+      });
+
     let channel: any = null;
     let pollInterval: NodeJS.Timeout | null = null;
     let retryCount = 0;
@@ -209,6 +221,7 @@ export const SmartTalkRoom = () => {
             filter: `user_email=eq.${session?.user?.email}`,
           },
           (payload) => {
+            console.log("📨 Real-time INSERT received:", payload);
             const newMessage = payload.new as MessageProps;
             console.log("📨 Real-time INSERT received:", {
               id: newMessage.id,
@@ -250,7 +263,7 @@ export const SmartTalkRoom = () => {
                 newMessage,
               ]);
             }
-          },
+          }
         )
         .on(
           "postgres_changes",
@@ -277,7 +290,7 @@ export const SmartTalkRoom = () => {
           },
         )
         .subscribe((status, err) => {
-          console.log("🔗 Real-time subscription status:", status, err ? `Error: ${err.message}` : "");
+          console.log("🔗 Real-time subscription status:", status, err ? `Error: ${err?.message || err}` : "");
 
           if (status === 'SUBSCRIBED') {
             console.log('✅ Successfully subscribed to real-time');
@@ -289,6 +302,16 @@ export const SmartTalkRoom = () => {
             }
           } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
             console.error('❌ Real-time subscription failed:', status, err);
+
+            // Log detailed error information
+            if (err) {
+              console.error('❌ Detailed error:', {
+                message: err.message,
+                details: err.details,
+                hint: err.hint,
+                code: err.code
+              });
+            }
 
             // Fallback to polling if real-time fails
             if (!pollInterval && retryCount < maxRetries) {
