@@ -180,7 +180,7 @@ export const SmartTalkRoom = () => {
   useEffect(() => {
     if (!session?.user?.email) return;
 
-    console.log("Setting up real-time subscription for user:", session.user.email);
+    console.log("Setting up real-time subscription for user:", session?.user?.email);
 
     let channel: any = null;
     let pollInterval: NodeJS.Timeout | null = null;
@@ -189,14 +189,14 @@ export const SmartTalkRoom = () => {
 
     const setupSubscription = () => {
       channel = supabase
-        .channel(`realtime-smart-talk-${session.user.email}-${Date.now()}`) // More unique channel name
+        .channel(`realtime-smart-talk-${session?.user?.email}-${Date.now()}`) // More unique channel name
         .on(
           "postgres_changes",
           {
             event: "INSERT",
             schema: "public",
             table: "smart_talk_messages",
-            filter: `user_email=eq.${session.user.email}`, // Add filter at subscription level
+            filter: `user_email=eq.${session?.user?.email}`, // Add filter at subscription level
           },
         (payload) => {
           const newMessage = payload.new as MessageProps;
@@ -231,7 +231,7 @@ export const SmartTalkRoom = () => {
             event: "UPDATE",
             schema: "public",
             table: "smart_talk_messages",
-            filter: `user_email=eq.${session.user.email}`, // Add filter at subscription level
+            filter: `user_email=eq.${session?.user?.email}`, // Add filter at subscription level
           },
           (payload) => {
             const updatedMessage = payload.new as MessageProps;
