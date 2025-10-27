@@ -28,7 +28,7 @@ export const SmartTalkRoom = () => {
   const [isReply, setIsReply] = useState({ is_reply: false, name: "" });
   const [showPopupFor, setShowPopupFor] = useState<string | null>(null);
   const [thinkingMessageId, setThinkingMessageId] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState("minimax/minimax-m2:free");
+  const [selectedModel, setSelectedModel] = useState("minimax/minimax-01");
 
   const supabase = createClient();
 
@@ -204,7 +204,7 @@ export const SmartTalkRoom = () => {
           console.log("Message is for this user, processing");
 
           // If this is an AI message and we have a thinking message, replace it
-          if (newMessage.is_ai && thinkingMessageId) {
+          if (newMessage.is_ai && thinkingMessageId && newMessage.id !== thinkingMessageId) {
             console.log("Replacing thinking message with AI response");
             setMessages((prevMessages) =>
               prevMessages.map((msg) =>
@@ -212,8 +212,8 @@ export const SmartTalkRoom = () => {
               )
             );
             setThinkingMessageId(null);
-          } else {
-            // Regular message insertion
+          } else if (!newMessage.is_ai || !thinkingMessageId) {
+            // Regular message insertion (user messages or AI messages without thinking state)
             console.log("Adding new message to list");
             setMessages((prevMessages) => [
               ...prevMessages,
@@ -254,7 +254,7 @@ export const SmartTalkRoom = () => {
       console.log("Cleaning up real-time subscription");
       supabase.removeChannel(channel);
     };
-  }, [supabase, session?.user?.email]); // Removed thinkingMessageId from dependencies
+  }, [supabase, session?.user?.email, thinkingMessageId]); // Added thinkingMessageId back to dependencies
 
   return (
     <div className="flex flex-col h-full">
