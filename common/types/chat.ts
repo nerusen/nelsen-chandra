@@ -13,6 +13,9 @@ export interface MessageProps {
   is_ai?: boolean;
   is_thinking?: boolean;
   user_email?: string;
+  conversation_id?: string;
+  message_type?: string;
+  metadata?: any;
 }
 
 export interface ChatListProps {
