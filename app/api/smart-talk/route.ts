@@ -219,13 +219,23 @@ async function getAIResponse(userMessage: string, model: string = "minimax/minim
     });
 
     if (!response.ok) {
-      throw new Error(`OpenRouter API error: ${response.status}`);
+      const errorData = await response.json().catch(() => ({}));
+      console.error("OpenRouter API error:", response.status, errorData);
+      throw new Error(`OpenRouter API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
     }
 
     const data = await response.json();
-    return data.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response right now.";
+    console.log("OpenRouter API response:", data);
+
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.error("Invalid response structure:", data);
+      throw new Error("Invalid response structure from OpenRouter API");
+    }
+
+    return data.choices[0].message.content || "I'm sorry, I couldn't generate a response right now.";
   } catch (error) {
     console.error("Error calling OpenRouter API:", error);
+    console.error("Error details:", error);
     return "I'm sorry, but I'm currently unable to respond. Please try again later.";
   }
 }
