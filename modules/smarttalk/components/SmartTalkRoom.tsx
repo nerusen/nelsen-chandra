@@ -28,7 +28,7 @@ export const SmartTalkRoom = () => {
   const [isReply, setIsReply] = useState({ is_reply: false, name: "" });
   const [showPopupFor, setShowPopupFor] = useState<string | null>(null);
   const [thinkingMessageId, setThinkingMessageId] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState("meta-llama/llama-3.1-70b-instruct:free");
+  const [selectedModel, setSelectedModel] = useState("minimax/minimax-01");
 
   const supabase = createClient();
 

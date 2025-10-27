@@ -9,14 +9,14 @@ interface ModelSelectorProps {
 }
 
 const models = [
-  { id: "meta-llama/llama-3.1-70b-instruct:free", name: "Llama 3.1 70B (General)" },
-  { id: "google/gemini-pro-1.5:free", name: "Gemini Pro 1.5 (Advanced)" },
-  { id: "microsoft/wizardlm-2-8x22b:free", name: "WizardLM 2 8x22B (Coding)" },
-  { id: "mistralai/mixtral-8x7b-instruct:free", name: "Mixtral 8x7B (Reasoning)" },
-  { id: "meta-llama/llama-3.1-8b-instruct:free", name: "Llama 3.1 8B (Fast)" },
-  { id: "google/gemini-flash-1.5:free", name: "Gemini Flash 1.5 (Speed)" },
-  { id: "mistralai/mistral-7b-instruct:free", name: "Mistral 7B (Balanced)" },
-  { id: "openchat/openchat-7b:free", name: "OpenChat 7B (Conversational)" },
+  { id: "minimax/minimax-01", name: "MiniMax M2" },
+  { id: "meta-llama/llama-3.3-70b-instruct:free", name: "Llama 3.3 8B Instruct" },
+  { id: "qwen/qwen3-235b-a22b:free", name: "Qwen3 Coder 480B A35B" },
+  { id: "google/gemini-2.0-flash-exp:free", name: "Gemini 2.0 Flash Experimental" },
+  { id: "moonshotai/kimi-k2-0711:free", name: "Kimi K2 0711" },
+  { id: "deepseek/deepseek-chat:free", name: "DeepSeek V3.1" },
+  { id: "deepseek/deepseek-r1:free", name: "DeepSeek R1 0528" },
+  { id: "tng/deepseek-r1-t2-chimera:free", name: "DeepSeek R1T2 Chimera" },
 ];
 
 const ModelSelector = ({ selectedModel, onModelChange }: ModelSelectorProps) => {
