@@ -176,85 +176,154 @@ export const SmartTalkRoom = () => {
     console.log("Smart Talk loading:", isLoading);
   }, [data, error, isLoading]);
 
-  // Stable real-time subscription setup - tanpa thinkingMessageId dependency
+  // Real-time subscription with error handling and fallback polling
   useEffect(() => {
     if (!session?.user?.email) return;
 
     console.log("Setting up real-time subscription for user:", session.user.email);
 
-    const channel = supabase
-      .channel("realtime smart-talk")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "smart_talk_messages",
-        },
-        (payload) => {
-          const newMessage = payload.new as MessageProps;
-          console.log("Real-time INSERT received:", newMessage);
+    let channel: any = null;
+    let pollInterval: NodeJS.Timeout | null = null;
+    let retryCount = 0;
+    const maxRetries = 3;
 
-          // Filter messages for this user
-          if (newMessage.user_email !== session?.user?.email) {
-            console.log("Message not for this user, ignoring");
-            return;
-          }
+    const setupSubscription = () => {
+      channel = supabase
+        .channel(`realtime-smart-talk-${Date.now()}`) // Unique channel name
+        .on(
+          "postgres_changes",
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "smart_talk_messages",
+          },
+          (payload) => {
+            const newMessage = payload.new as MessageProps;
+            console.log("Real-time INSERT received:", newMessage);
 
-          console.log("Message is for this user, processing");
+            // Filter messages for this user
+            if (newMessage.user_email !== session?.user?.email) {
+              console.log("Message not for this user, ignoring");
+              return;
+            }
 
-          // If this is an AI message and we have a thinking message, replace it
-          if (newMessage.is_ai && thinkingMessageId) {
-            console.log("Replacing thinking message with AI response");
+            console.log("Message is for this user, processing");
+
+            // If this is an AI message and we have a thinking message, replace it
+            if (newMessage.is_ai && thinkingMessageId) {
+              console.log("Replacing thinking message with AI response");
+              setMessages((prevMessages) =>
+                prevMessages.map((msg) =>
+                  msg.id === thinkingMessageId ? newMessage : msg
+                )
+              );
+              setThinkingMessageId(null);
+            } else {
+              // Regular message insertion
+              console.log("Adding new message to list");
+              setMessages((prevMessages) => [
+                ...prevMessages,
+                newMessage,
+              ]);
+            }
+          },
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "smart_talk_messages",
+          },
+          (payload) => {
+            const updatedMessage = payload.new as MessageProps;
+            console.log("Real-time UPDATE received:", updatedMessage);
+
+            // Filter messages for this user
+            if (updatedMessage.user_email !== session?.user?.email) {
+              console.log("Update not for this user, ignoring");
+              return;
+            }
+
             setMessages((prevMessages) =>
               prevMessages.map((msg) =>
-                msg.id === thinkingMessageId ? newMessage : msg
-              )
+                msg.id === updatedMessage.id ? updatedMessage : msg,
+              ),
             );
-            setThinkingMessageId(null);
-          } else {
-            // Regular message insertion (user messages or AI messages without thinking state)
-            console.log("Adding new message to list");
-            setMessages((prevMessages) => [
-              ...prevMessages,
-              newMessage,
-            ]);
-          }
-        },
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "smart_talk_messages",
-        },
-        (payload) => {
-          const updatedMessage = payload.new as MessageProps;
-          console.log("Real-time UPDATE received:", updatedMessage);
+          },
+        )
+        .subscribe((status, err) => {
+          console.log("Real-time subscription status:", status, err);
 
-          // Filter messages for this user
-          if (updatedMessage.user_email !== session?.user?.email) {
-            console.log("Update not for this user, ignoring");
-            return;
-          }
+          if (status === 'SUBSCRIBED') {
+            console.log('Successfully subscribed to real-time');
+            retryCount = 0; // Reset retry count on success
+            if (pollInterval) {
+              clearInterval(pollInterval);
+              pollInterval = null;
+            }
+          } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+            console.error('Real-time subscription failed:', status, err);
 
-          setMessages((prevMessages) =>
-            prevMessages.map((msg) =>
-              msg.id === updatedMessage.id ? updatedMessage : msg,
-            ),
-          );
-        },
-      )
-      .subscribe((status) => {
-        console.log("Real-time subscription status:", status);
-      });
+            // Fallback to polling if real-time fails
+            if (!pollInterval && retryCount < maxRetries) {
+              console.log('Falling back to polling...');
+              pollInterval = setInterval(async () => {
+                try {
+                  if (session?.user?.email && thinkingMessageId) {
+                    const response = await fetch(`/api/smart-talk?email=${session.user.email}`);
+                    const data = await response.json();
+
+                    // Find recent AI response
+                    const aiResponse = data.find((msg: MessageProps) =>
+                      msg.is_ai && new Date(msg.created_at) > new Date(Date.now() - 30000)
+                    );
+
+                    if (aiResponse) {
+                      console.log('Found AI response via polling, replacing thinking message');
+                      setMessages(prev => prev.map(msg =>
+                        msg.id === thinkingMessageId ? aiResponse : msg
+                      ));
+                      setThinkingMessageId(null);
+                      if (pollInterval) {
+                        clearInterval(pollInterval);
+                        pollInterval = null;
+                      }
+                    }
+                  }
+                } catch (error) {
+                  console.error('Polling error:', error);
+                }
+              }, 3000); // Poll every 3 seconds
+            }
+
+            // Retry subscription
+            if (retryCount < maxRetries) {
+              retryCount++;
+              console.log(`Retrying subscription (${retryCount}/${maxRetries})...`);
+              setTimeout(() => {
+                if (channel) {
+                  supabase.removeChannel(channel);
+                }
+                setupSubscription();
+              }, 2000 * retryCount); // Exponential backoff
+            }
+          }
+        });
+    };
+
+    setupSubscription();
 
     return () => {
-      console.log("Cleaning up real-time subscription");
-      supabase.removeChannel(channel);
+      console.log("Cleaning up real-time subscription and polling");
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
+      if (pollInterval) {
+        clearInterval(pollInterval);
+      }
     };
-  }, [supabase, session?.user?.email]); // Hapus thinkingMessageId dari dependency
+  }, [supabase, session?.user?.email]); // Stable dependencies
 
   return (
     <div className="flex flex-col h-full">
