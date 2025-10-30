@@ -420,7 +420,7 @@ export const SmartTalkRoom = () => {
   }, [supabase, session?.user?.email]); // Stable dependencies
 
   return (
-    <div className={`flex flex-col h-full ${showClearConfirm ? 'blur-sm' : ''} transition-all duration-300`}>
+    <div className="flex flex-col h-full">
       {isLoading ? (
         <SmartTalkItemSkeleton />
       ) : (
