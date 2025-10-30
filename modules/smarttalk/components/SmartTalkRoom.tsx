@@ -10,7 +10,7 @@ import SmartTalkAuth from "./SmartTalkAuth";
 import SmartTalkInput from "./SmartTalkInput";
 import SmartTalkList from "./SmartTalkList";
 import SmartTalkItemSkeleton from "./SmartTalkItemSkeleton";
-import ClearChatButton from "./ClearChatButton";
+import ClearChatConfirmPopup from "./ClearChatConfirmPopup";
 
 import { MessageProps } from "@/common/types/chat";
 import { fetcher } from "@/services/fetcher";
@@ -29,6 +29,7 @@ export const SmartTalkRoom = () => {
   const [showPopupFor, setShowPopupFor] = useState<string | null>(null);
   const [thinkingMessageId, setThinkingMessageId] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState("minimax/minimax-01");
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const supabase = createClient();
 
@@ -43,15 +44,13 @@ export const SmartTalkRoom = () => {
     setIsReply({ is_reply: false, name: "" });
   };
 
-  const handleClearChat = async () => {
-    try {
-      await axios.delete("/api/smart-talk", { data: { email: session?.user?.email } });
-      setMessages([]);
-      notif("Chat cleared successfully");
-    } catch (error) {
-      console.error("Error clearing chat:", error);
-      notif("Failed to clear chat");
-    }
+  const handleClearChat = () => {
+    setShowClearConfirm(true);
+  };
+
+  const handleConfirmClearChat = () => {
+    setMessages([]);
+    setShowClearConfirm(false);
   };
 
   const handleSendMessage = async (message: string) => {
@@ -421,7 +420,7 @@ export const SmartTalkRoom = () => {
   }, [supabase, session?.user?.email]); // Stable dependencies
 
   return (
-    <div className="flex flex-col h-full">
+    <div className={`flex flex-col h-full ${showClearConfirm ? 'blur-sm' : ''} transition-all duration-300`}>
       {isLoading ? (
         <SmartTalkItemSkeleton />
       ) : (
@@ -444,6 +443,12 @@ export const SmartTalkRoom = () => {
       ) : (
         <SmartTalkAuth />
       )}
+
+      <ClearChatConfirmPopup
+        isVisible={showClearConfirm}
+        onClose={() => setShowClearConfirm(false)}
+        onConfirm={handleConfirmClearChat}
+      />
     </div>
   );
 };
