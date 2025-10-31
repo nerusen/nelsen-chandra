@@ -155,7 +155,6 @@ const ChatItem = ({
                 </div>
               </>
             )}
-            <div className="text-sm dark:text-neutral-200">{name}</div>
           </div>
           <div className="hidden md:flex">
             <ChatTime datetime={created_at} />
@@ -232,6 +231,21 @@ const ChatItem = ({
               </div>
             ) : (
               <>
+                <div className="flex items-center gap-x-2 mb-2">
+                  {condition && (
+                    <>
+                      <div className="flex items-center gap-[2px] rounded-full bg-teal-500/20 px-1.5 py-0.5 font-medium text-teal-300 ">
+                        <AdminIcon size={13} />
+                        <span className="text-[10px]">Dev</span>
+                      </div>
+                      <div className="flex items-center gap-[2px] rounded-full bg-blue-500/20 px-1.5 py-0.5 font-medium text-blue-400 ">
+                        <VerifiedIcon size={13} />
+                        <span className="text-[10px]">Verified</span>
+                      </div>
+                    </>
+                  )}
+                  <div className="text-sm font-medium dark:text-neutral-200">{name}</div>
+                </div>
                 {is_reply && (
                   <>
                     <span className="text-blue-500">@{reply_to} </span>
