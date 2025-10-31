@@ -269,7 +269,9 @@ const ChatItem = ({
                 </div>
                 {is_reply && (
                   <>
-                    <span className="text-xs text-neutral-600 dark:text-neutral-400">membalas <span className="text-blue-500">@{reply_to}</span></span>
+                    <div className="bg-[#171717] text-xs text-neutral-600 dark:text-neutral-400 px-2 py-1 rounded-md mb-1 -mx-3">
+                      membalas <span className="text-blue-500">@{reply_to}</span>
+                    </div>
                     <div className="mt-1">
                       <MessageRenderer message={message} />
                     </div>
