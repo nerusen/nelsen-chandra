@@ -1,7 +1,7 @@
 import Image from "next/image";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { MdCode as AdminIcon } from "react-icons/md";
 import { MdVerified as VerifiedIcon } from "react-icons/md";
@@ -49,6 +49,7 @@ const ChatItem = ({
   showPopup,
 }: ChatItemProps) => {
   const [isHover, setIsHover] = useState(false);
+  const [isTogglesVisible, setIsTogglesVisible] = useState(false);
   const [editMessage, setEditMessage] = useState(message);
   const [isPopupVisible, setIsPopupVisible] = useState(showPopup || false);
 
@@ -161,14 +162,25 @@ const ChatItem = ({
           )}
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsTogglesVisible(!isTogglesVisible);
+          }}
         >
-          <div className={clsx(
-            "rounded-xl px-4 py-2 relative",
-            condition
-              ? "author-gradient-border"
-              : "bg-neutral-200 dark:bg-[#1E1E1E] dark:text-neutral-50",
-            isEditing && "blur-none",
-          )}>
+          <motion.div
+            className={clsx(
+              "rounded-xl px-4 relative",
+              condition
+                ? "author-gradient-border"
+                : "bg-neutral-200 dark:bg-[#1E1E1E] dark:text-neutral-50",
+              isEditing && "blur-none",
+            )}
+            animate={{
+              paddingTop: "0.5rem",
+              paddingBottom: isTogglesVisible ? "3rem" : "0.5rem",
+            }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
             {isEditing ? (
               <div className="flex flex-col gap-2">
                 <input
@@ -219,56 +231,66 @@ const ChatItem = ({
               </>
             )}
 
-            {isHover && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.2 }}
-              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-full mb-2 bg-[#212121] rounded-full px-2 py-1 flex items-center gap-1 shadow-lg z-10"
-              >
-                <motion.button
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.1, delay: 0 }}
-                  onClick={() => onReply(name)}
-                  className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
+            <AnimatePresence>
+              {isTogglesVisible && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-[#212121] rounded-full px-1 sm:px-2 py-1 flex items-center gap-1 shadow-lg z-10"
                 >
-                  <Tooltip title="Reply">
-                    <ReplyIcon
-                      size={14}
-                      className={clsx(
-                        "transition duration-300",
-                        condition && "scale-x-[-1]",
-                      )}
-                    />
-                  </Tooltip>
-                </motion.button>
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.1, delay: 0 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onReply(name);
+                    }}
+                    className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
+                  >
+                    <Tooltip title="Reply">
+                      <ReplyIcon
+                        size={14}
+                        className={clsx(
+                          "transition duration-300",
+                          condition && "scale-x-[-1]",
+                        )}
+                      />
+                    </Tooltip>
+                  </motion.button>
 
-                {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
+                  {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
                   <motion.button
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.1, delay: 0.05 }}
-                    onClick={() => onEdit(id, message)}
-                    className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit(id, message);
+                    }}
+                    className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
                   >
-                    <Tooltip title="Edit Message">
-                      <EditIcon size={14} />
-                    </Tooltip>
-                  </motion.button>
-                )}
+                      <Tooltip title="Edit Message">
+                        <EditIcon size={14} />
+                      </Tooltip>
+                    </motion.button>
+                  )}
 
-                {isCurrentUserAuthor && (
-                  <motion.button
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.1, delay: 0.1 }}
-                    onClick={() => onPin(id, !is_pinned)}
-                    className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
-                  >
-                    <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
-                      <PinIcon size={14} />
+                  {isCurrentUserAuthor && (
+                    <motion.button
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.1, delay: 0.1 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onPin(id, !is_pinned);
+                      }}
+                      className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
+                    >
+                      <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
+                        <PinIcon size={14} />
                     </Tooltip>
                   </motion.button>
                 )}
@@ -278,8 +300,11 @@ const ChatItem = ({
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.1, delay: 0.15 }}
-                    onClick={() => onDelete(id)}
-                    className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(id);
+                    }}
+                    className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
                   >
                     <Tooltip title="Delete Message">
                       <DeleteIcon size={14} />
@@ -288,6 +313,7 @@ const ChatItem = ({
                 )}
               </motion.div>
             )}
+          </AnimatePresence>
 
           </div>
         </div>
