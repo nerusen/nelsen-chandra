@@ -221,19 +221,26 @@ const ChatItem = ({
           </div>
 
           {isHover && (
-            <>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.2 }}
+              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mt-2 bg-[#212121] rounded-full px-2 py-1 flex items-center gap-1 shadow-lg z-10"
+            >
               <motion.button
-                initial={{ opacity: 0, scale: 0, transform: "rotate(45deg)" }}
-                animate={{ opacity: 1, scale: 1, transform: "rotate(0deg)" }}
-                transition={{ duration: 0.2 }}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.1, delay: 0 }}
                 onClick={() => onReply(name)}
+                className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
               >
                 <Tooltip title="Reply">
                   <ReplyIcon
-                    size={15}
+                    size={14}
                     className={clsx(
-                      "transition duration-300 active:scale-90",
-                      condition && "scale-x-[-1] active:scale-x-[-1]",
+                      "transition duration-300",
+                      condition && "scale-x-[-1]",
                     )}
                   />
                 </Tooltip>
@@ -243,12 +250,12 @@ const ChatItem = ({
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.1 }}
+                  transition={{ duration: 0.1, delay: 0.05 }}
                   onClick={() => onEdit(id, message)}
-                  className="rounded-md bg-blue-600 p-2 text-white transition duration-100 hover:bg-blue-500 w-9 h-9 flex items-center justify-center"
+                  className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
                 >
                   <Tooltip title="Edit Message">
-                    <EditIcon size={16} />
+                    <EditIcon size={14} />
                   </Tooltip>
                 </motion.button>
               )}
@@ -257,12 +264,12 @@ const ChatItem = ({
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.1 }}
+                  transition={{ duration: 0.1, delay: 0.1 }}
                   onClick={() => onPin(id, !is_pinned)}
-                  className="rounded-md bg-yellow-500 p-2 text-yellow-50 transition duration-100 hover:bg-yellow-400 dark:bg-yellow-600 dark:hover:bg-yellow-500 w-9 h-9 flex items-center justify-center"
+                  className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
                 >
                   <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
-                    <PinIcon size={16} />
+                    <PinIcon size={14} />
                   </Tooltip>
                 </motion.button>
               )}
@@ -271,16 +278,16 @@ const ChatItem = ({
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.1 }}
+                  transition={{ duration: 0.1, delay: 0.15 }}
                   onClick={() => onDelete(id)}
-                  className="rounded-md bg-red-600 p-2 text-red-50 transition duration-100 hover:bg-red-500 w-9 h-9 flex items-center justify-center"
+                  className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
                 >
                   <Tooltip title="Delete Message">
-                    <DeleteIcon size={16} />
+                    <DeleteIcon size={14} />
                   </Tooltip>
                 </motion.button>
               )}
-            </>
+            </motion.div>
           )}
         </div>
         <div className="flex md:hidden">
