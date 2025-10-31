@@ -79,7 +79,7 @@ const ChatItem = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
-      if (activeEmblem && !target.closest('.emblem-container')) {
+      if (activeEmblem && !target.closest('.bubble-container')) {
         setActiveEmblem(null);
       }
       if (isBubbleTogglesVisible && !target.closest('.bubble-container')) {
@@ -160,41 +160,7 @@ const ChatItem = ({
             condition && "md:flex-row-reverse",
           )}
         >
-          <div className="flex items-center gap-x-2 relative emblem-container">
-            {condition && (
-              <>
-                <motion.button
-                  onClick={() => setActiveEmblem(activeEmblem === 'dev' ? null : 'dev')}
-                  className="flex items-center gap-[2px] rounded-full bg-teal-500/20 px-1.5 py-0.5 font-medium text-teal-300 hover:bg-teal-500/30 transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <AdminIcon size={13} />
-                </motion.button>
-                <motion.button
-                  onClick={() => setActiveEmblem(activeEmblem === 'verified' ? null : 'verified')}
-                  className="flex items-center gap-[2px] rounded-full bg-blue-500/20 px-1.5 py-0.5 font-medium text-blue-400 hover:bg-blue-500/30 transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <VerifiedIcon size={13} />
-                </motion.button>
-                <AnimatePresence>
-                  {activeEmblem && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.9 }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
-                      className="absolute top-full mt-1 left-0 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md px-2 py-1 text-xs font-medium shadow-sm z-10"
-                    >
-                      {activeEmblem === 'dev' ? 'Dev' : 'Verified'}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </>
-            )}
-          </div>
+
           <div className="hidden md:flex">
             <ChatTime datetime={created_at} />
           </div>
@@ -267,6 +233,39 @@ const ChatItem = ({
               <>
                 <div className="flex items-center gap-x-2 mb-2">
                   <div className="text-sm font-medium dark:text-neutral-200">{name}</div>
+                  {condition && (
+                    <>
+                      <motion.button
+                        onClick={() => setActiveEmblem(activeEmblem === 'dev' ? null : 'dev')}
+                        className="flex items-center gap-[2px] rounded-full bg-teal-500/20 px-1.5 py-0.5 font-medium text-teal-300 hover:bg-teal-500/30 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <AdminIcon size={13} />
+                      </motion.button>
+                      <motion.button
+                        onClick={() => setActiveEmblem(activeEmblem === 'verified' ? null : 'verified')}
+                        className="flex items-center gap-[2px] rounded-full bg-blue-500/20 px-1.5 py-0.5 font-medium text-blue-400 hover:bg-blue-500/30 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <VerifiedIcon size={13} />
+                      </motion.button>
+                      <AnimatePresence>
+                        {activeEmblem && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -10, scale: 0.9 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
+                            className="absolute top-full mt-1 left-0 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md px-2 py-1 text-xs font-medium shadow-sm z-10"
+                          >
+                            {activeEmblem === 'dev' ? 'Dev' : 'Verified'}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
+                  )}
                 </div>
                 {is_reply && (
                   <>
