@@ -28,6 +28,7 @@ const ChatList = ({
   showPopupFor,
 }: ChatListPropsNew) => {
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+  const [activeTogglesId, setActiveTogglesId] = useState<string | null>(null);
   const chatListRef = useRef<HTMLDivElement | null>(null);
   const [hasScrolledUp, setHasScrolledUp] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
@@ -89,6 +90,20 @@ const ChatList = ({
     };
   }, [isWidget]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (activeTogglesId && !(event.target as Element).closest(`#message-${activeTogglesId}`)) {
+        setActiveTogglesId(null);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [activeTogglesId]);
+
   return (
     <div className="relative">
       <div ref={chatListRef} className="h-96 space-y-5 overflow-y-auto py-4">
@@ -118,6 +133,14 @@ const ChatList = ({
                 isEditing={editingMessageId === chat.id}
                 isWidget={isWidget}
                 showPopup={showPopupFor === chat.id}
+                isTogglesVisible={activeTogglesId === chat.id}
+                onToggleVisibility={(visible) => {
+                  if (visible) {
+                    setActiveTogglesId(chat.id);
+                  } else {
+                    setActiveTogglesId(null);
+                  }
+                }}
                 {...chat}
               />
             </div>

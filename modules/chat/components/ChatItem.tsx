@@ -27,6 +27,8 @@ interface ChatItemProps extends MessageProps {
   onEditCancel?: () => void;
   isEditing?: boolean;
   showPopup?: boolean;
+  isTogglesVisible?: boolean;
+  onToggleVisibility?: (visible: boolean) => void;
 }
 
 const ChatItem = ({
@@ -47,11 +49,15 @@ const ChatItem = ({
   onEditCancel,
   isEditing,
   showPopup,
+  isTogglesVisible: externalIsTogglesVisible,
+  onToggleVisibility,
 }: ChatItemProps) => {
   const [isHover, setIsHover] = useState(false);
-  const [isTogglesVisible, setIsTogglesVisible] = useState(false);
+  const [internalIsTogglesVisible, setInternalIsTogglesVisible] = useState(false);
   const [editMessage, setEditMessage] = useState(message);
   const [isPopupVisible, setIsPopupVisible] = useState(showPopup || false);
+
+  const isTogglesVisible = externalIsTogglesVisible !== undefined ? externalIsTogglesVisible : internalIsTogglesVisible;
 
   // Reset editMessage when message changes or when not editing
   useEffect(() => {
@@ -164,7 +170,12 @@ const ChatItem = ({
           onMouseLeave={() => setIsHover(false)}
           onClick={(e) => {
             e.stopPropagation();
-            setIsTogglesVisible(!isTogglesVisible);
+            const newVisibility = !isTogglesVisible;
+            if (onToggleVisibility) {
+              onToggleVisibility(newVisibility);
+            } else {
+              setInternalIsTogglesVisible(newVisibility);
+            }
           }}
         >
           <motion.div
