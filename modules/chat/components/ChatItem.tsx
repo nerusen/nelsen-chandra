@@ -169,7 +169,7 @@ const ChatItem = ({
         >
           <motion.div
             className={clsx(
-              "rounded-xl px-4 relative",
+              "rounded-xl px-4 relative overflow-visible",
               condition
                 ? "author-gradient-border"
                 : "bg-neutral-200 dark:bg-[#1E1E1E] dark:text-neutral-50",
@@ -238,7 +238,7 @@ const ChatItem = ({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-[#212121] rounded-full px-1 sm:px-2 py-1 flex items-center gap-1 shadow-lg z-10"
+                  className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-[#212121] rounded-full px-1 sm:px-2 py-1 flex items-center gap-1 shadow-lg z-10 min-w-max"
                 >
                   <motion.button
                     initial={{ opacity: 0, scale: 0 }}
