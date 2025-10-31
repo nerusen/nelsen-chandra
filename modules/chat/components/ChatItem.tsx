@@ -176,7 +176,7 @@ const ChatItem = ({
         >
           <motion.div
             className={clsx(
-              "rounded-xl px-4 relative overflow-visible w-80 h-auto",
+              "rounded-xl px-4 relative overflow-visible max-w-xs",
               condition
                 ? "author-gradient-border"
                 : "bg-neutral-200 dark:bg-[#1E1E1E] dark:text-neutral-50",
