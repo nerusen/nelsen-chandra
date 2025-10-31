@@ -218,77 +218,78 @@ const ChatItem = ({
                 {!is_reply && <><MessageRenderer message={message} />{is_pinned && <><br /><span className="text-xs text-neutral-700 font-medium">Pinned</span></>}</>}
               </>
             )}
-          </div>
 
-          {isHover && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ duration: 0.2 }}
-              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mt-2 bg-[#212121] rounded-full px-2 py-1 flex items-center gap-1 shadow-lg z-10"
-            >
-              <motion.button
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.1, delay: 0 }}
-                onClick={() => onReply(name)}
-                className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
+            {isHover && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.2 }}
+              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-full mb-2 bg-[#212121] rounded-full px-2 py-1 flex items-center gap-1 shadow-lg z-10"
               >
-                <Tooltip title="Reply">
-                  <ReplyIcon
-                    size={14}
-                    className={clsx(
-                      "transition duration-300",
-                      condition && "scale-x-[-1]",
-                    )}
-                  />
-                </Tooltip>
-              </motion.button>
-
-              {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
                 <motion.button
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.1, delay: 0.05 }}
-                  onClick={() => onEdit(id, message)}
+                  transition={{ duration: 0.1, delay: 0 }}
+                  onClick={() => onReply(name)}
                   className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
                 >
-                  <Tooltip title="Edit Message">
-                    <EditIcon size={14} />
+                  <Tooltip title="Reply">
+                    <ReplyIcon
+                      size={14}
+                      className={clsx(
+                        "transition duration-300",
+                        condition && "scale-x-[-1]",
+                      )}
+                    />
                   </Tooltip>
                 </motion.button>
-              )}
 
-              {isCurrentUserAuthor && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.1, delay: 0.1 }}
-                  onClick={() => onPin(id, !is_pinned)}
-                  className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
-                >
-                  <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
-                    <PinIcon size={14} />
-                  </Tooltip>
-                </motion.button>
-              )}
+                {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.1, delay: 0.05 }}
+                    onClick={() => onEdit(id, message)}
+                    className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
+                  >
+                    <Tooltip title="Edit Message">
+                      <EditIcon size={14} />
+                    </Tooltip>
+                  </motion.button>
+                )}
 
-              {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.1, delay: 0.15 }}
-                  onClick={() => onDelete(id)}
-                  className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
-                >
-                  <Tooltip title="Delete Message">
-                    <DeleteIcon size={14} />
-                  </Tooltip>
-                </motion.button>
-              )}
-            </motion.div>
-          )}
+                {isCurrentUserAuthor && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.1, delay: 0.1 }}
+                    onClick={() => onPin(id, !is_pinned)}
+                    className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
+                  >
+                    <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
+                      <PinIcon size={14} />
+                    </Tooltip>
+                  </motion.button>
+                )}
+
+                {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.1, delay: 0.15 }}
+                    onClick={() => onDelete(id)}
+                    className="bg-[#121212] rounded-full p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
+                  >
+                    <Tooltip title="Delete Message">
+                      <DeleteIcon size={14} />
+                    </Tooltip>
+                  </motion.button>
+                )}
+              </motion.div>
+            )}
+
+          </div>
         </div>
         <div className="flex md:hidden">
           <ChatTime datetime={created_at} />
