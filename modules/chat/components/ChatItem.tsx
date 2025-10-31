@@ -314,8 +314,7 @@ const ChatItem = ({
               </motion.div>
             )}
           </AnimatePresence>
-
-          </div>
+          </motion.div>
         </div>
         <div className="flex md:hidden">
           <ChatTime datetime={created_at} />
