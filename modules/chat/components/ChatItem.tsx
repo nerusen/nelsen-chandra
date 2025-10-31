@@ -251,9 +251,20 @@ const ChatItem = ({
                     <span className="text-blue-500">@{reply_to} </span>
                     <MessageRenderer message={message} />
                     {is_pinned && <span className="text-xs text-neutral-700 font-medium ml-2 inline-flex items-center gap-1 align-middle"><PinIcon size={10} /> Pinned</span>}
+                    <div className="flex justify-end mt-1">
+                      <ChatTime datetime={created_at} />
+                    </div>
                   </>
                 )}
-                {!is_reply && <><MessageRenderer message={message} />{is_pinned && <span className="text-xs text-neutral-700 font-medium ml-2 inline-flex items-center gap-1 align-middle"><PinIcon size={10} /> Pinned</span>}</>}
+                {!is_reply && (
+                  <>
+                    <MessageRenderer message={message} />
+                    {is_pinned && <span className="text-xs text-neutral-700 font-medium ml-2 inline-flex items-center gap-1 align-middle"><PinIcon size={10} /> Pinned</span>}
+                    <div className="flex justify-end mt-1">
+                      <ChatTime datetime={created_at} />
+                    </div>
+                  </>
+                )}
               </>
             )}
 
@@ -342,9 +353,7 @@ const ChatItem = ({
           </AnimatePresence>
           </motion.div>
         </div>
-        <div className="flex md:hidden">
-          <ChatTime datetime={created_at} />
-        </div>
+
       </div>
     </div>
   );
