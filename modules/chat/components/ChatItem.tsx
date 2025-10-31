@@ -178,7 +178,7 @@ const ChatItem = ({
             animate={{
               paddingTop: "0.5rem",
               paddingBottom: isTogglesVisible ? "3rem" : "0.5rem",
-              minWidth: isTogglesVisible ? "240px" : "auto",
+              minWidth: isTogglesVisible ? "280px" : "auto",
             }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
