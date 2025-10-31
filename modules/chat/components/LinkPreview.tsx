@@ -46,7 +46,7 @@ const LinkPreview = ({ url, className }: LinkPreviewProps) => {
 
   if (loading) {
     return (
-      <div className={clsx("mt-2 p-3 border rounded-lg bg-neutral-50 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700", className)}>
+      <div className={clsx("mb-2 p-3 border rounded-lg bg-neutral-50 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700", className)}>
         <div className="animate-pulse">
           <div className="h-4 bg-neutral-300 dark:bg-neutral-600 rounded w-3/4 mb-2"></div>
           <div className="h-3 bg-neutral-300 dark:bg-neutral-600 rounded w-1/2"></div>
@@ -64,7 +64,7 @@ const LinkPreview = ({ url, className }: LinkPreviewProps) => {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className={clsx("mt-2 block p-3 border rounded-lg bg-neutral-50 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors", className)}
+      className={clsx("mb-2 block p-3 border rounded-lg bg-neutral-50 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors", className)}
     >
       <div className="flex gap-3">
         {data.image && (

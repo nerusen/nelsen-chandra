@@ -50,6 +50,7 @@ const MessageRenderer = ({ message, className }: MessageRendererProps) => {
         if (part.type === 'url') {
           return (
             <span key={index}>
+              <LinkPreview url={part.content} />
               <a
                 href={part.content}
                 target="_blank"
@@ -58,7 +59,6 @@ const MessageRenderer = ({ message, className }: MessageRendererProps) => {
               >
                 {part.content}
               </a>
-              <LinkPreview url={part.content} />
             </span>
           );
         }
