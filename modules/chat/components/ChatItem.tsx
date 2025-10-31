@@ -258,7 +258,7 @@ const ChatItem = ({
                       <MessageRenderer message={message} />
                     </div>
                     <div className="flex justify-between items-center mt-1">
-                      {is_pinned && <span className="text-xs text-neutral-700 font-medium inline-flex items-center gap-1"><PinIcon size={12} /> Pinned</span>}
+                      {is_pinned && <span className="text-xs text-neutral-500 font-medium inline-flex items-center gap-1"><PinIcon size={12} className="text-neutral-500" /> Pinned</span>}
                       <ChatTime datetime={created_at} />
                     </div>
                   </>
@@ -267,7 +267,7 @@ const ChatItem = ({
                   <>
                     <MessageRenderer message={message} />
                     <div className="flex justify-between items-center mt-1">
-                      {is_pinned && <span className="text-xs text-neutral-700 font-medium inline-flex items-center gap-1"><PinIcon size={12} /> Pinned</span>}
+                      {is_pinned && <span className="text-xs text-neutral-500 font-medium inline-flex items-center gap-1"><PinIcon size={12} className="text-neutral-500" /> Pinned</span>}
                       <ChatTime datetime={created_at} />
                     </div>
                   </>
