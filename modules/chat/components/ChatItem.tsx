@@ -262,16 +262,16 @@ const ChatItem = ({
                   </motion.button>
 
                   {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
-                  <motion.button
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.1, delay: 0.05 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onEdit(id, message);
-                    }}
-                    className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
-                  >
+                    <motion.button
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.1, delay: 0.05 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEdit(id, message);
+                      }}
+                      className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
+                    >
                       <Tooltip title="Edit Message">
                         <EditIcon size={14} />
                       </Tooltip>
@@ -291,9 +291,9 @@ const ChatItem = ({
                     >
                       <Tooltip title={is_pinned ? "Unpin Message" : "Pin Message"}>
                         <PinIcon size={14} />
-                    </Tooltip>
-                  </motion.button>
-                )}
+                      </Tooltip>
+                    </motion.button>
+                  )}
 
                 {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
                   <motion.button
