@@ -180,7 +180,7 @@ const ChatItem = ({
               paddingBottom: isTogglesVisible ? "3rem" : "0.5rem",
               minWidth: isTogglesVisible ? "280px" : "auto",
             }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
           >
             {isEditing ? (
               <div className="flex flex-col gap-2">
@@ -238,7 +238,7 @@ const ChatItem = ({
                   initial={{ opacity: 0, y: 10, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
                   className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-[#212121] rounded-full px-1 sm:px-2 py-1 flex items-center gap-1 shadow-lg z-10 min-w-max"
                 >
                   <motion.button
