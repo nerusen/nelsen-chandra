@@ -201,8 +201,8 @@ const ChatItem = ({
         </div>
         <div
           className={clsx(
-            "group flex w-fit items-center gap-3 relative bubble-container",
-            condition && "flex-row-reverse",
+            "group flex flex-col w-fit relative bubble-container",
+            condition && "items-end",
           )}
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
@@ -299,7 +299,7 @@ const ChatItem = ({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.9 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="mt-2 flex justify-center"
+                className="mt-2 flex justify-start"
               >
                 <div className="bg-[#212121] rounded-full px-1 sm:px-2 py-1 flex items-center gap-1 shadow-lg z-5 min-w-max">
                   <motion.button
