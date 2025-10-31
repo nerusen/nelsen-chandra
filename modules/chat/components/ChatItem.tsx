@@ -13,6 +13,7 @@ import { IoInformationCircle as InfoIcon } from "react-icons/io5";
 import { IoClose as CloseIcon } from "react-icons/io5";
 
 import ChatTime from "./ChatTime";
+import MessageRenderer from "./MessageRenderer";
 
 import Tooltip from "@/common/components/elements/Tooltip";
 import { MessageProps } from "@/common/types/chat";
@@ -210,11 +211,11 @@ const ChatItem = ({
                 {is_reply && (
                   <>
                     <span className="text-blue-500">@{reply_to} </span>
-                    <span>{message}</span>
+                    <MessageRenderer message={message} />
                     {is_pinned && <><br /><span className="text-xs text-neutral-700 font-medium">Pinned</span></>}
                   </>
                 )}
-                {!is_reply && <>{message}{is_pinned && <><br /><span className="text-xs text-neutral-700 font-medium">Pinned</span></>}</>}
+                {!is_reply && <><MessageRenderer message={message} />{is_pinned && <><br /><span className="text-xs text-neutral-700 font-medium">Pinned</span></>}</>}
               </>
             )}
           </div>
