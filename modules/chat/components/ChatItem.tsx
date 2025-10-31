@@ -228,7 +228,7 @@ const ChatItem = ({
             ) : (
               <>
                 <div className="flex items-center gap-x-2 mb-2">
-                  <div className="text-sm font-medium dark:text-neutral-200">{name}</div>
+                  <div className="text-sm font-bold dark:text-neutral-200">{name}</div>
                   {condition && (
                     <>
                       <motion.button
