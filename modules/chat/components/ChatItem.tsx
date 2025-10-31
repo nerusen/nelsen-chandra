@@ -57,6 +57,7 @@ const ChatItem = ({
   const [editMessage, setEditMessage] = useState(message);
   const [isPopupVisible, setIsPopupVisible] = useState(showPopup || false);
   const [activeEmblem, setActiveEmblem] = useState<'dev' | 'verified' | null>(null);
+  const [isBubbleTogglesVisible, setIsBubbleTogglesVisible] = useState(false);
 
   const isTogglesVisible = externalIsTogglesVisible !== undefined ? externalIsTogglesVisible : internalIsTogglesVisible;
 
@@ -74,17 +75,21 @@ const ChatItem = ({
     }
   }, [showPopup]);
 
-  // Close emblem tooltip when clicking outside
+  // Close emblem tooltip and bubble toggles when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (activeEmblem && !(event.target as Element).closest('.emblem-container')) {
+      const target = event.target as Element;
+      if (activeEmblem && !target.closest('.emblem-container')) {
         setActiveEmblem(null);
+      }
+      if (isBubbleTogglesVisible && !target.closest('.bubble-container')) {
+        setIsBubbleTogglesVisible(false);
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [activeEmblem]);
+  }, [activeEmblem, isBubbleTogglesVisible]);
   const { data: session } = useSession();
 
   const authorEmail = process.env.NEXT_PUBLIC_AUTHOR_EMAIL;
@@ -196,19 +201,14 @@ const ChatItem = ({
         </div>
         <div
           className={clsx(
-            "group flex w-fit items-center gap-3",
+            "group flex w-fit items-center gap-3 relative bubble-container",
             condition && "flex-row-reverse",
           )}
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
           onClick={(e) => {
             e.stopPropagation();
-            const newVisibility = !isTogglesVisible;
-            if (onToggleVisibility) {
-              onToggleVisibility(newVisibility);
-            } else {
-              setInternalIsTogglesVisible(newVisibility);
-            }
+            setIsBubbleTogglesVisible(!isBubbleTogglesVisible);
           }}
         >
           <motion.div
@@ -221,8 +221,8 @@ const ChatItem = ({
             )}
             animate={{
               paddingTop: "0.5rem",
-              paddingBottom: isTogglesVisible ? "3rem" : "0.5rem",
-              minWidth: isTogglesVisible ? "280px" : "auto",
+              paddingBottom: isBubbleTogglesVisible ? "3rem" : "0.5rem",
+              minWidth: isBubbleTogglesVisible ? "280px" : "auto",
             }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
           >
@@ -291,7 +291,7 @@ const ChatItem = ({
             )}
 
             <AnimatePresence>
-              {isTogglesVisible && (
+              {isBubbleTogglesVisible && (
                 <motion.div
                   initial={{ opacity: 0, y: 10, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -306,6 +306,7 @@ const ChatItem = ({
                     onClick={(e) => {
                       e.stopPropagation();
                       onReply(name);
+                      setIsBubbleTogglesVisible(false);
                     }}
                     className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
                   >
@@ -328,6 +329,7 @@ const ChatItem = ({
                       onClick={(e) => {
                         e.stopPropagation();
                         onEdit(id, message);
+                        setIsBubbleTogglesVisible(false);
                       }}
                       className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
                     >
@@ -345,6 +347,7 @@ const ChatItem = ({
                       onClick={(e) => {
                         e.stopPropagation();
                         onPin(id, !is_pinned);
+                        setIsBubbleTogglesVisible(false);
                       }}
                       className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
                     >
@@ -362,6 +365,7 @@ const ChatItem = ({
                     onClick={(e) => {
                       e.stopPropagation();
                       onDelete(id);
+                      setIsBubbleTogglesVisible(false);
                     }}
                     className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
                   >
