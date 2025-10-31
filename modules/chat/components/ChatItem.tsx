@@ -221,7 +221,7 @@ const ChatItem = ({
             )}
             animate={{
               paddingTop: "0.5rem",
-              paddingBottom: isBubbleTogglesVisible ? "3rem" : "0.5rem",
+              paddingBottom: isBubbleTogglesVisible ? "1rem" : "0.5rem",
               minWidth: isBubbleTogglesVisible ? "280px" : "auto",
             }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -290,15 +290,18 @@ const ChatItem = ({
               </>
             )}
 
-            <AnimatePresence>
-              {isBubbleTogglesVisible && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-[#212121] rounded-full px-1 sm:px-2 py-1 flex items-center gap-1 shadow-lg z-5 min-w-max"
-                >
+          </motion.div>
+
+          <AnimatePresence>
+            {isBubbleTogglesVisible && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.9 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="mt-2 flex justify-center"
+              >
+                <div className="bg-[#212121] rounded-full px-1 sm:px-2 py-1 flex items-center gap-1 shadow-lg z-5 min-w-max">
                   <motion.button
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -357,27 +360,27 @@ const ChatItem = ({
                     </motion.button>
                   )}
 
-                {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
-                  <motion.button
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.1, delay: 0.15 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete(id);
-                      setIsBubbleTogglesVisible(false);
-                    }}
-                    className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
-                  >
-                    <Tooltip title="Delete Message">
-                      <DeleteIcon size={14} />
+                  {(isOwnMessage || isCurrentUserAuthor) && !isEditing && (
+                    <motion.button
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.1, delay: 0.15 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(id);
+                        setIsBubbleTogglesVisible(false);
+                      }}
+                      className="bg-[#121212] rounded-full p-1.5 sm:p-2 text-white hover:bg-[#1a1a1a] transition duration-100 active:scale-90 flex items-center justify-center"
+                    >
+                      <Tooltip title="Delete Message">
+                        <DeleteIcon size={14} />
                     </Tooltip>
                   </motion.button>
                 )}
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
-          </motion.div>
         </div>
 
       </div>
