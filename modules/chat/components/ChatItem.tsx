@@ -179,7 +179,7 @@ const ChatItem = ({
         >
           <motion.div
             className={clsx(
-              "rounded-xl px-4 relative overflow-visible",
+              "rounded-xl px-4 relative overflow-visible w-80 h-auto",
               condition
                 ? "author-gradient-border"
                 : "bg-neutral-200 dark:bg-[#1E1E1E] dark:text-neutral-50",
@@ -188,7 +188,6 @@ const ChatItem = ({
             animate={{
               paddingTop: "0.5rem",
               paddingBottom: isBubbleTogglesVisible ? "1rem" : "0.5rem",
-              minWidth: isBubbleTogglesVisible ? "280px" : "auto",
             }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
           >
@@ -254,11 +253,11 @@ const ChatItem = ({
                       <AnimatePresence>
                         {activeEmblem && (
                           <motion.div
-                            initial={{ opacity: 0, y: -10, scale: 0.9 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: -10, scale: 0.9 }}
+                            initial={{ opacity: 0, x: -10, scale: 0.9 }}
+                            animate={{ opacity: 1, x: 0, scale: 1 }}
+                            exit={{ opacity: 0, x: -10, scale: 0.9 }}
                             transition={{ duration: 0.2, ease: "easeOut" }}
-                            className="absolute top-full mt-1 left-0 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md px-2 py-1 text-xs font-medium shadow-sm z-10"
+                            className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md px-2 py-1 text-xs font-medium shadow-sm z-10 whitespace-nowrap"
                           >
                             {activeEmblem === 'dev' ? 'Dev' : 'Verified'}
                           </motion.div>
