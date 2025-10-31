@@ -228,7 +228,7 @@ const ChatItem = ({
             ) : (
               <>
                 <div className="flex items-center gap-x-2 mb-2">
-                  <div className="text-sm font-bold dark:text-neutral-200">{name}</div>
+                  <div className="text-sm dark:text-xs font-bold dark:text-neutral-200">{name}</div>
                   {condition && (
                     <>
                       <motion.button
@@ -251,7 +251,7 @@ const ChatItem = ({
                 </div>
                 {is_reply && (
                   <>
-                    <div className="bg-[#171717] text-xs text-neutral-600 dark:text-neutral-400 px-2 py-1 rounded-md mb-1 -mx-3">
+                    <div className="bg-neutral-200 dark:bg-[#171717] text-xs text-neutral-600 dark:text-neutral-400 px-2 py-1 rounded-md mb-1 -mx-3">
                       membalas <span className="text-blue-500">@{reply_to}</span>
                     </div>
                     <div className="mt-1">
