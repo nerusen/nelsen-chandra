@@ -253,11 +253,11 @@ const ChatItem = ({
                       <AnimatePresence>
                         {activeEmblem && (
                           <motion.div
-                            initial={{ opacity: 0, x: -10, scale: 0.9 }}
+                            initial={{ opacity: 0, x: 10, scale: 0.9 }}
                             animate={{ opacity: 1, x: 0, scale: 1 }}
-                            exit={{ opacity: 0, x: -10, scale: 0.9 }}
+                            exit={{ opacity: 0, x: 10, scale: 0.9 }}
                             transition={{ duration: 0.2, ease: "easeOut" }}
-                            className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md px-2 py-1 text-xs font-medium shadow-sm z-10 whitespace-nowrap"
+                            className="absolute left-full ml-1 top-1/2 transform -translate-y-1/2 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md px-2 py-1 text-xs font-medium shadow-sm z-10 whitespace-nowrap"
                           >
                             {activeEmblem === 'dev' ? 'Dev' : 'Verified'}
                           </motion.div>
