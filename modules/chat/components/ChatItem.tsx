@@ -250,7 +250,7 @@ const ChatItem = ({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.9 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-[#212121] rounded-full px-1 sm:px-2 py-1 flex items-center gap-1 shadow-lg z-10 min-w-max"
+                  className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-[#212121] rounded-full px-1 sm:px-2 py-1 flex items-center gap-1 shadow-lg z-5 min-w-max"
                 >
                   <motion.button
                     initial={{ opacity: 0, scale: 0 }}
