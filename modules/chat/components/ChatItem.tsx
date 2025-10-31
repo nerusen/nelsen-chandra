@@ -269,8 +269,10 @@ const ChatItem = ({
                 </div>
                 {is_reply && (
                   <>
-                    <span className="text-blue-500">@{reply_to} </span>
-                    <MessageRenderer message={message} />
+                    <span className="text-xs text-neutral-600 dark:text-neutral-400">membalas <span className="text-blue-500">@{reply_to}</span></span>
+                    <div className="mt-1">
+                      <MessageRenderer message={message} />
+                    </div>
                     {is_pinned && <span className="text-xs text-neutral-700 font-medium ml-2 inline-flex items-center gap-1 align-middle"><PinIcon size={10} /> Pinned</span>}
                     <div className="flex justify-end mt-1">
                       <ChatTime datetime={created_at} />
