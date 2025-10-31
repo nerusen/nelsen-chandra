@@ -143,7 +143,6 @@ const ChatItem = ({
           )}
         >
           <div className="flex items-center gap-x-2">
-            <div className="text-sm dark:text-neutral-200">{name}</div>
             {condition && (
               <>
                 <div className="flex items-center gap-[2px] rounded-full bg-teal-500/20 px-1.5 py-0.5 font-medium text-teal-300 ">
@@ -156,6 +155,7 @@ const ChatItem = ({
                 </div>
               </>
             )}
+            <div className="text-sm dark:text-neutral-200">{name}</div>
           </div>
           <div className="hidden md:flex">
             <ChatTime datetime={created_at} />
