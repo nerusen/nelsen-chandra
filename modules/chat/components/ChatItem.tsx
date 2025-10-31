@@ -236,7 +236,7 @@ const ChatItem = ({
                   <>
                     <span className="text-blue-500">@{reply_to} </span>
                     <MessageRenderer message={message} />
-                    {is_pinned && <span className="text-xs text-neutral-700 font-medium ml-2">📌 Pinned</span>}
+                    {is_pinned && <span className="text-xs text-neutral-700 font-medium ml-2">Pinned</span>}
                   </>
                 )}
                 {!is_reply && <><MessageRenderer message={message} />{is_pinned && <span className="text-xs text-neutral-700 font-medium ml-2">📌 Pinned</span>}</>}
