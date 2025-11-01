@@ -1,6 +1,6 @@
-iii@tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities;iii
+@tailwind utilities;
 
 /* body {
   background:
@@ -121,3 +121,4 @@ iii@tailwind base;
 .dark .google-profile-border::before {
   background: #121212;
 }
+ii
