@@ -23,11 +23,11 @@ const ProfileHeader = ({ expandMenu, imageSize }: ProfileHeaderProps) => {
     >
       <div className="google-profile-border">
         <Image
-          src={"/images/nelsen.png"}
+          src={"/images/satria.jpg"}
           width={expandMenu ? 80 : imageSize * 0.9}
           height={expandMenu ? 80 : imageSize * 0.9}
           alt="n31sen.st"
-          className="relative z-10 border-4 border-white/80 dark:border-neutral-800/80 lg:hover:scale-105"
+          className="relative z-10 border-2 border-white/80 dark:border-neutral-800/80 lg:hover:scale-105"
           rounded="rounded-full"
         />
       </div>
