@@ -1,6 +1,6 @@
 "use client";
 
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
@@ -51,6 +51,8 @@ export const SmartTalkRoom = () => {
   const handleConfirmClearChat = () => {
     setMessages([]);
     setShowClearConfirm(false);
+    // Invalidate SWR cache to refresh data
+    mutate(`/api/smart-talk?email=${session?.user?.email}`);
   };
 
   const handleSendMessage = async (message: string) => {
@@ -417,7 +419,7 @@ export const SmartTalkRoom = () => {
         clearInterval(pollInterval);
       }
     };
-  }, [supabase, session?.user?.email]); // Stable dependencies
+  }, [supabase, session?.user?.email, thinkingMessageId]); // Stable dependencies
 
   return (
     <div className="flex flex-col h-full">
