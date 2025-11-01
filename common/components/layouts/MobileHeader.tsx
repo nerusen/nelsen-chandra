@@ -26,11 +26,11 @@ const MobileHeader = () => {
         >
           <div className="z-10 w-max rounded-full google-profile-border shadow-md">
             <Image
-              src={"/images/nelsen.png"}
+              src={"/images/satria.jpg"}
               alt="profile"
               width={isOpen ? 80 : imageSize * 0.9}
               height={isOpen ? 80 : imageSize * 0.9}
-              className="relative z-10 border-4 border-white/80 dark:border-neutral-800/80"
+              className="relative z-10 border-2 border-white/80 dark:border-neutral-800/80"
               rounded="rounded-full"
             />
           </div>
