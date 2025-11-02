@@ -254,7 +254,7 @@ export const SmartTalkRoom = () => {
       channel = supabase
         .channel(channelName, {
           config: {
-            presence: { key: session?.user?.email },
+            presence: { key: session?.user?.email || 'anonymous' },
             broadcast: { self: true },
           },
         })
