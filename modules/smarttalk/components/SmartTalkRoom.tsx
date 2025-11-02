@@ -235,14 +235,49 @@ export const SmartTalkRoom = () => {
     console.log("Smart Talk loading:", isLoading);
   }, [data, error, isLoading]);
 
-  // Enhanced real-time subscription with robust error handling
+  // Force refresh mechanism for AI responses - backend refresh without UI disruption
+  const forceRefreshMessages = async () => {
+    if (!session?.user?.email) return;
+
+    try {
+      console.log("🔄 Force refreshing messages from backend...");
+      const response = await fetch(`/api/smart-talk?email=${session?.user?.email}&t=${Date.now()}`);
+      const freshData = await response.json();
+
+      // Only update if we have new data and there's a thinking message
+      if (freshData && Array.isArray(freshData) && thinkingMessageId) {
+        const aiResponse = freshData
+          .filter((msg: MessageProps) => msg.is_ai && new Date(msg.created_at) > new Date(Date.now() - 120000)) // Last 2 minutes
+          .sort((a: MessageProps, b: MessageProps) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          )[0];
+
+        if (aiResponse) {
+          console.log("🎯 Force refresh found AI response, replacing thinking message");
+          setMessages((prevMessages: MessageProps[]) => prevMessages.map((msg: MessageProps) =>
+            msg.id === thinkingMessageId ? { ...aiResponse, is_thinking: false } : msg
+          ));
+          setThinkingMessageId(null);
+          console.log("✅ AI response displayed via force refresh");
+          return true; // Success
+        }
+      }
+      return false; // No update needed
+    } catch (error) {
+      console.error("❌ Force refresh error:", error);
+      return false;
+    }
+  };
+
+  // Enhanced real-time subscription with force refresh fallback
   useEffect(() => {
     if (!session?.user?.email) return;
 
-    console.log("🔄 Setting up enhanced real-time subscription for user:", session?.user?.email);
+    console.log("🔄 Setting up enhanced real-time subscription with force refresh for user:", session?.user?.email);
 
     let channel: any = null;
     let pollInterval: NodeJS.Timeout | null = null;
+    let forceRefreshInterval: NodeJS.Timeout | null = null;
     let retryCount = 0;
     const maxRetries = 5;
 
@@ -261,7 +296,7 @@ export const SmartTalkRoom = () => {
             table: "smart_talk_messages",
             filter: `user_email=eq.${session?.user?.email}`,
           },
-          (payload) => {
+          (payload: any) => {
             console.log("📨 Real-time INSERT received:", {
               id: payload.new.id,
               is_ai: payload.new.is_ai,
@@ -327,7 +362,7 @@ export const SmartTalkRoom = () => {
             table: "smart_talk_messages",
             filter: `user_email=eq.${session?.user?.email}`,
           },
-          (payload) => {
+          (payload: any) => {
             const updatedMessage = payload.new as MessageProps;
             console.log("🔄 Real-time UPDATE received:", updatedMessage.id);
 
@@ -336,8 +371,8 @@ export const SmartTalkRoom = () => {
               return;
             }
 
-            setMessages(prevMessages =>
-              prevMessages.map(msg =>
+            setMessages((prevMessages: MessageProps[]) =>
+              prevMessages.map((msg: MessageProps) =>
                 msg.id === updatedMessage.id ? { ...updatedMessage } : msg
               )
             );
@@ -354,6 +389,11 @@ export const SmartTalkRoom = () => {
               pollInterval = null;
               console.log('🛑 Stopped polling since real-time is working');
             }
+            if (forceRefreshInterval) {
+              clearInterval(forceRefreshInterval);
+              forceRefreshInterval = null;
+              console.log('🛑 Stopped force refresh since real-time is working');
+            }
           } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
             console.error('❌ Subscription failed:', status, err);
             console.error('❌ Error details:', {
@@ -364,13 +404,23 @@ export const SmartTalkRoom = () => {
               hint: err?.hint
             });
 
-            // Start polling immediately on subscription failure
+            // Start force refresh immediately on subscription failure
+            if (!forceRefreshInterval) {
+              console.log('🔄 Starting force refresh due to subscription failure...');
+              forceRefreshInterval = setInterval(async () => {
+                if (thinkingMessageId) {
+                  await forceRefreshMessages();
+                }
+              }, 2000); // Force refresh every 2 seconds
+            }
+
+            // Also start polling as additional fallback
             if (!pollInterval) {
-              console.log('🔄 Starting immediate polling due to subscription failure...');
+              console.log('🔄 Starting polling fallback...');
               pollInterval = setInterval(async () => {
                 if (thinkingMessageId) {
                   try {
-                    console.log('🔍 Polling for AI response (subscription failed)...');
+                    console.log('🔍 Polling for AI response (fallback)...');
                     const response = await fetch(`/api/smart-talk?email=${session?.user?.email}`);
                     const data = await response.json();
 
@@ -380,7 +430,7 @@ export const SmartTalkRoom = () => {
                     );
 
                     if (aiResponse) {
-                      console.log('🎯 Found AI response via polling (fallback), replacing thinking message');
+                      console.log('🎯 Found AI response via polling, replacing thinking message');
                       setMessages((prev: MessageProps[]) => prev.map((msg: MessageProps) =>
                         msg.id === thinkingMessageId ? { ...aiResponse, is_thinking: false } : msg
                       ));
@@ -409,7 +459,7 @@ export const SmartTalkRoom = () => {
                 setupSubscription();
               }, delay);
             } else {
-              console.error('💀 Max retries reached, relying on polling fallback only');
+              console.error('💀 Max retries reached, relying on force refresh and polling fallback only');
             }
           }
         });
@@ -425,6 +475,9 @@ export const SmartTalkRoom = () => {
       }
       if (pollInterval) {
         clearInterval(pollInterval);
+      }
+      if (forceRefreshInterval) {
+        clearInterval(forceRefreshInterval);
       }
     };
   }, [supabase, session?.user?.email]); // Stable dependencies
