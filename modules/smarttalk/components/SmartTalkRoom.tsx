@@ -252,12 +252,7 @@ export const SmartTalkRoom = () => {
       console.log("📡 Creating channel:", channelName);
 
       channel = supabase
-        .channel(channelName, {
-          config: {
-            presence: { key: session?.user?.email || 'anonymous' },
-            broadcast: { self: true },
-          },
-        })
+        .channel(channelName)
         .on(
           "postgres_changes",
           {
