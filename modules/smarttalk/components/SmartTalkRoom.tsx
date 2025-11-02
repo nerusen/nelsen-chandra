@@ -159,10 +159,10 @@ export const SmartTalkRoom = () => {
       // Wait for real-time subscription to handle the response
       // The real-time listener will replace the thinking message with the actual AI response
 
-      // Add a fallback: if no real-time response after 5 seconds, poll
+      // Add a fallback: if no real-time response after 3 seconds, poll
       setTimeout(async () => {
-        if (thinkingMessageId === thinkingId) { // Still thinking after 5 seconds
-          console.log("🔄 Fallback: Polling for AI response after 5 seconds...");
+        if (thinkingMessageId === thinkingId) { // Still thinking after 3 seconds
+          console.log("🔄 Fallback: Polling for AI response after 3 seconds...");
           try {
             const pollResponse = await fetch(`/api/smart-talk?email=${session?.user?.email}`);
             const data = await pollResponse.json();
@@ -181,14 +181,15 @@ export const SmartTalkRoom = () => {
                 msg.id === thinkingId ? { ...aiResponse, is_thinking: false } : msg
               ));
               setThinkingMessageId(null);
+              console.log("✅ AI response displayed via early polling fallback");
             } else {
-              console.log("❓ No recent AI response found in polling");
+              console.log("❓ No recent AI response found in early polling");
             }
           } catch (error) {
-            console.error("❌ Fallback polling error:", error);
+            console.error("❌ Early fallback polling error:", error);
           }
         }
-      }, 5000); // 5 seconds fallback (faster)
+      }, 3000); // 3 seconds fallback (even faster)
 
     } catch (error) {
       console.error("❌ Error getting AI response:", error);
@@ -234,7 +235,7 @@ export const SmartTalkRoom = () => {
     console.log("Smart Talk loading:", isLoading);
   }, [data, error, isLoading]);
 
-  // Enhanced real-time subscription with immediate UI updates
+  // Enhanced real-time subscription with robust error handling
   useEffect(() => {
     if (!session?.user?.email) return;
 
@@ -246,10 +247,17 @@ export const SmartTalkRoom = () => {
     const maxRetries = 5;
 
     const setupSubscription = () => {
+      // Create unique channel name to avoid conflicts
       const channelName = `smart-talk-${session?.user?.email}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      console.log("📡 Creating channel:", channelName);
 
       channel = supabase
-        .channel(channelName)
+        .channel(channelName, {
+          config: {
+            presence: { key: session?.user?.email },
+            broadcast: { self: true },
+          },
+        })
         .on(
           "postgres_changes",
           {
@@ -356,55 +364,60 @@ export const SmartTalkRoom = () => {
             }
           } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
             console.error('❌ Subscription failed:', status, err);
+            console.error('❌ Error details:', {
+              status,
+              message: err?.message || err,
+              code: (err as any)?.code,
+              details: (err as any)?.details,
+              hint: (err as any)?.hint
+            });
 
-            // Enhanced fallback polling for AI responses
-            if (!pollInterval && retryCount < maxRetries) {
-              console.log('🔄 Starting enhanced fallback polling...');
+            // Start polling immediately on subscription failure
+            if (!pollInterval) {
+              console.log('🔄 Starting immediate polling due to subscription failure...');
               pollInterval = setInterval(async () => {
                 if (thinkingMessageId) {
                   try {
-                    console.log('🔍 Polling for AI response...');
+                    console.log('🔍 Polling for AI response (subscription failed)...');
                     const response = await fetch(`/api/smart-talk?email=${session?.user?.email}`);
                     const data = await response.json();
 
-                    // Find recent AI response (within last 30 seconds)
+                    // Find recent AI response (within last 45 seconds)
                     const aiResponse = data.find((msg: MessageProps) =>
-                      msg.is_ai && new Date(msg.created_at) > new Date(Date.now() - 30000)
+                      msg.is_ai && new Date(msg.created_at) > new Date(Date.now() - 45000)
                     );
 
                     if (aiResponse) {
-                      console.log('🎯 Found AI response via polling, replacing thinking message');
+                      console.log('🎯 Found AI response via polling (fallback), replacing thinking message');
                       setMessages(prev => prev.map(msg =>
                         msg.id === thinkingMessageId ? { ...aiResponse, is_thinking: false } : msg
                       ));
                       setThinkingMessageId(null);
-                      if (pollInterval) {
-                        clearInterval(pollInterval);
-                        pollInterval = null;
-                        console.log('🛑 Stopped polling after finding AI response');
-                      }
+                      console.log('✅ AI response displayed via polling fallback');
                     }
                   } catch (error) {
                     console.error('❌ Polling error:', error);
                   }
                 }
-              }, 2000); // Poll every 2 seconds (more frequent)
+              }, 3000); // Poll every 3 seconds
             }
 
-            // Retry subscription with exponential backoff
+            // Try to reconnect subscription
             if (retryCount < maxRetries) {
               retryCount++;
-              const delay = Math.min(1000 * Math.pow(2, retryCount), 30000); // Max 30 seconds
+              const delay = Math.min(2000 * retryCount, 30000); // Max 30 seconds
               console.log(`🔄 Retrying subscription (${retryCount}/${maxRetries}) in ${delay}ms...`);
               setTimeout(() => {
                 if (channel) {
+                  console.log('🧹 Cleaning up failed channel...');
                   supabase.removeChannel(channel);
                   channel = null;
                 }
+                console.log('🔄 Attempting to setup subscription again...');
                 setupSubscription();
               }, delay);
             } else {
-              console.error('💀 Max retries reached, real-time subscription failed permanently');
+              console.error('💀 Max retries reached, relying on polling fallback only');
             }
           }
         });
