@@ -285,7 +285,7 @@ export const SmartTalkRoom = () => {
             console.log("✅ Message is for this user, processing");
 
             // Force immediate state update using functional setState
-            setMessages(prevMessages => {
+            setMessages((prevMessages: MessageProps[]) => {
               console.log("🔄 Updating messages state:", {
                 currentLength: prevMessages.length,
                 isAiMessage: newMessage.is_ai,
@@ -297,7 +297,7 @@ export const SmartTalkRoom = () => {
               // If this is an AI message and we have a thinking message, replace it
               if (newMessage.is_ai && thinkingMessageId) {
                 console.log("🔄 Replacing thinking message with AI response");
-                const updatedMessages = prevMessages.map(msg => {
+                const updatedMessages = prevMessages.map((msg: MessageProps) => {
                   if (msg.id === thinkingMessageId) {
                     console.log("✅ Found thinking message to replace with:", newMessage.message?.substring(0, 50) + "...");
                     return { ...newMessage, is_thinking: false };
@@ -343,7 +343,7 @@ export const SmartTalkRoom = () => {
             );
           }
         )
-        .subscribe((status, err) => {
+        .subscribe((status: string, err: any) => {
           console.log("🔗 Subscription status:", status, err ? `Error: ${err?.message || err}` : "");
 
           if (status === 'SUBSCRIBED') {
@@ -359,9 +359,9 @@ export const SmartTalkRoom = () => {
             console.error('❌ Error details:', {
               status,
               message: err?.message || err,
-              code: (err as any)?.code,
-              details: (err as any)?.details,
-              hint: (err as any)?.hint
+              code: err?.code,
+              details: err?.details,
+              hint: err?.hint
             });
 
             // Start polling immediately on subscription failure
@@ -381,7 +381,7 @@ export const SmartTalkRoom = () => {
 
                     if (aiResponse) {
                       console.log('🎯 Found AI response via polling (fallback), replacing thinking message');
-                      setMessages(prev => prev.map(msg =>
+                      setMessages((prev: MessageProps[]) => prev.map((msg: MessageProps) =>
                         msg.id === thinkingMessageId ? { ...aiResponse, is_thinking: false } : msg
                       ));
                       setThinkingMessageId(null);
