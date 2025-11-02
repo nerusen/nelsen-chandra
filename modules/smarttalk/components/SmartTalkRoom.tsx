@@ -295,34 +295,31 @@ export const SmartTalkRoom = () => {
                 currentLength: prevMessages.length,
                 isAiMessage: newMessage.is_ai,
                 hasThinkingId: !!thinkingMessageId,
-                thinkingId: thinkingMessageId
+                thinkingId: thinkingMessageId,
+                newMessageId: newMessage.id
               });
-
-              let updatedMessages;
 
               // If this is an AI message and we have a thinking message, replace it
               if (newMessage.is_ai && thinkingMessageId) {
                 console.log("🔄 Replacing thinking message with AI response");
-                updatedMessages = prevMessages.map(msg => {
+                const updatedMessages = prevMessages.map(msg => {
                   if (msg.id === thinkingMessageId) {
-                    console.log("✅ Found thinking message to replace");
+                    console.log("✅ Found thinking message to replace with:", newMessage.message?.substring(0, 50) + "...");
                     return { ...newMessage, is_thinking: false };
                   }
                   return msg;
                 });
                 setThinkingMessageId(null);
-                console.log("✅ AI response successfully displayed immediately");
+                console.log("✅ AI response successfully displayed immediately via real-time");
                 return updatedMessages;
               } else if (!newMessage.is_ai) {
-                // Add new user message to the list
-                console.log("💬 Adding new user message to list");
-                updatedMessages = [...prevMessages, { ...newMessage }];
-                return updatedMessages;
+                // Add new user message to the list (shouldn't happen via real-time, but handle it)
+                console.log("💬 Adding new user message to list via real-time");
+                return [...prevMessages, { ...newMessage }];
               } else {
-                // AI message without thinking state (shouldn't happen but handle it)
-                console.log("🤖 Adding AI message without thinking state");
-                updatedMessages = [...prevMessages, { ...newMessage }];
-                return updatedMessages;
+                // AI message without thinking state - add it normally
+                console.log("🤖 Adding AI message without thinking state via real-time");
+                return [...prevMessages, { ...newMessage }];
               }
             });
           }
