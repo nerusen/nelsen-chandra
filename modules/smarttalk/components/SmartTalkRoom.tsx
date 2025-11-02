@@ -58,6 +58,8 @@ export const SmartTalkRoom = () => {
   const handleSendMessage = async (message: string) => {
     if (!session?.user?.email) return;
 
+    console.log("🚀 Starting to send message:", message.substring(0, 50) + "...");
+
     const messageId = uuidv4();
     const newMessageData = {
       id: messageId,
@@ -70,7 +72,10 @@ export const SmartTalkRoom = () => {
       is_show: true,
       created_at: new Date().toISOString(),
       is_ai: false, // User message
+      user_email: session.user.email, // Important for filtering
     };
+
+    console.log("📝 Adding user message to UI:", messageId);
 
     // Optimistic update - add message immediately to UI
     setMessages((prevMessages) => [
@@ -79,7 +84,9 @@ export const SmartTalkRoom = () => {
     ]);
 
     try {
-      await axios.post("/api/smart-talk", newMessageData);
+      console.log("📡 Sending message to API...");
+      const response = await axios.post("/api/smart-talk", newMessageData);
+      console.log("✅ Message sent successfully:", response.data);
       notif("Message sent successfully");
 
       // Add thinking message immediately
@@ -97,7 +104,10 @@ export const SmartTalkRoom = () => {
         created_at: new Date().toISOString(),
         is_ai: true,
         is_thinking: true,
+        user_email: session.user.email, // Important for filtering
       };
+
+      console.log("🤔 Adding thinking message to UI:", thinkingId);
 
       // Add thinking message immediately
       setMessages((prevMessages) => [
@@ -106,9 +116,10 @@ export const SmartTalkRoom = () => {
       ]);
 
       // Get AI response - only call once
+      console.log("🤖 Requesting AI response...");
       await getAIResponse(message, thinkingId, selectedModel);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("❌ Error sending message:", error);
       notif("Failed to send message");
       // Remove optimistic message on error
       setMessages((prevMessages) =>
@@ -128,8 +139,8 @@ export const SmartTalkRoom = () => {
 
   const getAIResponse = async (userMessage: string, thinkingId: string, model: string) => {
     try {
-      console.log("Sending AI response request for message:", userMessage);
-      console.log("Request payload:", {
+      console.log("🤖 Sending AI response request for message:", userMessage.substring(0, 50) + "...");
+      console.log("📋 Request payload:", {
         userMessage: userMessage.substring(0, 50) + "...",
         email: session?.user?.email,
         model,
@@ -140,43 +151,47 @@ export const SmartTalkRoom = () => {
         userMessage,
         email: session?.user?.email,
         model,
+        thinkingId // Pass thinkingId for tracking
       });
 
-      console.log("AI response request sent successfully, response:", response.data);
+      console.log("✅ AI response request sent successfully, response:", response.data);
 
       // Wait for real-time subscription to handle the response
       // The real-time listener will replace the thinking message with the actual AI response
 
-      // Add a fallback: if no real-time response after 10 seconds, poll once
+      // Add a fallback: if no real-time response after 5 seconds, poll
       setTimeout(async () => {
-        if (thinkingMessageId === thinkingId) { // Still thinking after 10 seconds
-          console.log("🔄 Fallback: Polling for AI response after 10 seconds...");
+        if (thinkingMessageId === thinkingId) { // Still thinking after 5 seconds
+          console.log("🔄 Fallback: Polling for AI response after 5 seconds...");
           try {
             const pollResponse = await fetch(`/api/smart-talk?email=${session?.user?.email}`);
             const data = await pollResponse.json();
 
-            // Find the most recent AI message
+            // Find the most recent AI message (within last 60 seconds)
             const aiResponse = data
-              .filter((msg: MessageProps) => msg.is_ai)
+              .filter((msg: MessageProps) => msg.is_ai && new Date(msg.created_at) > new Date(Date.now() - 60000))
               .sort((a: MessageProps, b: MessageProps) =>
                 new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
               )[0];
 
             if (aiResponse && thinkingMessageId === thinkingId) {
               console.log("🎯 Found AI response via fallback polling, replacing thinking message");
+              console.log("📄 AI Response content:", aiResponse.message?.substring(0, 100) + "...");
               setMessages(prev => prev.map(msg =>
-                msg.id === thinkingId ? aiResponse : msg
+                msg.id === thinkingId ? { ...aiResponse, is_thinking: false } : msg
               ));
               setThinkingMessageId(null);
+            } else {
+              console.log("❓ No recent AI response found in polling");
             }
           } catch (error) {
             console.error("❌ Fallback polling error:", error);
           }
         }
-      }, 10000); // 10 seconds fallback
+      }, 5000); // 5 seconds fallback (faster)
 
     } catch (error) {
-      console.error("Error getting AI response:", error);
+      console.error("❌ Error getting AI response:", error);
       notif("Failed to get AI response");
       // Remove thinking message on error
       setMessages((prevMessages) =>
@@ -249,14 +264,18 @@ export const SmartTalkRoom = () => {
               is_ai: payload.new.is_ai,
               user_email: payload.new.user_email,
               message: payload.new.message?.substring(0, 50) + "...",
-              created_at: payload.new.created_at
+              created_at: payload.new.created_at,
+              thinkingMessageId: thinkingMessageId
             });
 
             const newMessage = payload.new as MessageProps;
 
             // Double-check user filtering
             if (newMessage.user_email !== session?.user?.email) {
-              console.log("🚫 Message not for this user, ignoring");
+              console.log("🚫 Message not for this user, ignoring", {
+                expected: session?.user?.email,
+                received: newMessage.user_email
+              });
               return;
             }
 
@@ -264,23 +283,38 @@ export const SmartTalkRoom = () => {
 
             // Force immediate state update using functional setState
             setMessages(prevMessages => {
+              console.log("🔄 Updating messages state:", {
+                currentLength: prevMessages.length,
+                isAiMessage: newMessage.is_ai,
+                hasThinkingId: !!thinkingMessageId,
+                thinkingId: thinkingMessageId
+              });
+
+              let updatedMessages;
+
               // If this is an AI message and we have a thinking message, replace it
               if (newMessage.is_ai && thinkingMessageId) {
                 console.log("🔄 Replacing thinking message with AI response");
-                const updatedMessages = prevMessages.map(msg =>
-                  msg.id === thinkingMessageId ? { ...newMessage, is_thinking: false } : msg
-                );
+                updatedMessages = prevMessages.map(msg => {
+                  if (msg.id === thinkingMessageId) {
+                    console.log("✅ Found thinking message to replace");
+                    return { ...newMessage, is_thinking: false };
+                  }
+                  return msg;
+                });
                 setThinkingMessageId(null);
                 console.log("✅ AI response successfully displayed immediately");
                 return updatedMessages;
               } else if (!newMessage.is_ai) {
                 // Add new user message to the list
                 console.log("💬 Adding new user message to list");
-                return [...prevMessages, { ...newMessage }];
+                updatedMessages = [...prevMessages, { ...newMessage }];
+                return updatedMessages;
               } else {
                 // AI message without thinking state (shouldn't happen but handle it)
                 console.log("🤖 Adding AI message without thinking state");
-                return [...prevMessages, { ...newMessage }];
+                updatedMessages = [...prevMessages, { ...newMessage }];
+                return updatedMessages;
               }
             });
           }
