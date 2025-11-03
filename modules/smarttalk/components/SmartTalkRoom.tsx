@@ -269,21 +269,19 @@ export const SmartTalkRoom = () => {
     }
   };
 
-  // Enhanced real-time subscription with force refresh fallback
+  // Enhanced real-time subscription with aggressive polling fallback
   useEffect(() => {
     if (!session?.user?.email) return;
 
-    console.log("🔄 Setting up enhanced real-time subscription with force refresh for user:", session?.user?.email);
+    console.log("🔄 Setting up enhanced real-time subscription for user:", session?.user?.email);
 
     let channel: any = null;
     let pollInterval: NodeJS.Timeout | null = null;
-    let forceRefreshInterval: NodeJS.Timeout | null = null;
     let retryCount = 0;
-    const maxRetries = 5;
+    const maxRetries = 3;
 
     const setupSubscription = () => {
-      // Create unique channel name to avoid conflicts
-      const channelName = `smart-talk-${session?.user?.email}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const channelName = `smart-talk-${session?.user?.email}-${Date.now()}`;
       console.log("📡 Creating channel:", channelName);
 
       channel = supabase
@@ -302,185 +300,118 @@ export const SmartTalkRoom = () => {
               is_ai: payload.new.is_ai,
               user_email: payload.new.user_email,
               message: payload.new.message?.substring(0, 50) + "...",
-              created_at: payload.new.created_at,
               thinkingMessageId: thinkingMessageId
             });
 
             const newMessage = payload.new as MessageProps;
 
-            // Double-check user filtering
+            // Check if this message is for current user
             if (newMessage.user_email !== session?.user?.email) {
-              console.log("🚫 Message not for this user, ignoring", {
-                expected: session?.user?.email,
-                received: newMessage.user_email
-              });
+              console.log("🚫 Message not for this user");
               return;
             }
 
-            console.log("✅ Message is for this user, processing");
-
-            // Force immediate state update using functional setState
-            setMessages((prevMessages: MessageProps[]) => {
-              console.log("🔄 Updating messages state:", {
-                currentLength: prevMessages.length,
-                isAiMessage: newMessage.is_ai,
-                hasThinkingId: !!thinkingMessageId,
-                thinkingId: thinkingMessageId,
-                newMessageId: newMessage.id
-              });
-
-              // If this is an AI message and we have a thinking message, replace it
-              if (newMessage.is_ai && thinkingMessageId) {
-                console.log("🔄 Replacing thinking message with AI response");
-                const updatedMessages = prevMessages.map((msg: MessageProps) => {
-                  if (msg.id === thinkingMessageId) {
-                    console.log("✅ Found thinking message to replace with:", newMessage.message?.substring(0, 50) + "...");
-                    return { ...newMessage, is_thinking: false };
-                  }
-                  return msg;
-                });
-                setThinkingMessageId(null);
-                console.log("✅ AI response successfully displayed immediately via real-time");
-                return updatedMessages;
-              } else if (!newMessage.is_ai) {
-                // Add new user message to the list (shouldn't happen via real-time, but handle it)
-                console.log("💬 Adding new user message to list via real-time");
-                return [...prevMessages, { ...newMessage }];
-              } else {
-                // AI message without thinking state - add it normally
-                console.log("🤖 Adding AI message without thinking state via real-time");
-                return [...prevMessages, { ...newMessage }];
-              }
-            });
-          }
-        )
-        .on(
-          "postgres_changes",
-          {
-            event: "UPDATE",
-            schema: "public",
-            table: "smart_talk_messages",
-            filter: `user_email=eq.${session?.user?.email}`,
-          },
-          (payload: any) => {
-            const updatedMessage = payload.new as MessageProps;
-            console.log("🔄 Real-time UPDATE received:", updatedMessage.id);
-
-            if (updatedMessage.user_email !== session?.user?.email) {
-              console.log("🚫 Update not for this user, ignoring");
+            // If this is AI message and we have thinking message, replace it
+            if (newMessage.is_ai && thinkingMessageId) {
+              console.log("🔄 Replacing thinking message with AI response");
+              setMessages((prev: MessageProps[]) => prev.map((msg: MessageProps) =>
+                msg.id === thinkingMessageId
+                  ? { ...newMessage, is_thinking: false }
+                  : msg
+              ));
+              setThinkingMessageId(null);
+              console.log("✅ AI response displayed via real-time");
               return;
             }
 
-            setMessages((prevMessages: MessageProps[]) =>
-              prevMessages.map((msg: MessageProps) =>
-                msg.id === updatedMessage.id ? { ...updatedMessage } : msg
-              )
-            );
+            // Add non-AI messages normally
+            if (!newMessage.is_ai) {
+              setMessages((prev: MessageProps[]) => [...prev, newMessage]);
+            }
           }
         )
         .subscribe((status: string, err: any) => {
-          console.log("🔗 Subscription status:", status, err ? `Error: ${err?.message || err}` : "");
+          console.log("🔗 Subscription status:", status);
 
           if (status === 'SUBSCRIBED') {
             console.log('✅ Successfully subscribed to real-time');
             retryCount = 0;
+            // Stop polling when real-time works
             if (pollInterval) {
               clearInterval(pollInterval);
               pollInterval = null;
-              console.log('🛑 Stopped polling since real-time is working');
-            }
-            if (forceRefreshInterval) {
-              clearInterval(forceRefreshInterval);
-              forceRefreshInterval = null;
-              console.log('🛑 Stopped force refresh since real-time is working');
             }
           } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
-            console.error('❌ Subscription failed:', status, err);
-            console.error('❌ Error details:', {
-              status,
-              message: err?.message || err,
-              code: err?.code,
-              details: err?.details,
-              hint: err?.hint
-            });
-
-            // Start force refresh immediately on subscription failure
-            if (!forceRefreshInterval) {
-              console.log('🔄 Starting force refresh due to subscription failure...');
-              forceRefreshInterval = setInterval(async () => {
-                if (thinkingMessageId) {
-                  await forceRefreshMessages();
-                }
-              }, 2000); // Force refresh every 2 seconds
-            }
-
-            // Also start polling as additional fallback
+            console.error('❌ Subscription failed, starting aggressive polling');
+            // Start aggressive polling immediately
             if (!pollInterval) {
-              console.log('🔄 Starting polling fallback...');
               pollInterval = setInterval(async () => {
                 if (thinkingMessageId) {
                   try {
-                    console.log('🔍 Polling for AI response (fallback)...');
-                    const response = await fetch(`/api/smart-talk?email=${session?.user?.email}`);
+                    console.log('🔍 Aggressive polling for AI response...');
+                    const response = await fetch(`/api/smart-talk?email=${session?.user?.email}&t=${Date.now()}`);
                     const data = await response.json();
 
-                    // Find recent AI response (within last 45 seconds)
-                    const aiResponse = data.find((msg: MessageProps) =>
-                      msg.is_ai && new Date(msg.created_at) > new Date(Date.now() - 45000)
-                    );
+                    // Find the most recent AI message within last 2 minutes
+                    const aiMessages = data
+                      .filter((msg: MessageProps) => msg.is_ai)
+                      .sort((a: MessageProps, b: MessageProps) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
-                    if (aiResponse) {
-                      console.log('🎯 Found AI response via polling, replacing thinking message');
-                      setMessages((prev: MessageProps[]) => prev.map((msg: MessageProps) =>
-                        msg.id === thinkingMessageId ? { ...aiResponse, is_thinking: false } : msg
-                      ));
-                      setThinkingMessageId(null);
-                      console.log('✅ AI response displayed via polling fallback');
+                    if (aiMessages.length > 0) {
+                      const latestAIMessage = aiMessages[0];
+                      const messageAge = Date.now() - new Date(latestAIMessage.created_at).getTime();
+
+                      // Only use messages from last 2 minutes and not already in our messages
+                      if (messageAge < 120000) {
+                        const isAlreadyDisplayed = messages.some((msg: MessageProps) => msg.id === latestAIMessage.id);
+
+                        if (!isAlreadyDisplayed) {
+                          console.log('🎯 Found new AI response via polling, replacing thinking message');
+                          setMessages((prev: MessageProps[]) => prev.map((msg: MessageProps) =>
+                            msg.id === thinkingMessageId
+                              ? { ...latestAIMessage, is_thinking: false }
+                              : msg
+                          ));
+                          setThinkingMessageId(null);
+                          console.log('✅ AI response displayed via aggressive polling');
+                          return;
+                        }
+                      }
                     }
                   } catch (error) {
                     console.error('❌ Polling error:', error);
                   }
                 }
-              }, 3000); // Poll every 3 seconds
+              }, 1000); // Poll every 1 second - very aggressive
             }
 
-            // Try to reconnect subscription
+            // Try to reconnect
             if (retryCount < maxRetries) {
               retryCount++;
-              const delay = Math.min(2000 * retryCount, 30000); // Max 30 seconds
-              console.log(`🔄 Retrying subscription (${retryCount}/${maxRetries}) in ${delay}ms...`);
               setTimeout(() => {
                 if (channel) {
-                  console.log('🧹 Cleaning up failed channel...');
                   supabase.removeChannel(channel);
                   channel = null;
                 }
-                console.log('🔄 Attempting to setup subscription again...');
                 setupSubscription();
-              }, delay);
-            } else {
-              console.error('💀 Max retries reached, relying on force refresh and polling fallback only');
+              }, 5000 * retryCount);
             }
           }
         });
     };
 
-    // Setup subscription immediately
     setupSubscription();
 
     return () => {
-      console.log("🧹 Cleaning up enhanced real-time subscription");
+      console.log("🧹 Cleaning up real-time subscription");
       if (channel) {
         supabase.removeChannel(channel);
       }
       if (pollInterval) {
         clearInterval(pollInterval);
       }
-      if (forceRefreshInterval) {
-        clearInterval(forceRefreshInterval);
-      }
     };
-  }, [supabase, session?.user?.email]); // Stable dependencies
+  }, [supabase, session?.user?.email, thinkingMessageId, messages]);
 
   return (
     <div className="flex flex-col h-full">
