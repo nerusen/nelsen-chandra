@@ -32,8 +32,6 @@ interface ChatItemProps extends MessageProps {
   onToggleVisibility?: (visible: boolean) => void;
 }
 
-const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
 const ChatItem = ({
   id,
   name,
