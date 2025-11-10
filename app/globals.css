@@ -70,7 +70,7 @@
   position: absolute;
   height: calc(100% + 2px);
   width: calc(100% + 2px);
-  background-image: conic-gradient(from var(--angle), #1E1E1E, #525252, #1E1E1E, #1E1E1E, #1E1E1E);
+  background-image: conic-gradient(from var(--angle), #1e1e1e00, #525252, #1e1e1e00, #1e1e1e00, #1e1e1e00);
   top: -1px;
   left: -1px;
   z-index: -1;
