@@ -23,7 +23,7 @@ const PageHeading = ({ title, description, children }: PageHeadingProps) => {
             </div>
           )}
         </div>
-        <div className="border-b border-dashed border-neutral-600"></div>
+        <div className="border-b border-dashed border-neutral-600 mb-6"></div>
       </div>
     </>
   );
