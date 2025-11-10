@@ -4,9 +4,28 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
   const supabase = createClient();
   try {
-    const { data } = await supabase.from("messages").select();
-    return NextResponse.json(data, { status: 200 });
+    // Get messages with their associated images
+    const { data: messages, error: messagesError } = await supabase
+      .from("messages")
+      .select(`
+        *,
+        images (
+          image_data
+        )
+      `)
+      .order('created_at', { ascending: true });
+
+    if (messagesError) throw messagesError;
+
+    // Transform the data to include media array
+    const transformedMessages = messages?.map(message => ({
+      ...message,
+      media: message.images?.map((img: any) => img.image_data) || []
+    }));
+
+    return NextResponse.json(transformedMessages, { status: 200 });
   } catch (error) {
+    console.error("Error fetching messages:", error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 },
@@ -18,9 +37,35 @@ export const POST = async (req: Request) => {
   const supabase = createClient();
   try {
     const body = await req.json();
-    await supabase.from("messages").insert([body]);
+    const { media, ...messageData } = body;
+
+    // Insert message first
+    const { data: messageResult, error: messageError } = await supabase
+      .from("messages")
+      .insert([messageData])
+      .select()
+      .single();
+
+    if (messageError) throw messageError;
+
+    // If there are media files, insert them
+    if (media && media.length > 0) {
+      const mediaData = media.map((imageData: string) => ({
+        message_id: messageResult.id,
+        image_data: imageData,
+        user_email: messageData.email,
+      }));
+
+      const { error: mediaError } = await supabase
+        .from("images")
+        .insert(mediaData);
+
+      if (mediaError) throw mediaError;
+    }
+
     return NextResponse.json("Data saved successfully", { status: 200 });
   } catch (error) {
+    console.error("Error saving message with media:", error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 },
