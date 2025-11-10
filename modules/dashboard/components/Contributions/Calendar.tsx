@@ -67,7 +67,7 @@ const Calendar = ({ data }: CalendarProps) => {
   return (
     <>
       <div className="relative flex flex-col">
-        <ul className="flex justify-end gap-[3px] overflow-hidden text-xs dark:text-neutral-400 md:justify-start">
+        <ul className="flex justify-start gap-[3px] overflow-x-auto text-xs dark:text-neutral-400 md:overflow-hidden">
           {months.map((month) => (
             <li
               key={month.firstDay}
@@ -79,7 +79,7 @@ const Calendar = ({ data }: CalendarProps) => {
           ))}
         </ul>
 
-        <div className="flex justify-start gap-[2.9px] overflow-hidden">
+        <div className="flex justify-start gap-[2.9px] overflow-x-auto md:overflow-hidden">
           {weeks?.map((week) => (
             <div key={week.firstDay}>
               {week.contributionDays.map((contribution) => {
