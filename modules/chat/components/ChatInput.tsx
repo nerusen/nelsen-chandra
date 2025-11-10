@@ -1,9 +1,11 @@
 import clsx from "clsx";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { FiSend as SendIcon } from "react-icons/fi";
+import { MdPhotoLibrary as PhotoIcon } from "react-icons/md";
+import { IoClose as CloseIcon } from "react-icons/io5";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { IoCloseCircle as CloseIcon } from "react-icons/io5";
+import Image from "next/image";
 
 import ChatUserInfo from "./ChatUserInfo";
 
@@ -13,6 +15,7 @@ interface ChatInputPropsNew extends ChatInputProps {
   replyName?: string;
   isWidget?: boolean;
   onCancelReply: () => void;
+  onSendMessage: (message: string, media?: string[]) => void;
 }
 
 const ChatInput = ({
@@ -23,8 +26,10 @@ const ChatInput = ({
 }: ChatInputPropsNew) => {
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [media, setMedia] = useState<string[]>([]);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const t = useTranslations("ChatRoomPage");
 
@@ -36,8 +41,9 @@ const ChatInput = ({
     setIsSending(true);
 
     try {
-      onSendMessage(message);
+      onSendMessage(message, media);
       setMessage("");
+      setMedia([]);
     } catch (error) {
       console.log(error);
     } finally {
@@ -46,6 +52,32 @@ const ChatInput = ({
         inputRef.current?.focus();
       }, 0);
     }
+  };
+
+  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const maxFiles = 2;
+    const selectedFiles = Array.from(files).slice(0, maxFiles - media.length);
+
+    selectedFiles.forEach((file) => {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const result = e.target?.result as string;
+          setMedia((prev) => [...prev, result]);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Reset file input
+    e.target.value = '';
+  };
+
+  const removeMedia = (index: number) => {
+    setMedia((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -69,6 +101,28 @@ const ChatInput = ({
             />
           </motion.div>
         )}
+        {media.length > 0 && (
+          <div className="flex gap-2 overflow-x-auto">
+            {media.map((mediaItem, index) => (
+              <div key={index} className="relative">
+                <Image
+                  src={mediaItem}
+                  alt={`Preview ${index + 1}`}
+                  width={80}
+                  height={80}
+                  className="rounded-lg object-cover aspect-square"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeMedia(index)}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                >
+                  <CloseIcon size={12} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="flex">
           <input
             type="text"
@@ -80,16 +134,32 @@ const ChatInput = ({
             autoFocus
             className="flex-grow rounded-md border p-2 focus:outline-none dark:border-[#3A3A3A] dark:bg-[#1F1F1F]"
           />
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            accept="image/*"
+            multiple
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="ml-2 rounded-md p-3 bg-neutral-500 hover:bg-neutral-400 dark:bg-neutral-600 dark:hover:bg-neutral-500 text-white transition duration-100 active:scale-90"
+            disabled={isSending || media.length >= 2}
+          >
+            <PhotoIcon size={18} />
+          </button>
           <button
             type="submit"
             onClick={handleSendMessage}
             className={clsx(
               "ml-2 rounded-md p-3 text-white transition duration-100 active:scale-90",
-              message.trim()
+              (message.trim() || media.length > 0)
                 ? "bg-emerald-500 hover:bg-emerald-400 dark:bg-emerald-600 dark:hover:bg-emerald-500"
                 : "cursor-not-allowed bg-[#1F1F1F] border border-[#3A3A3A] active:scale-100",
             )}
-            disabled={isSending || !message.trim()}
+            disabled={isSending || (!message.trim() && media.length === 0)}
             data-umami-event="click_send_message"
           >
             <SendIcon size={18} />

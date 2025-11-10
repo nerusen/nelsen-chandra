@@ -14,6 +14,7 @@ import { IoClose as CloseIcon } from "react-icons/io5";
 
 import ChatTime from "./ChatTime";
 import MessageRenderer from "./MessageRenderer";
+import ImageModal from "./ImageModal";
 
 import Tooltip from "@/common/components/elements/Tooltip";
 import { MessageProps } from "@/common/types/chat";
@@ -31,12 +32,15 @@ interface ChatItemProps extends MessageProps {
   onToggleVisibility?: (visible: boolean) => void;
 }
 
+const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
 const ChatItem = ({
   id,
   name,
   email,
   image,
   message,
+  media,
   created_at,
   reply_to,
   is_reply,
@@ -56,6 +60,7 @@ const ChatItem = ({
   const [internalIsTogglesVisible, setInternalIsTogglesVisible] = useState(false);
   const [editMessage, setEditMessage] = useState(message);
   const [isPopupVisible, setIsPopupVisible] = useState(showPopup || false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const [isBubbleTogglesVisible, setIsBubbleTogglesVisible] = useState(false);
 
@@ -102,6 +107,19 @@ const ChatItem = ({
       onEditCancel?.();
       setIsHover(false); // Reset hover state after edit
     }
+  };
+
+  const handleImageClick = (imageSrc: string) => {
+    setSelectedImage(imageSrc);
+  };
+
+  const handleDownload = (imageSrc: string) => {
+    const link = document.createElement('a');
+    link.href = imageSrc;
+    link.download = 'nelsen.jpg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handleEditCancel = () => {
@@ -265,6 +283,21 @@ const ChatItem = ({
                 )}
                 {!is_reply && (
                   <>
+                    {media && media.length > 0 && (
+                      <div className="mb-2">
+                        {media.map((mediaItem, index) => (
+                          <Image
+                            key={index}
+                            src={mediaItem}
+                            alt={`Media ${index + 1}`}
+                            width={200}
+                            height={200}
+                            className="rounded-lg cursor-pointer object-cover max-w-full h-auto"
+                            onClick={() => handleImageClick(mediaItem)}
+                          />
+                        ))}
+                      </div>
+                    )}
                     <MessageRenderer message={message} />
                     <div className="flex justify-between items-center mt-1">
                       {is_pinned && <span className="text-xs text-neutral-500 font-medium inline-flex items-center gap-1"><PinIcon size={12} className="text-neutral-500" /> Pinned</span>}
@@ -369,6 +402,15 @@ const ChatItem = ({
         </div>
 
       </div>
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <ImageModal
+          imageSrc={selectedImage}
+          onClose={() => setSelectedImage(null)}
+          onDownload={handleDownload}
+        />
+      )}
     </div>
   );
 };

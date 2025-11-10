@@ -39,7 +39,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
     setIsReply({ is_reply: false, name: "" });
   };
 
-  const handleSendMessage = async (message: string) => {
+  const handleSendMessage = async (message: string, media?: string[]) => {
     const messageId = uuidv4();
     const newMessageData = {
       id: messageId,
@@ -47,6 +47,7 @@ export const ChatRoom = ({ isWidget = false }: { isWidget?: boolean }) => {
       email: session?.user?.email,
       image: session?.user?.image,
       message,
+      media,
       is_reply: isReply.is_reply,
       reply_to: isReply.name,
       is_show: true,
