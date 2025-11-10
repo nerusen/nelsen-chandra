@@ -4,6 +4,7 @@ export interface MessageProps {
   email: string;
   image?: string;
   message: string;
+  media?: string[]; // Array of base64 image strings
   is_reply?: boolean;
   reply_to?: string;
   created_at: string;
