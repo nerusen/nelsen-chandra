@@ -36,6 +36,10 @@ export const DELETE = async (
       );
     }
 
+    // Delete associated images first
+    await supabase.from("images").delete().eq("message_id", id);
+
+    // Then delete the message
     await supabase.from("messages").delete().eq("id", id);
     return NextResponse.json("Data deleted successfully", { status: 200 });
   } catch (error) {
