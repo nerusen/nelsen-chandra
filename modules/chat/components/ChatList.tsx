@@ -98,15 +98,22 @@ const ChatList = ({
     if (chatListRef.current) {
       // Use multiple attempts to ensure scrolling to bottom after all messages are rendered
       const scrollToBottom = () => {
-        chatListRef.current?.scrollTo({
-          top: chatListRef.current.scrollHeight,
-          behavior: 'smooth',
-        });
+        if (chatListRef.current) {
+          chatListRef.current.scrollTo({
+            top: chatListRef.current.scrollHeight,
+            behavior: 'smooth',
+          });
+        }
       };
 
+      // Initial scroll attempts
       setTimeout(scrollToBottom, 100);
       setTimeout(scrollToBottom, 300);
       setTimeout(scrollToBottom, 500);
+
+      // Additional attempts to ensure it reaches the bottom
+      setTimeout(scrollToBottom, 700);
+      setTimeout(scrollToBottom, 1000);
     }
   }, []);
 
