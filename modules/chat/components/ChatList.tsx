@@ -71,7 +71,10 @@ const ChatList = ({
 
   useEffect(() => {
     if (chatListRef.current && !hasScrolledUp) {
-      chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
+      chatListRef.current.scrollTo({
+        top: chatListRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
     }
   }, [messages, hasScrolledUp]);
 
@@ -89,6 +92,18 @@ const ChatList = ({
       window.removeEventListener('resize', handleResize);
     };
   }, [isWidget]);
+
+  // Auto-scroll to bottom on initial load or refresh
+  useEffect(() => {
+    if (chatListRef.current) {
+      setTimeout(() => {
+        chatListRef.current?.scrollTo({
+          top: chatListRef.current.scrollHeight,
+          behavior: 'smooth',
+        });
+      }, 100); // Small delay to ensure messages are rendered
+    }
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
