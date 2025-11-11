@@ -96,12 +96,17 @@ const ChatList = ({
   // Auto-scroll to bottom on initial load or refresh
   useEffect(() => {
     if (chatListRef.current) {
-      setTimeout(() => {
+      // Use multiple attempts to ensure scrolling to bottom after all messages are rendered
+      const scrollToBottom = () => {
         chatListRef.current?.scrollTo({
           top: chatListRef.current.scrollHeight,
           behavior: 'smooth',
         });
-      }, 100); // Small delay to ensure messages are rendered
+      };
+
+      setTimeout(scrollToBottom, 100);
+      setTimeout(scrollToBottom, 300);
+      setTimeout(scrollToBottom, 500);
     }
   }, []);
 

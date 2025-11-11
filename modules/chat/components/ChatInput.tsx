@@ -145,12 +145,7 @@ const ChatInput = ({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className={clsx(
-              "ml-2 rounded-md p-3 text-white transition duration-100 active:scale-90",
-              (message.trim() || media.length > 0)
-                ? "bg-emerald-500 hover:bg-emerald-400 dark:bg-emerald-600 dark:hover:bg-emerald-500"
-                : "bg-white hover:bg-neutral-100 dark:bg-[#1F1F1F] dark:hover:bg-neutral-700 border border-neutral-300 dark:border-[#3A3A3A]",
-            )}
+            className="ml-2 rounded-md p-3 bg-white dark:bg-[#1F1F1F] border border-neutral-300 dark:border-[#3A3A3A] text-black dark:text-white transition duration-100 active:scale-90"
             disabled={isSending || media.length >= 2}
           >
             <PhotoIcon size={18} />
@@ -159,7 +154,7 @@ const ChatInput = ({
             type="submit"
             onClick={handleSendMessage}
             className={clsx(
-              "ml-2 rounded-md p-3 text-white transition duration-100 active:scale-90",
+              "ml-2 rounded-md p-3 text-black dark:text-white transition duration-100 active:scale-90",
               (message.trim() || media.length > 0)
                 ? "bg-emerald-500 hover:bg-emerald-400 dark:bg-emerald-600 dark:hover:bg-emerald-500"
                 : "cursor-not-allowed bg-white border border-neutral-300 dark:bg-[#1F1F1F] dark:border-[#3A3A3A] active:scale-100",
