@@ -64,23 +64,23 @@ const LinkPreview = ({ url, className }: LinkPreviewProps) => {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className={clsx("mb-2 block p-3 border rounded-lg bg-emerald-200 dark:bg-emerald-950 border-neutral-200 dark:border-neutral-700 hover:bg-emerald-300 dark:hover:bg-emerald-900 transition-colors", className)}
+      className={clsx("mb-2 block p-3 border rounded-lg bg-emerald-200 dark:bg-[#041a12] border-neutral-200 dark:border-neutral-700 hover:bg-emerald-300 dark:hover:bg-[#052e16] transition-colors", className)}
     >
-      <div className="flex gap-3">
+      <div className="flex flex-col gap-3">
         {data.image && (
-          <div className="flex-shrink-0">
+          <div className="w-full">
             <Image
               src={data.image}
               alt={data.title || "Link preview"}
-              width={60}
-              height={60}
-              className="rounded object-cover"
+              width={200}
+              height={120}
+              className="rounded-lg object-cover w-full h-auto max-h-32"
             />
           </div>
         )}
         <div className="flex-1 min-w-0">
           {data.title && (
-            <h4 className="font-medium text-sm text-neutral-900 dark:text-neutral-100 truncate">
+            <h4 className="font-medium text-sm text-neutral-900 dark:text-neutral-100">
               {data.title}
             </h4>
           )}

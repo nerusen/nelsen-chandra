@@ -7,7 +7,7 @@ const ChatItemSkeleton = () => {
       <div className="space-y-5 py-4">
         {/* Skeleton 1 */}
         <div className="flex items-center gap-3 px-4 lg:px-8">
-          <Skeleton className="h-full" circle containerClassName="w-[40px]" />
+          <Skeleton className="h-[40px] w-[40px] rounded-full" />
           <div className="space-y-1 flex-1">
             <div className="flex flex-col md:flex-row md:items-center gap-x-2 gap-y-1">
               <Skeleton containerClassName="w-20" />
@@ -19,7 +19,7 @@ const ChatItemSkeleton = () => {
         </div>
         {/* Skeleton 2 */}
         <div className="flex items-center gap-3 px-4 lg:px-8 flex-row-reverse">
-          <Skeleton className="h-full" circle containerClassName="w-[40px]" />
+          <Skeleton className="h-[40px] w-[40px] rounded-full" />
           <div className="space-y-1 flex-1 flex flex-col items-end">
             <div className="flex flex-col md:flex-row md:items-center gap-x-2 gap-y-1 md:flex-row-reverse">
               <Skeleton containerClassName="w-20" />
@@ -31,7 +31,7 @@ const ChatItemSkeleton = () => {
         </div>
         {/* Skeleton 3 */}
         <div className="flex items-center gap-3 px-4 lg:px-8">
-          <Skeleton className="h-full" circle containerClassName="w-[40px]" />
+          <Skeleton className="h-[40px] w-[40px] rounded-full" />
           <div className="space-y-1 flex-1">
             <div className="flex flex-col md:flex-row md:items-center gap-x-2 gap-y-1">
               <Skeleton containerClassName="w-16" />
