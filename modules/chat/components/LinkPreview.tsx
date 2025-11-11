@@ -64,7 +64,7 @@ const LinkPreview = ({ url, className }: LinkPreviewProps) => {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className={clsx("mb-2 block p-3 border rounded-lg bg-[#69D8A6] dark:bg-[#031E0F] border-neutral-200 dark:border-neutral-700 hover:bg-emerald-300 dark:hover:bg-[#052e16] transition-colors", className)}
+      className={clsx("mb-2 block p-3 border rounded-lg bg-[#96DABB] dark:bg-[#031E0F] border-neutral-200 dark:border-neutral-700 hover:bg-emerald-300 dark:hover:bg-[#052e16] transition-colors", className)}
     >
       <div className="flex flex-col gap-3">
         {data.image && (
