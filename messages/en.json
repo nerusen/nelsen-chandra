@@ -233,7 +233,7 @@
     "button": "Take me home"
   },
   "LoginPage": {
-    "title": "Welcome to Smart Talk",
-    "description": "Sign in to start your AI-powered conversation experience"
+    "title": "Welcome",
+    "description": "Sign in to access all features"
   }
 }
