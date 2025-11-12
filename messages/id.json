@@ -233,7 +233,7 @@
     "button": "Bawa saya ke beranda"
   },
   "LoginPage": {
-    "title": "Selamat Datang di Smart Talk",
-    "description": "Masuk untuk memulai pengalaman percakapan bertenaga AI"
+    "title": "Selamat Datang",
+    "description": "Masuk untuk akses semua fitur"
   }
 }
