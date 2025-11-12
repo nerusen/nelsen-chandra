@@ -11,11 +11,11 @@ const LoginForm = () => {
   const t = useTranslations("LoginPage");
 
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/home" });
+    signIn("google", { callbackUrl: "/chat" });
   };
 
   const handleGithubSignIn = () => {
-    signIn("github", { callbackUrl: "/home" });
+    signIn("github", { callbackUrl: "/chat" });
   };
 
   return (
