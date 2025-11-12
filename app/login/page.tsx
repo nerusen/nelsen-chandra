@@ -11,7 +11,7 @@ import { authOptions } from "@/common/libs/next-auth";
 
 export const metadata: Metadata = {
   title: `Login ${METADATA.exTitle}`,
-  description: "Login to access Smart Talk AI chat feature",
+  description: "Login to access all fitures",
   alternates: {
     canonical: `${process.env.DOMAIN}/login`,
   },
@@ -21,12 +21,12 @@ const LoginPage = async () => {
   const session = await getServerSession(authOptions);
 
   if (session) {
-    redirect("/smart-talk");
+    redirect("/home");
   }
 
   return (
     <Container data-aos="fade-up">
-      <PageHeading title="Login" description="Please sign in to access Smart Talk" />
+      <PageHeading title="Login" description="Please sign in to access all features" />
       <LoginForm />
     </Container>
   );
