@@ -37,7 +37,7 @@ const MobileHeader = () => {
           <div className="mt-1 flex items-center gap-2">
             <Link href="/" passHref>
               <h2 className="flex-grow whitespace-nowrap text-lg font-medium lg:text-xl">
-                n31sen.st
+                Nelsen C.
               </h2>
             </Link>
             <Tooltip title="Verified">
