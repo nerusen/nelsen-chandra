@@ -218,12 +218,10 @@ const StrikeGame = () => {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <SectionHeading title={t("title")} icon={<StrikeIcon />} />
-        <SectionSubHeading>
-          <p>{t("sub_title")}</p>
-        </SectionSubHeading>
-      </div>
+      <SectionHeading title={t("title")} icon={<StrikeIcon />} />
+      <SectionSubHeading>
+        <p>{t("sub_title")}</p>
+      </SectionSubHeading>
 
       <Breakline className="my-8" />
 
@@ -295,7 +293,7 @@ const StrikeGame = () => {
       </div>
 
       {/* User Info Bubbles */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("strike_name")}>
           <h4 className="font-medium text-sm">{t("strike_name_title")}</h4>
           <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{userStrike?.strike_name}</p>
@@ -303,6 +301,10 @@ const StrikeGame = () => {
         <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_rank")}>
           <h4 className="font-medium text-sm">{t("user_rank_title")}</h4>
           <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{currentLevel.name}</p>
+        </SpotlightCard>
+        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_level")}>
+          <h4 className="font-medium text-sm">{t("user_level_title")}</h4>
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{userStrike?.current_streak} {t("days")}</p>
         </SpotlightCard>
         <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_name")}>
           <h4 className="font-medium text-sm">{t("user_name_title")}</h4>
@@ -371,6 +373,16 @@ const StrikeGame = () => {
           <SpotlightCard className="p-4 max-w-sm w-full">
             <h3 className="text-base font-bold mb-3">{t("leaderboard_position_popup")}</h3>
             <p className="text-sm">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
+            <button onClick={() => setShowPopup(null)} className="mt-3 px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
+          </SpotlightCard>
+        </div>
+      )}
+
+      {showPopup === "user_level" && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <SpotlightCard className="p-4 max-w-sm w-full">
+            <h3 className="text-base font-bold mb-3">{t("user_level_popup")}</h3>
+            <p className="text-sm">{userStrike?.current_streak} {t("days")}</p>
             <button onClick={() => setShowPopup(null)} className="mt-3 px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
           </SpotlightCard>
         </div>
