@@ -40,7 +40,7 @@ export const GET = async () => {
         return {
           user_email: strike.user_email,
           strike_name: strike.strike_name,
-          max_streak: strike.max_streak,
+          current_streak: strike.current_streak,
           ...userInfo,
         };
       })
