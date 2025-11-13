@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GiBullseye, GiAncientSword, GiAllForOne, GiBatBlade, GiBoltShield, GiBurningSkull, GiAngelWings, GiAngelOutfit, GiLaurelCrown, GiHolyGrail, GiUpgrade, GiCycle, GiOpenBook, GiBurningEmbers as StrikeIcon, GiDna2 as WarningIcon } from "react-icons/gi";
 import { useTranslations } from "next-intl";
-import { createClient } from "@/common/utils/client";
 
 import Card from "@/common/components/elements/Card";
 import Breakline from "@/common/components/elements/Breakline";
@@ -70,27 +69,6 @@ const StrikeGame = () => {
     }
     fetchUserStrike();
     fetchLeaderboard();
-
-    // Set up realtime subscription for user data changes
-    const supabase = createClient();
-    const channel = supabase
-      .channel('user_strikes_realtime')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'user_strikes',
-        filter: `user_email=eq.${session.user?.email}`,
-      }, (payload) => {
-        console.log('Realtime update received:', payload);
-        // Refresh user data when database changes
-        fetchUserStrike();
-        fetchLeaderboard();
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
   }, [session, status]);
 
   const fetchUserStrike = async () => {
