@@ -11,11 +11,11 @@ export const GET = async () => {
   }
 
   try {
-    // Get all users with their strike data, ordered by max_streak descending
+    // Get all users with their strike data, ordered by current_streak descending
     const { data: strikes, error: strikesError } = await supabase
       .from("user_strikes")
       .select("*")
-      .order("max_streak", { ascending: false });
+      .order("current_streak", { ascending: false });
 
     if (strikesError) throw strikesError;
 
@@ -30,10 +30,10 @@ export const GET = async () => {
         };
 
         // If this is the current user, use their session data
-        if (session.user && strike.user_email === session.user.email) {
-         userInfo = {
-            name: session.user.name || "Unknown User",
-            image: session.user.image || "/default-avatar.png",
+        if (strike.user_email === session.user?.email) {
+          userInfo = {
+            name: session.user?.name || "Unknown User",
+            image: session.user?.image || "/default-avatar.png",
           };
         }
 
