@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { GiBullseye, GiAncientSword, GiAllForOne, GiBatBlade, GiBoltShield, GiBurningSkull, GiAngelWings, GiAngelOutfit, GiLaurelCrown, GiHolyGrail, GiUpgrade, GiCycle, GiOpenBook, GiBurningEmbers as StrikeIcon } from "react-icons/gi";
+import { GiBullseye, GiAncientSword, GiAllForOne, GiBatBlade, GiBoltShield, GiBurningSkull, GiAngelWings, GiAngelOutfit, GiLaurelCrown, GiHolyGrail, GiUpgrade, GiCycle, GiOpenBook, GiBurningEmbers as StrikeIcon, GiDna2 as WarningIcon } from "react-icons/gi";
 import { useTranslations } from "next-intl";
 
 import Card from "@/common/components/elements/Card";
@@ -329,7 +329,7 @@ const StrikeGame = () => {
           <span className="inline">{t("refresh_button")}</span>
         </button>
         <button
-          onClick={handleResetProgress}
+          onClick={() => setShowPopup("reset_confirm")}
           className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
         >
           <span className="inline">{t("reset_button")}</span>
@@ -431,6 +431,37 @@ const StrikeGame = () => {
               })}
             </div>
             <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
+          </SpotlightCard>
+        </div>
+      )}
+
+      {showPopup === "reset_confirm" && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <SpotlightCard className="p-6 max-w-sm w-full text-center">
+            <div className="flex items-center justify-center mb-4">
+              <WarningIcon size={48} className="text-red-500" />
+            </div>
+            <h3 className="text-xl font-bold mb-2 text-red-500">WARNING</h3>
+            <p className="text-sm mb-6 text-neutral-700 dark:text-neutral-300">
+              Apakah Anda yakin ingin mengatur ulang semua progres permainan? Tindakan ini tidak dapat dibatalkan.
+            </p>
+            <div className="flex space-x-3 justify-center">
+              <button
+                onClick={() => setShowPopup(null)}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition duration-100"
+              >
+                {t("cancel_button")}
+              </button>
+              <button
+                onClick={() => {
+                  handleResetProgress();
+                  setShowPopup(null);
+                }}
+                className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+              >
+                <span className="inline">{t("confirm_button")}</span>
+              </button>
+            </div>
           </SpotlightCard>
         </div>
       )}
