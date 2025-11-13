@@ -219,6 +219,12 @@ const StrikeGame = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 space-y-6">
+      <SectionHeading title={t("title")} />
+      <SectionSubHeading>
+        <p>{t("sub_title")}</p>
+      </SectionSubHeading>
+
+      <Breakline className="my-8" />
 
       {/* Profile Bubble */}
       <SpotlightCard className="p-6">
