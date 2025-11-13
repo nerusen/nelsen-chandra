@@ -6,29 +6,37 @@ export const GET = async () => {
 
   try {
     // Get all users with their strike data and profile info, ordered by current_streak descending
-    const { data: leaderboard, error: leaderboardError } = await supabase
+    const { data: strikes, error: strikesError } = await supabase
       .from("user_strikes")
-      .select(`
-        user_email,
-        strike_name,
-        current_streak,
-        user_profiles (
-          name,
-          image
-        )
-      `)
+      .select("*")
       .order("current_streak", { ascending: false });
 
-    if (leaderboardError) throw leaderboardError;
+    if (strikesError) throw strikesError;
 
-    // Transform the data to flatten the profile info
-    const transformedLeaderboard = leaderboard?.map((item: any) => ({
-      user_email: item.user_email,
-      strike_name: item.strike_name,
-      current_streak: item.current_streak,
-      name: item.user_profiles?.name || "Unknown User",
-      image: item.user_profiles?.image || "/default-avatar.png",
-    }));
+    // Get all user profiles
+    const { data: profiles, error: profilesError } = await supabase
+      .from("user_profiles")
+      .select("*");
+
+    if (profilesError) throw profilesError;
+
+    // Create a map of profiles for quick lookup
+    const profileMap = new Map();
+    profiles?.forEach(profile => {
+      profileMap.set(profile.user_email, profile);
+    });
+
+    // Transform the data to include profile info
+    const transformedLeaderboard = strikes?.map((strike) => {
+      const profile = profileMap.get(strike.user_email);
+      return {
+        user_email: strike.user_email,
+        strike_name: strike.strike_name,
+        current_streak: strike.current_streak,
+        name: profile?.name || "Unknown User",
+        image: profile?.image || "/default-avatar.png",
+      };
+    });
 
     return NextResponse.json(transformedLeaderboard, { status: 200 });
   } catch (error) {
