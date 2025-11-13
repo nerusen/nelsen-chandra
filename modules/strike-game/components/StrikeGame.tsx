@@ -225,6 +225,8 @@ const StrikeGame = () => {
         </SectionSubHeading>
       </div>
 
+      <Breakline className="my-8" />
+
       {/* Profile Bubble */}
       <SpotlightCard className="p-6">
         <div className="flex items-center space-x-3">
@@ -239,6 +241,24 @@ const StrikeGame = () => {
           </div>
         </div>
       </SpotlightCard>
+
+      {/* Action Buttons Above GIF */}
+      <div className="flex justify-between items-center">
+        <button
+          onClick={() => setShowPopup("guide")}
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+        >
+          <GiOpenBook />
+          <span className="inline">{t("guide_button")}</span>
+        </button>
+        <button
+          onClick={() => setShowPopup("leaderboard")}
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+        >
+          <GiHolyGrail />
+          <span className="inline">{t("leaderboard_button")}</span>
+        </button>
+      </div>
 
       {/* GIF Display */}
       <SpotlightCard className="p-6 text-center">
@@ -294,44 +314,30 @@ const StrikeGame = () => {
         </SpotlightCard>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row justify-center gap-4">
+      {/* Reset Button */}
+      <div className="text-center">
         <button
           onClick={handleResetProgress}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
         >
           <span className="inline">{t("reset_button")}</span>
-        </button>
-        <button
-          onClick={() => setShowPopup("leaderboard")}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
-        >
-          <GiHolyGrail />
-          <span className="inline">{t("leaderboard_button")}</span>
-        </button>
-        <button
-          onClick={() => setShowPopup("guide")}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
-        >
-          <GiOpenBook />
-          <span className="inline">{t("guide_button")}</span>
         </button>
       </div>
 
       {/* Popups */}
       {showPopup === "strike_name" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <SpotlightCard className="p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold mb-4">{t("change_strike_name")}</h3>
+          <SpotlightCard className="p-4 max-w-sm w-full">
+            <h3 className="text-base font-bold mb-3">{t("change_strike_name")}</h3>
             <input
               type="text"
               value={newStrikeName}
               onChange={(e) => setNewStrikeName(e.target.value)}
-              className="w-full p-2 border rounded mb-4"
+              className="w-full p-2 border rounded mb-3 text-sm"
             />
             <div className="flex space-x-2">
-              <button onClick={handleUpdateStrikeName} className="px-4 py-2 bg-green-600 text-white rounded">{t("save_button")}</button>
-              <button onClick={() => setShowPopup(null)} className="px-4 py-2 bg-gray-600 text-white rounded">{t("cancel_button")}</button>
+              <button onClick={handleUpdateStrikeName} className="px-3 py-1 bg-green-600 text-white rounded text-sm">{t("save_button")}</button>
+              <button onClick={() => setShowPopup(null)} className="px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("cancel_button")}</button>
             </div>
           </SpotlightCard>
         </div>
@@ -339,33 +345,33 @@ const StrikeGame = () => {
 
       {showPopup === "user_rank" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <SpotlightCard className="p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold mb-4">{t("user_rank_popup")}</h3>
+          <SpotlightCard className="p-4 max-w-sm w-full">
+            <h3 className="text-base font-bold mb-3">{t("user_rank_popup")}</h3>
             <div className="flex items-center space-x-2">
-              <currentLevel.icon size={24} />
-              <span>{currentLevel.name}</span>
+              <currentLevel.icon size={20} />
+              <span className="text-sm">{currentLevel.name}</span>
             </div>
-            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
+            <button onClick={() => setShowPopup(null)} className="mt-3 px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
           </SpotlightCard>
         </div>
       )}
 
       {showPopup === "user_name" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <SpotlightCard className="p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold mb-4">{t("user_name_popup")}</h3>
-            <p>{session.user?.name}</p>
-            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
+          <SpotlightCard className="p-4 max-w-sm w-full">
+            <h3 className="text-base font-bold mb-3">{t("user_name_popup")}</h3>
+            <p className="text-sm">{session.user?.name}</p>
+            <button onClick={() => setShowPopup(null)} className="mt-3 px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
           </SpotlightCard>
         </div>
       )}
 
       {showPopup === "user_leaderboard" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <SpotlightCard className="p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold mb-4">{t("leaderboard_position_popup")}</h3>
-            <p>#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
-            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
+          <SpotlightCard className="p-4 max-w-sm w-full">
+            <h3 className="text-base font-bold mb-3">{t("leaderboard_position_popup")}</h3>
+            <p className="text-sm">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
+            <button onClick={() => setShowPopup(null)} className="mt-3 px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
           </SpotlightCard>
         </div>
       )}
