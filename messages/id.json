@@ -275,6 +275,8 @@
     "streak": "rangkaian",
     "level": "level",
     "days": "hari",
-    "confirm_button": "Konfirmasi"
+    "confirm_button": "Konfirmasi",
+    "reset_warning_title": "PERINGATAN",
+    "reset_warning_description": "Apakah Anda yakin ingin mengatur ulang semua progres permainan? Tindakan ini tidak dapat dibatalkan."
   }
 }

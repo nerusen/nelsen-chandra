@@ -275,6 +275,9 @@
     "achieved_at": "Achieved at",
     "streak": "streak",
     "level": "level",
-    "days": "days"
+    "days": "days",
+    "confirm_button": "Confirm",
+    "reset_warning_title": "WARNING",
+    "reset_warning_description": "Are you sure you want to reset all game progress? This action cannot be undone."
   }
 }
