@@ -60,12 +60,11 @@ const StrikeGame = () => {
   useEffect(() => {
     if (status === "loading") return;
     if (!session) {
-      router.push("/login");
       return;
     }
     fetchUserStrike();
     fetchLeaderboard();
-  }, [session, status, router]);
+  }, [session, status]);
 
   const fetchUserStrike = async () => {
     try {
