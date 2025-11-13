@@ -11,13 +11,15 @@ export const GET = async () => {
   }
 
   try {
-    // Always sync user profile first
+    // Always sync user profile data in the unified table
     await supabase
-      .from("user_profiles")
+      .from("user_strikes")
       .upsert({
         user_email: session.user.email,
         name: session.user.name || null,
         image: session.user.image || null,
+      }, {
+        onConflict: 'user_email'
       });
 
     const { data, error } = await supabase
