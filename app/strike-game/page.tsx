@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { GiFire, GiHolyGrail, GiUpgrade, GiBullseye, GiAncientSword, GiAllForOne, GiBatBlade, GiBoltShield, GiBurningSkull, GiAngelWings, GiAngelOutfit, GiLaurelCrown } from 'react-icons/gi';
@@ -140,8 +142,6 @@ export default function StrikeGamePage() {
         {/* Right Side - GIF and Info Bubbles */}
         <div className="md:w-2/3">
           {/* GIF Display */}
-          <div className="mb-6">
-            <img 
               src={`/images/strike/level-${strikeLevel}.gif`} 
               alt={`Level ${strikeLevel}`} 
               className="w-full max-w-md mx-auto" 
