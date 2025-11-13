@@ -219,7 +219,7 @@ const StrikeGame = () => {
             onClick={handleRestoreStrike}
             className="mt-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 flex items-center space-x-2"
           >
-            <GiRestore />
+            <GiCycle />
             <span>Restore Strike</span>
           </button>
         )}
@@ -251,7 +251,7 @@ const StrikeGame = () => {
           onClick={() => setShowPopup("guide")}
           className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center space-x-2 mx-auto"
         >
-          <GiBookOpen />
+          <GiOpenBook />
           <span>Guide</span>
         </button>
       </div>
