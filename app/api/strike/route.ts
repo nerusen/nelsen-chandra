@@ -11,6 +11,15 @@ export const GET = async () => {
   }
 
   try {
+    // Always sync user profile first
+    await supabase
+      .from("user_profiles")
+      .upsert({
+        user_email: session.user.email,
+        name: session.user.name || null,
+        image: session.user.image || null,
+      });
+
     const { data, error } = await supabase
       .from("user_strikes")
       .select("*")
@@ -23,20 +32,19 @@ export const GET = async () => {
       // Create new user strike record
       const { data: newData, error: insertError } = await supabase
         .from("user_strikes")
-        .insert([{ user_email: session.user.email }])
+        .insert([{
+          user_email: session.user.email,
+          strike_name: session.user.name || "New Striker",
+          current_streak: 0,
+          max_streak: 0,
+          last_strike_date: null,
+          restore_count: 0,
+          last_restore_month: null,
+        }])
         .select()
         .single();
 
       if (insertError) throw insertError;
-
-      // Sync user profile
-      await supabase
-        .from("user_profiles")
-        .upsert({
-          user_email: session.user.email,
-          name: session.user.name || null,
-          image: session.user.image || null,
-        });
 
       return NextResponse.json(newData, { status: 200 });
     }
