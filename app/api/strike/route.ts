@@ -28,6 +28,16 @@ export const GET = async () => {
         .single();
 
       if (insertError) throw insertError;
+
+      // Sync user profile
+      await supabase
+        .from("user_profiles")
+        .upsert({
+          user_email: session.user.email,
+          name: session.user.name,
+          image: session.user.image,
+        });
+
       return NextResponse.json(newData, { status: 200 });
     }
 
@@ -68,7 +78,7 @@ export const POST = async (req: Request) => {
     if (action === "upgrade") {
       // Check if already upgraded today
       if (userData.last_strike_date === today) {
-        return NextResponse.json({ message: "Already upgraded today, come back tomorrow." }, { status: 400 });
+        return NextResponse.json({ message: "Already upgraded today" }, { status: 400 });
       }
 
       // Check if streak is broken (more than 1 day since last strike)
@@ -107,7 +117,7 @@ export const POST = async (req: Request) => {
     } else if (action === "restore") {
       // Check if restore is allowed
       if (userData.restore_count >= 3 && userData.last_restore_month === currentMonth) {
-        return NextResponse.json({ message: "Restore limit reached for this month. Nice Try..." }, { status: 400 });
+        return NextResponse.json({ message: "Restore limit reached for this month" }, { status: 400 });
       }
 
       // Restore streak to max_streak
