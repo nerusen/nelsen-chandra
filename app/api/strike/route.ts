@@ -12,31 +12,27 @@ export const GET = async () => {
   }
 
   try {
-    // Always sync user profile data in the unified table
-    await supabase
-      .from("user_strikes")
-      .upsert({
-        user_email: session.user.email,
-        name: session.user.name || null,
-        image: session.user.image || null,
-        updated_at: new Date().toISOString(),
-      });
-
-    const { data, error } = await supabase
+    // First, try to get existing user data
+    const { data: existingData, error: fetchError } = await supabase
       .from("user_strikes")
       .select("*")
       .eq("user_email", session.user.email)
       .single();
 
-    if (error && error.code !== 'PGRST116') throw error;
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      console.error("Fetch error:", fetchError);
+      throw fetchError;
+    }
 
-    if (!data) {
+    if (!existingData) {
       // Create new user strike record
       const { data: newData, error: insertError } = await supabase
         .from("user_strikes")
         .insert([{
           user_email: session.user.email,
           strike_name: session.user.name || "New Striker",
+          name: session.user.name || null,
+          image: session.user.image || null,
           current_streak: 0,
           max_streak: 0,
           last_strike_date: null,
@@ -46,16 +42,31 @@ export const GET = async () => {
         .select()
         .single();
 
-      if (insertError) throw insertError;
+      if (insertError) {
+        console.error("Insert error:", insertError);
+        throw insertError;
+      }
 
       return NextResponse.json(newData, { status: 200 });
-    }
+    } else {
+      // Update profile data if changed
+      if (existingData.name !== session.user.name || existingData.image !== session.user.image) {
+        await supabase
+          .from("user_strikes")
+          .update({
+            name: session.user.name || existingData.name,
+            image: session.user.image || existingData.image,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("user_email", session.user.email);
+      }
 
-    return NextResponse.json(data, { status: 200 });
+      return NextResponse.json(existingData, { status: 200 });
+    }
   } catch (error) {
     console.error("Error fetching user strike:", error);
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { message: "Internal Server Error", error: error.message },
       { status: 500 },
     );
   }
@@ -83,7 +94,10 @@ export const POST = async (req: Request) => {
       .eq("user_email", userEmail)
       .single();
 
-    if (fetchError) throw fetchError;
+    if (fetchError) {
+      console.error("Fetch user data error:", fetchError);
+      throw fetchError;
+    }
 
     if (action === "upgrade") {
       // Check if already upgraded today
@@ -121,7 +135,10 @@ export const POST = async (req: Request) => {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Upgrade error:", error);
+        throw error;
+      }
       return NextResponse.json(data, { status: 200 });
 
     } else if (action === "restore") {
@@ -145,7 +162,10 @@ export const POST = async (req: Request) => {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Restore error:", error);
+        throw error;
+      }
       return NextResponse.json(data, { status: 200 });
 
     } else if (action === "reset") {
@@ -163,7 +183,10 @@ export const POST = async (req: Request) => {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Reset error:", error);
+        throw error;
+      }
       return NextResponse.json(data, { status: 200 });
     }
 
@@ -171,7 +194,7 @@ export const POST = async (req: Request) => {
   } catch (error) {
     console.error("Error updating user strike:", error);
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { message: "Internal Server Error", error: error.message },
       { status: 500 },
     );
   }
@@ -188,19 +211,26 @@ export const PATCH = async (req: Request) => {
   try {
     const { strike_name } = await req.json();
 
+    if (!strike_name || typeof strike_name !== 'string' || strike_name.trim().length === 0) {
+      return NextResponse.json({ message: "Invalid strike name" }, { status: 400 });
+    }
+
     const { data, error } = await supabase
       .from("user_strikes")
-      .update({ strike_name, updated_at: new Date().toISOString() })
+      .update({ strike_name: strike_name.trim(), updated_at: new Date().toISOString() })
       .eq("user_email", session.user.email)
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error("Update strike name error:", error);
+      throw error;
+    }
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error("Error updating strike name:", error);
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { message: "Internal Server Error", error: error.message },
       { status: 500 },
     );
   }
