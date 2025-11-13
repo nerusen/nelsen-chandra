@@ -244,6 +244,7 @@
     "login_button": "Masuk",
     "strike_name_title": "Nama Strike",
     "user_rank_title": "Peringkat",
+    "user_level_title": "Rangkaian Saat Ini",
     "user_name_title": "Nama",
     "leaderboard_title": "Posisi",
     "upgrade_button": "Tingkatkan Strike",
@@ -257,6 +258,7 @@
     "cancel_button": "Batal",
     "close_button": "Tutup",
     "user_rank_popup": "Peringkat Anda",
+    "user_level_popup": "Rangkaian Saat Ini Anda",
     "user_name_popup": "Nama Anda",
     "leaderboard_position_popup": "Posisi Anda",
     "leaderboard_popup": "Papan Peringkat",
@@ -270,6 +272,7 @@
     "strike_header": "Strike",
     "achieved_at": "Dicapai pada",
     "streak": "rangkaian",
-    "level": "level"
+    "level": "level",
+    "days": "hari"
   }
 }

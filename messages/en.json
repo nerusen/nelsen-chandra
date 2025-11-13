@@ -245,6 +245,7 @@
     "login_button": "Sign In",
     "strike_name_title": "Strike Name",
     "user_rank_title": "Rank",
+    "user_level_title": "Current Streak",
     "user_name_title": "Name",
     "leaderboard_title": "Position",
     "upgrade_button": "Upgrade Strike",
@@ -258,6 +259,7 @@
     "cancel_button": "Cancel",
     "close_button": "Close",
     "user_rank_popup": "Your Rank",
+    "user_level_popup": "Your Current Streak",
     "user_name_popup": "Your Name",
     "leaderboard_position_popup": "Your Position",
     "leaderboard_popup": "Leaderboard",
@@ -271,6 +273,7 @@
     "strike_header": "Strike",
     "achieved_at": "Achieved at",
     "streak": "streak",
-    "level": "level"
+    "level": "level",
+    "days": "days"
   }
 }
