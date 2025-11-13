@@ -12,57 +12,33 @@ export const GET = async () => {
   }
 
   try {
-    // First, try to get existing user data
-    const { data: existingData, error: fetchError } = await supabase
+    // Use upsert to handle both insert and update in one operation
+    const { data: userData, error: upsertError } = await supabase
       .from("user_strikes")
-      .select("*")
-      .eq("user_email", session.user.email)
+      .upsert({
+        user_email: session.user.email,
+        name: session.user.name || null,
+        image: session.user.image || null,
+        strike_name: session.user.name || "New Striker",
+        current_streak: 0,
+        max_streak: 0,
+        last_strike_date: null,
+        restore_count: 0,
+        last_restore_month: null,
+        updated_at: new Date().toISOString(),
+      }, {
+        onConflict: 'user_email',
+        ignoreDuplicates: false
+      })
+      .select()
       .single();
 
-    if (fetchError && fetchError.code !== 'PGRST116') {
-      console.error("Fetch error:", fetchError);
-      throw fetchError;
+    if (upsertError) {
+      console.error("Upsert error:", upsertError);
+      throw upsertError;
     }
 
-    if (!existingData) {
-      // Create new user strike record
-      const { data: newData, error: insertError } = await supabase
-        .from("user_strikes")
-        .insert([{
-          user_email: session.user.email,
-          strike_name: session.user.name || "New Striker",
-          name: session.user.name || null,
-          image: session.user.image || null,
-          current_streak: 0,
-          max_streak: 0,
-          last_strike_date: null,
-          restore_count: 0,
-          last_restore_month: null,
-        }])
-        .select()
-        .single();
-
-      if (insertError) {
-        console.error("Insert error:", insertError);
-        throw insertError;
-      }
-
-      return NextResponse.json(newData, { status: 200 });
-    } else {
-      // Update profile data if changed
-      if (existingData.name !== session.user.name || existingData.image !== session.user.image) {
-        await supabase
-          .from("user_strikes")
-          .update({
-            name: session.user.name || existingData.name,
-            image: session.user.image || existingData.image,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("user_email", session.user.email);
-      }
-
-      return NextResponse.json(existingData, { status: 200 });
-    }
+    return NextResponse.json(userData, { status: 200 });
   } catch (error) {
     console.error("Error fetching user strike:", error);
     return NextResponse.json(
@@ -100,46 +76,32 @@ export const POST = async (req: Request) => {
     }
 
     if (action === "upgrade") {
-      // Check if already upgraded today
-      if (userData.last_strike_date === today) {
-        return NextResponse.json({ message: "Already upgraded today" }, { status: 400 });
+      // Use the database function for safer upgrade logic
+      const { data: upgradeResult, error: upgradeError } = await supabase
+        .rpc('upgrade_strike', { p_email: userEmail });
+
+      if (upgradeError) {
+        console.error("Upgrade RPC error:", upgradeError);
+        throw upgradeError;
       }
 
-      // Check if streak is broken (more than 1 day since last strike)
-      const lastStrikeDate = userData.last_strike_date ? new Date(userData.last_strike_date) : null;
-      const daysSinceLastStrike = lastStrikeDate ? Math.floor((now.getTime() - lastStrikeDate.getTime()) / (1000 * 60 * 60 * 24)) : null;
-
-      let newCurrentStreak = userData.current_streak;
-      let newMaxStreak = userData.max_streak;
-
-      if (daysSinceLastStrike === null || daysSinceLastStrike === 1) {
-        // Continue streak
-        newCurrentStreak += 1;
-        if (newCurrentStreak > newMaxStreak) {
-          newMaxStreak = newCurrentStreak;
-        }
-      } else if (daysSinceLastStrike > 1) {
-        // Streak broken, start new streak
-        newCurrentStreak = 1;
+      if (!upgradeResult.success) {
+        return NextResponse.json({ message: upgradeResult.message }, { status: 400 });
       }
 
-      const { data, error } = await supabase
+      // Fetch updated data to return
+      const { data: updatedData, error: fetchError } = await supabase
         .from("user_strikes")
-        .update({
-          current_streak: newCurrentStreak,
-          max_streak: newMaxStreak,
-          last_strike_date: today,
-          updated_at: now.toISOString(),
-        })
+        .select("*")
         .eq("user_email", userEmail)
-        .select()
         .single();
 
-      if (error) {
-        console.error("Upgrade error:", error);
-        throw error;
+      if (fetchError) {
+        console.error("Fetch updated data error:", fetchError);
+        throw fetchError;
       }
-      return NextResponse.json(data, { status: 200 });
+
+      return NextResponse.json(updatedData, { status: 200 });
 
     } else if (action === "restore") {
       // Check if restore is allowed
