@@ -153,8 +153,39 @@ const StrikeGame = () => {
     }
   };
 
-  if (status === "loading") return <div>Loading...</div>;
-  if (!session) return null;
+  if (status === "loading") {
+    return (
+      <div className="flex h-full flex-col items-center justify-center gap-y-4 transition-all duration-300">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neutral-700 dark:border-neutral-300 mx-auto"></div>
+          <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+            Loading...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+        <div>
+          <h2 className="text-2xl font-medium">Login Required</h2>
+          <p className="mb-6 border-b border-dashed border-neutral-600 pb-6 pt-2 text-neutral-600 dark:text-neutral-400 md:mb-0 md:border-b-0 md:pb-0">
+            Please login to access the Strike Game and track your daily streaks.
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <a
+            href="/login"
+            className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+          >
+            <span className="inline">Login to Start Playing</span>
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   const currentLevel = userStrike ? getLevelFromStreak(userStrike.max_streak) : levelData[0];
   const displayLevel = userStrike && userStrike.current_streak === 0 ? levelData[0] : currentLevel;
