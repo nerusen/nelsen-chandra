@@ -277,6 +277,16 @@
     "days": "hari",
     "confirm_button": "Konfirmasi",
     "reset_warning_title": "PERINGATAN",
-    "reset_warning_description": "Apakah Anda yakin ingin mengatur ulang semua progres permainan? Tindakan ini tidak dapat dibatalkan."
+    "reset_warning_description": "Apakah Anda yakin ingin mengatur ulang semua progres permainan? Tindakan ini tidak dapat dibatalkan.",
+    "actions_title": "Tindakan",
+    "strike_actions_title": "Tindakan Strike",
+    "stats_title": "Statistik",
+    "settings_button": "Pengaturan",
+    "settings_popup_title": "Pengaturan",
+    "settings_popup_description": "Kelola pengaturan dan data permainan Anda.",
+    "refresh_title": "Segarkan Data",
+    "refresh_description": "Perbarui data strike saat ini dan peringkat papan peringkat",
+    "reset_title": "Reset Kemajuan",
+    "reset_description": "Reset semua kemajuan permainan strike Anda. Tindakan ini tidak dapat dibatalkan"
   }
 }
