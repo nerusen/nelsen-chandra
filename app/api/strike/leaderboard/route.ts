@@ -5,38 +5,22 @@ export const GET = async () => {
   const supabase = createClient();
 
   try {
-    // Get all users with their strike data and profile info, ordered by current_streak descending
-    const { data: strikes, error: strikesError } = await supabase
+    // Get all users with their strike data from the unified table, ordered by current_streak descending
+    const { data: leaderboard, error } = await supabase
       .from("user_strikes")
-      .select("*")
+      .select("user_email, strike_name, current_streak, name, image")
       .order("current_streak", { ascending: false });
 
-    if (strikesError) throw strikesError;
+    if (error) throw error;
 
-    // Get all user profiles
-    const { data: profiles, error: profilesError } = await supabase
-      .from("user_profiles")
-      .select("*");
-
-    if (profilesError) throw profilesError;
-
-    // Create a map of profiles for quick lookup
-    const profileMap = new Map();
-    profiles?.forEach(profile => {
-      profileMap.set(profile.user_email, profile);
-    });
-
-    // Transform the data to include profile info
-    const transformedLeaderboard = strikes?.map((strike) => {
-      const profile = profileMap.get(strike.user_email);
-      return {
-        user_email: strike.user_email,
-        strike_name: strike.strike_name,
-        current_streak: strike.current_streak,
-        name: profile?.name || "Unknown User",
-        image: profile?.image || "/default-avatar.png",
-      };
-    });
+    // Transform the data to ensure consistent format
+    const transformedLeaderboard = leaderboard?.map((user) => ({
+      user_email: user.user_email,
+      strike_name: user.strike_name,
+      current_streak: user.current_streak,
+      name: user.name || "Unknown User",
+      image: user.image || "/default-avatar.png",
+    }));
 
     return NextResponse.json(transformedLeaderboard, { status: 200 });
   } catch (error) {
