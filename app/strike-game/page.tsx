@@ -142,8 +142,8 @@ export default function StrikeGamePage() {
         {/* Right Side - GIF and Info Bubbles */}
         <div className="md:w-2/3">
           {/* GIF Display */}
-              src={`/images/strike/level-${strikeLevel}.gif`} 
-              alt={`Level ${strikeLevel}`} 
+          <div className="mb-6">
+            <img 
               className="w-full max-w-md mx-auto" 
               style={{ width: '480px', height: '480px' }}
             />
@@ -207,28 +207,19 @@ export default function StrikeGamePage() {
                 <thead>
                   <tr className="border-b border-gray-500">
                     <th className="px-4 py-2 text-left">Position</th>
-                    <th className="px-4 py-2 text-left">Profile</th>
                     <th className="px-4 py-2 text-left">Strike Name</th>
                     <th className="px-4 py-2 text-left">Username</th>
-                    <th className="px-4 py-2 text-left">Level</th>
                     <th className="px-4 py-2 text-left">Badge</th>
                   </tr>
                 </thead>
                 <tbody>
                   {leaderboard.map((user, index) => (
-              <tr 
-                className={`border-b border-gray-500 ${index < 3 ? 'bg-yellow-100 dark:bg-yellow-900' : ''}`}
-              >
-                <td className="px-4 py-2 font-semibold">{index + 1}</td>
-                <td className="px-4 py-2">
-                  <img src={user.profileImage} alt={user.username} className="w-12 h-12 rounded-full" />
-                </td>
-                <td className="px-4 py-2">{user.strike_name}</td>
-                <td className="px-4 py-2">{user.username}</td>
-                <td className="px-4 py-2">{user.position}</td>
-                <td className="px-4 py-2">{user.badge}</td>
-              </tr>
-
+                    <tr key={index} className={`border-b border-gray-500 ${index < 3 ? 'bg-yellow-100 dark:bg-yellow-900' : ''}`}>
+                      <td className="px-4 py-2 font-semibold">{index + 1}</td>
+                      <td className="px-4 py-2">{user.strike_name}</td>
+                      <td className="px-4 py-2">{user.username}</td>
+                      <td className="px-4 py-2">{user.badge}</td>
+                    </tr>
                   ))}
                 </tbody>
               </table>
