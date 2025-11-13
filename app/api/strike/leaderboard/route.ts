@@ -30,8 +30,8 @@ export const GET = async () => {
         };
 
         // If this is the current user, use their session data
-        if (strike.user_email === session.user.email) {
-          userInfo = {
+        if (session.user && strike.user_email === session.user.email) {
+         userInfo = {
             name: session.user.name || "Unknown User",
             image: session.user.image || "/default-avatar.png",
           };
