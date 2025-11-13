@@ -18,6 +18,7 @@ export const GET = async () => {
         user_email: session.user.email,
         name: session.user.name || null,
         image: session.user.image || null,
+        updated_at: new Date().toISOString(),
       });
 
     const { data, error } = await supabase
