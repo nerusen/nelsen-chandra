@@ -223,8 +223,7 @@ const StrikeGame = () => {
       <SectionSubHeading>
         <p>{t("sub_title")}</p>
       </SectionSubHeading>
-
-      <Breakline className="my-8" />
+      <Breakline />
 
       {/* Profile Bubble */}
       <SpotlightCard className="p-6">
@@ -241,80 +240,100 @@ const StrikeGame = () => {
         </div>
       </SpotlightCard>
 
-      {/* Action Buttons Above GIF */}
-      <div className="flex justify-between items-center">
-        <button
-          onClick={() => setShowPopup("guide")}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
-        >
-          <GiOpenBook />
-          <span className="inline">{t("guide_button")}</span>
-        </button>
-        <button
-          onClick={() => setShowPopup("leaderboard")}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
-        >
-          <GiHolyGrail />
-          <span className="inline">{t("leaderboard_button")}</span>
-        </button>
-      </div>
+      {/* Main Game Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column - Action Buttons */}
+        <div className="lg:col-span-1 space-y-4">
+          <SpotlightCard className="p-4">
+            <h4 className="font-medium text-sm mb-3 text-center">{t("actions_title")}</h4>
+            <div className="space-y-2">
+              <button
+                onClick={() => setShowPopup("guide")}
+                className="group flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+              >
+                <GiOpenBook />
+                <span className="inline">{t("guide_button")}</span>
+              </button>
+              <button
+                onClick={() => setShowPopup("leaderboard")}
+                className="group flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+              >
+                <GiHolyGrail />
+                <span className="inline">{t("leaderboard_button")}</span>
+              </button>
+            </div>
+          </SpotlightCard>
 
-      {/* GIF Display */}
-      <SpotlightCard className="p-6 text-center">
-        <img
-          src={`/images/strike/level-${displayLevel.level}.gif`}
-          alt={`Level ${displayLevel.level}`}
-          className="w-48 h-48 mx-auto"
-        />
-      </SpotlightCard>
+          {/* Strike Upgrade Section */}
+          <SpotlightCard className="p-4">
+            <h4 className="font-medium text-sm mb-3 text-center">{t("strike_actions_title")}</h4>
+            <div className="space-y-2">
+              <button
+                onClick={handleStrikeUpgrade}
+                className="group flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+              >
+                <GiUpgrade />
+                <span className="inline">{t("upgrade_button")}</span>
+              </button>
+              {userStrike && userStrike.current_streak === 0 && (
+                <button
+                  onClick={handleRestoreStrike}
+                  className="group flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+                >
+                  <GiCycle />
+                  <span className="inline">{t("restore_button")}</span>
+                </button>
+              )}
+              {userStrike && (
+                <p className="text-xs text-neutral-600 dark:text-neutral-400 text-center mt-2">
+                  {t("restores_left")}: {3 - userStrike.restore_count}/3
+                </p>
+              )}
+            </div>
+          </SpotlightCard>
+        </div>
 
-      {/* Strike Upgrade Button */}
-      <div className="text-center space-y-2">
-        <button
-          onClick={handleStrikeUpgrade}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
-        >
-          <GiUpgrade />
-          <span className="inline">{t("upgrade_button")}</span>
-        </button>
-        {userStrike && (
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">
-            {t("restores_left")}: {3 - userStrike.restore_count}/3
-          </p>
-        )}
-        {userStrike && userStrike.current_streak === 0 && (
-          <button
-            onClick={handleRestoreStrike}
-            className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
-          >
-            <GiCycle />
-            <span className="inline">{t("restore_button")}</span>
-          </button>
-        )}
-      </div>
+        {/* Center Column - GIF Display */}
+        <div className="lg:col-span-1 flex items-center justify-center">
+          <SpotlightCard className="p-6 text-center w-full max-w-sm">
+            <img
+              src={`/images/strike/level-${displayLevel.level}.gif`}
+              alt={`Level ${displayLevel.level}`}
+              className="w-48 h-48 mx-auto"
+            />
+          </SpotlightCard>
+        </div>
 
-      {/* User Info Bubbles */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("strike_name")}>
-          <h4 className="font-medium text-sm">{t("strike_name_title")}</h4>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{userStrike?.strike_name}</p>
-        </SpotlightCard>
-        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_rank")}>
-          <h4 className="font-medium text-sm">{t("user_rank_title")}</h4>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{currentLevel.name}</p>
-        </SpotlightCard>
-        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_level")}>
-          <h4 className="font-medium text-sm">{t("user_level_title")}</h4>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{userStrike?.current_streak} {t("days")}</p>
-        </SpotlightCard>
-        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_name")}>
-          <h4 className="font-medium text-sm">{t("user_name_title")}</h4>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{session.user?.name}</p>
-        </SpotlightCard>
-        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_leaderboard")}>
-          <h4 className="font-medium text-sm">{t("leaderboard_title")}</h4>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
-        </SpotlightCard>
+        {/* Right Column - User Info */}
+        <div className="lg:col-span-1">
+          <SpotlightCard className="p-4">
+            <h4 className="font-medium text-sm mb-3 text-center">{t("stats_title")}</h4>
+            <div className="grid grid-cols-2 gap-2">
+              <SpotlightCard className="p-3 cursor-pointer text-center" onClick={() => setShowPopup("strike_name")}>
+                <h5 className="font-medium text-xs">{t("strike_name_title")}</h5>
+                <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1 truncate">{userStrike?.strike_name}</p>
+              </SpotlightCard>
+              <SpotlightCard className="p-3 cursor-pointer text-center" onClick={() => setShowPopup("user_rank")}>
+                <h5 className="font-medium text-xs">{t("user_rank_title")}</h5>
+                <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{currentLevel.name}</p>
+              </SpotlightCard>
+              <SpotlightCard className="p-3 cursor-pointer text-center" onClick={() => setShowPopup("user_level")}>
+                <h5 className="font-medium text-xs">{t("user_level_title")}</h5>
+                <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{userStrike?.current_streak} {t("days")}</p>
+              </SpotlightCard>
+              <SpotlightCard className="p-3 cursor-pointer text-center" onClick={() => setShowPopup("user_name")}>
+                <h5 className="font-medium text-xs">{t("user_name_title")}</h5>
+                <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1 truncate">{session.user?.name}</p>
+              </SpotlightCard>
+            </div>
+            <div className="mt-3">
+              <SpotlightCard className="p-3 cursor-pointer text-center" onClick={() => setShowPopup("user_leaderboard")}>
+                <h5 className="font-medium text-xs">{t("leaderboard_title")}</h5>
+                <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
+              </SpotlightCard>
+            </div>
+          </SpotlightCard>
+        </div>
       </div>
 
       {/* Settings Button */}
