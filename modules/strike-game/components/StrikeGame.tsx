@@ -217,7 +217,7 @@ const StrikeGame = () => {
   const displayLevel = userStrike && userStrike.current_streak === 0 ? levelData[0] : currentLevel;
 
   return (
-    <section className="space-y-6">
+    <div className="space-y-6">
       <div className="space-y-2">
         <SectionHeading title={t("title")} icon={<StrikeIcon />} />
         <SectionSubHeading>
