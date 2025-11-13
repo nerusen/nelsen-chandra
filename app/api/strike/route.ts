@@ -66,7 +66,7 @@ export const GET = async () => {
   } catch (error) {
     console.error("Error fetching user strike:", error);
     return NextResponse.json(
-      { message: "Internal Server Error", error: error.message },
+      { message: "Internal Server Error", error: error instanceof Error ? error.message : String(error) },
       { status: 500 },
     );
   }
@@ -194,7 +194,7 @@ export const POST = async (req: Request) => {
   } catch (error) {
     console.error("Error updating user strike:", error);
     return NextResponse.json(
-      { message: "Internal Server Error", error: error.message },
+      { message: "Internal Server Error", error: error instanceof Error ? error.message : String(error) },
       { status: 500 },
     );
   }
@@ -230,7 +230,7 @@ export const PATCH = async (req: Request) => {
   } catch (error) {
     console.error("Error updating strike name:", error);
     return NextResponse.json(
-      { message: "Internal Server Error", error: error.message },
+      { message: "Internal Server Error", error: error instanceof Error ? error.message : String(error) },
       { status: 500 },
     );
   }
