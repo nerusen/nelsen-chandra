@@ -1,16 +1,23 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { GiFire, GiHolyGrail, GiUpgrade, GiBullseye, GiAncientSword, GiAllForOne, GiBatBlade, GiBoltShield, GiBurningSkull, GiAngelWings, GiAngelOutfit, GiLaurelCrown } from 'react-icons/gi';
 import { createClient } from '@/common/utils/client';
+
+interface LeaderboardItem {
+  position: number;
+  strike_name: string;
+  username: string;
+  badge: any;
+}
 
 export default function StrikeGamePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [strikeLevel, setStrikeLevel] = useState(0);
   const [upgradeAvailable, setUpgradeAvailable] = useState(true);
   const [restoreCount, setRestoreCount] = useState(0);
-  const [leaderboard, setLeaderboard] = useState([]);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardItem[]>([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showInfo, setShowInfo] = useState({ type: null, user: null });
   const [showGuide, setShowGuide] = useState(false);
@@ -84,7 +91,7 @@ export default function StrikeGamePage() {
   };
 
   // Function to show info popup
-  const showInfoPopup = (type, user) => {
+  const showInfoPopup = (type: string, user: any) => {
     setShowInfo({ type, user });
   };
 
@@ -214,7 +221,7 @@ export default function StrikeGamePage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {leaderboard.map((user, index) => (
+                  {leaderboard.map((user: LeaderboardItem, index: number) => (
                     <tr key={index} className={`border-b border-gray-500 ${index < 3 ? 'bg-yellow-100 dark:bg-yellow-900' : ''}`}>
                       <td className="px-4 py-2 font-semibold">{index + 1}</td>
                       <td className="px-4 py-2">{user.strike_name}</td>
