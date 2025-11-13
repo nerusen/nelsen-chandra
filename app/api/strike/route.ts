@@ -18,8 +18,6 @@ export const GET = async () => {
         user_email: session.user.email,
         name: session.user.name || null,
         image: session.user.image || null,
-      }, {
-        onConflict: 'user_email'
       });
 
     const { data, error } = await supabase
