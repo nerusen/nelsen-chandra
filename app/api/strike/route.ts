@@ -1,10 +1,11 @@
 import { createClient } from "@/common/utils/server";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/common/libs/next-auth";
 
 export const GET = async () => {
   const supabase = createClient();
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -62,7 +63,7 @@ export const GET = async () => {
 
 export const POST = async (req: Request) => {
   const supabase = createClient();
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -178,7 +179,7 @@ export const POST = async (req: Request) => {
 
 export const PATCH = async (req: Request) => {
   const supabase = createClient();
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
