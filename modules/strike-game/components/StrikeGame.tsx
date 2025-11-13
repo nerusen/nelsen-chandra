@@ -60,6 +60,7 @@ const StrikeGame = () => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
   const [showPopup, setShowPopup] = useState<string | null>(null);
   const [newStrikeName, setNewStrikeName] = useState("");
+  const [guideTab, setGuideTab] = useState<"ranks" | "levels">("ranks");
 
   useEffect(() => {
     if (status === "loading") return;
@@ -217,13 +218,7 @@ const StrikeGame = () => {
   const displayLevel = userStrike && userStrike.current_streak === 0 ? levelData[0] : currentLevel;
 
   return (
-    <div className="space-y-6">
-      <SectionHeading title={t("title")} icon={<StrikeIcon />} />
-      <SectionSubHeading>
-        <p>{t("sub_title")}</p>
-      </SectionSubHeading>
-
-      <Breakline className="my-8" />
+    <div className="max-w-4xl mx-auto px-4 space-y-6">
 
       {/* Profile Bubble */}
       <SpotlightCard className="p-6">
@@ -316,23 +311,13 @@ const StrikeGame = () => {
         </SpotlightCard>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex justify-center gap-4">
+      {/* Settings Button */}
+      <div className="flex justify-center">
         <button
-          onClick={() => {
-            fetchUserStrike();
-            fetchLeaderboard();
-          }}
+          onClick={() => setShowPopup("settings")}
           className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
         >
-          <GiCycle />
-          <span className="inline">{t("refresh_button")}</span>
-        </button>
-        <button
-          onClick={() => setShowPopup("reset_confirm")}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
-        >
-          <span className="inline">{t("reset_button")}</span>
+          <span className="inline">{t("settings_button")}</span>
         </button>
       </div>
 
@@ -400,37 +385,76 @@ const StrikeGame = () => {
 
       {showPopup === "leaderboard" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
-          <SpotlightCard className="p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <h3 className="text-lg font-bold mb-4">{t("leaderboard_popup")}</h3>
+          <SpotlightCard className="p-4 max-w-sm w-full max-h-[60vh] overflow-y-auto">
+            <h3 className="text-base font-bold mb-3">{t("leaderboard_popup")}</h3>
             <div className="space-y-2">
-              {leaderboard.map((user, index) => {
+              {leaderboard.slice(0, 10).map((user, index) => {
                 const userLevel = getLevelFromStreak(user.current_streak);
                 const isTop3 = index < 3;
                 return (
                   <SpotlightCard
                     key={user.user_email}
-                    className={`p-3 ${isTop3 ? (index === 0 ? 'bg-yellow-100 dark:bg-yellow-900' : index === 1 ? 'bg-gray-100 dark:bg-gray-800' : 'bg-orange-100 dark:bg-orange-900') : ''}`}
+                    className={`p-2 ${isTop3 ? (index === 0 ? 'bg-yellow-100 dark:bg-yellow-900' : index === 1 ? 'bg-gray-100 dark:bg-gray-800' : 'bg-orange-100 dark:bg-orange-900') : ''}`}
                   >
-                    <div className="flex items-center space-x-3">
-                      <span className="font-bold text-sm">#{index + 1}</span>
-                      <img src={user.image} alt={user.name} className="w-8 h-8 rounded-full" />
+                    <div className="flex items-center space-x-2">
+                      <span className="font-bold text-xs">#{index + 1}</span>
+                      <img src={user.image} alt={user.name} className="w-6 h-6 rounded-full" />
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm truncate">{user.strike_name} - {user.name}</p>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-xs text-neutral-600 dark:text-neutral-400">{t("streak")}: {user.current_streak}</span>
-                          <div className="flex items-center space-x-1">
-                            <userLevel.icon size={12} />
-                            <span className="text-xs text-neutral-600 dark:text-neutral-400">{userLevel.name}</span>
-                          </div>
+                        <p className="font-medium text-xs truncate">{user.strike_name} - {user.name}</p>
+                        <div className="flex items-center space-x-1">
+                          <span className="text-xs text-neutral-600 dark:text-neutral-400">{user.current_streak}</span>
+                          <userLevel.icon size={10} />
                         </div>
                       </div>
-                      <img src={`/images/strike/level-${userLevel.level}.gif`} alt={`Level ${userLevel.level}`} className="w-10 h-10" />
+                      <img src={`/images/strike/level-${userLevel.level}.gif`} alt={`Level ${userLevel.level}`} className="w-8 h-8" />
                     </div>
                   </SpotlightCard>
                 );
               })}
             </div>
-            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
+            <button onClick={() => setShowPopup(null)} className="mt-3 px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
+          </SpotlightCard>
+        </div>
+      )}
+
+      {showPopup === "settings" && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <SpotlightCard className="p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold mb-4 text-center">{t("settings_popup_title")}</h3>
+            <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6 text-center">{t("settings_popup_description")}</p>
+
+            <div className="space-y-4">
+              {/* Refresh Button */}
+              <div className="border border-neutral-300 dark:border-neutral-600 rounded-lg p-4">
+                <h4 className="font-semibold mb-2">{t("refresh_title")}</h4>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">{t("refresh_description")}</p>
+                <button
+                  onClick={() => {
+                    fetchUserStrike();
+                    fetchLeaderboard();
+                    setShowPopup(null);
+                  }}
+                  className="group flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+                >
+                  <GiCycle />
+                  <span className="inline">{t("refresh_button")}</span>
+                </button>
+              </div>
+
+              {/* Reset Button */}
+              <div className="border border-neutral-300 dark:border-neutral-600 rounded-lg p-4">
+                <h4 className="font-semibold mb-2 text-red-500">{t("reset_title")}</h4>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">{t("reset_description")}</p>
+                <button
+                  onClick={() => setShowPopup("reset_confirm")}
+                  className="group flex w-full items-center justify-center gap-2 rounded-lg border border-red-400 bg-red-50 px-3 py-2 text-sm transition duration-100 hover:bg-red-100 dark:border-red-600 dark:bg-red-900 dark:hover:bg-red-800 text-red-700 dark:text-red-300"
+                >
+                  <span className="inline">{t("reset_button")}</span>
+                </button>
+              </div>
+            </div>
+
+            <button onClick={() => setShowPopup(null)} className="mt-6 w-full px-4 py-2 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
           </SpotlightCard>
         </div>
       )}
@@ -470,9 +494,34 @@ const StrikeGame = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
           <SpotlightCard className="p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto">
             <h3 className="text-lg font-bold mb-4">{t("guide_popup")}</h3>
-            <div className="space-y-4">
+
+            {/* Tab Buttons */}
+            <div className="flex space-x-2 mb-4">
+              <button
+                onClick={() => setGuideTab("ranks")}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition duration-100 ${
+                  guideTab === "ranks"
+                    ? "bg-neutral-800 text-white dark:bg-neutral-200 dark:text-black"
+                    : "bg-neutral-100 text-neutral-700 border border-neutral-300 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-600 dark:hover:bg-neutral-700"
+                }`}
+              >
+                {t("ranks_section")}
+              </button>
+              <button
+                onClick={() => setGuideTab("levels")}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition duration-100 ${
+                  guideTab === "levels"
+                    ? "bg-neutral-800 text-white dark:bg-neutral-200 dark:text-black"
+                    : "bg-neutral-100 text-neutral-700 border border-neutral-300 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-600 dark:hover:bg-neutral-700"
+                }`}
+              >
+                {t("levels_section")}
+              </button>
+            </div>
+
+            {/* Tab Content */}
+            {guideTab === "ranks" && (
               <div>
-                <h4 className="font-semibold mb-2">{t("ranks_section")}</h4>
                 <table className="w-full border-collapse border border-gray-300">
                   <thead>
                     <tr>
@@ -492,8 +541,10 @@ const StrikeGame = () => {
                   </tbody>
                 </table>
               </div>
+            )}
+
+            {guideTab === "levels" && (
               <div>
-                <h4 className="font-semibold mb-2">{t("levels_section")}</h4>
                 <table className="w-full border-collapse border border-gray-300">
                   <thead>
                     <tr>
@@ -515,7 +566,8 @@ const StrikeGame = () => {
                   </tbody>
                 </table>
               </div>
-            </div>
+            )}
+
             <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
           </SpotlightCard>
         </div>
