@@ -316,11 +316,21 @@ const StrikeGame = () => {
         </SpotlightCard>
       </div>
 
-      {/* Reset Button */}
-      <div className="text-center">
+      {/* Action Buttons */}
+      <div className="flex justify-center gap-4">
+        <button
+          onClick={() => {
+            fetchUserStrike();
+            fetchLeaderboard();
+          }}
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+        >
+          <GiCycle />
+          <span className="inline">{t("refresh_button")}</span>
+        </button>
         <button
           onClick={handleResetProgress}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
         >
           <span className="inline">{t("reset_button")}</span>
         </button>
