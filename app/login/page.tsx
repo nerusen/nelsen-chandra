@@ -21,7 +21,7 @@ const LoginPage = async () => {
   const session = await getServerSession(authOptions);
 
   if (session) {
-    redirect("/chat");
+    redirect("/.");
   }
 
   return (
