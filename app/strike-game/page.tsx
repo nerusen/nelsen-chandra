@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { GiFire, GiHolyGrail, GiUpgrade, GiBullseye, GiAncientSword, GiAllForOne, GiBatBlade, GiBoltShield, GiBurningSkull, GiAngelWings, GiAngelOutfit, GiLaurelCrown } from 'react-icons/gi';
-import { supabase } from '../config/supabase';
+import { createClient } from '@/common/utils/client';
 
 export default function StrikeGamePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,6 +19,7 @@ export default function StrikeGamePage() {
   // Check authentication status and fetch user data
   useEffect(() => {
     const checkAuth = async () => {
+      const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       setIsAuthenticated(!!user);
       if (user) {
