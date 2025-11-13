@@ -26,7 +26,7 @@ interface UserStrike {
 interface LeaderboardUser {
   user_email: string;
   strike_name: string;
-  max_streak: number;
+  current_streak: number;
   image: string;
   name: string;
 }
@@ -404,7 +404,7 @@ const StrikeGame = () => {
             <h3 className="text-lg font-bold mb-4">{t("leaderboard_popup")}</h3>
             <div className="space-y-2">
               {leaderboard.map((user, index) => {
-                const userLevel = getLevelFromStreak(user.max_streak);
+                const userLevel = getLevelFromStreak(user.current_streak);
                 const isTop3 = index < 3;
                 return (
                   <SpotlightCard
@@ -417,7 +417,7 @@ const StrikeGame = () => {
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm truncate">{user.strike_name} - {user.name}</p>
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs text-neutral-600 dark:text-neutral-400">{t("streak")}: {user.max_streak}</span>
+                          <span className="text-xs text-neutral-600 dark:text-neutral-400">{t("streak")}: {user.current_streak}</span>
                           <div className="flex items-center space-x-1">
                             <userLevel.icon size={12} />
                             <span className="text-xs text-neutral-600 dark:text-neutral-400">{userLevel.name}</span>
