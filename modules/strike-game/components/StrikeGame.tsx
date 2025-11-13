@@ -399,16 +399,17 @@ const StrikeGame = () => {
                 return (
                   <SpotlightCard
                     key={user.user_email}
-                    className={`p-4 ${isTop3 ? (index === 0 ? 'bg-yellow-100 dark:bg-yellow-900' : index === 1 ? 'bg-gray-100 dark:bg-gray-800' : 'bg-orange-100 dark:bg-orange-900') : ''}`}
+                    className={`p-3 ${isTop3 ? (index === 0 ? 'bg-yellow-100 dark:bg-yellow-900' : index === 1 ? 'bg-gray-100 dark:bg-gray-800' : 'bg-orange-100 dark:bg-orange-900') : ''}`}
                   >
                     <div className="flex items-center space-x-3">
-                      <span className="font-bold">#{index + 1}</span>
+                      <span className="font-bold text-sm">#{index + 1}</span>
                       <img src={user.image} alt={user.name} className="w-8 h-8 rounded-full" />
-                      <div className="flex-1">
-                        <p className="font-medium">{user.strike_name} - {user.name}</p>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate">{user.strike_name} - {user.name}</p>
+                        <p className="text-xs text-neutral-600 dark:text-neutral-400">{t("level")}: {userLevel.name}</p>
                       </div>
-                      <img src={`/images/strike/level-${userLevel.level}.gif`} alt={`Level ${userLevel.level}`} className="w-12 h-12" />
-                      <userLevel.icon size={20} />
+                      <img src={`/images/strike/level-${userLevel.level}.gif`} alt={`Level ${userLevel.level}`} className="w-10 h-10" />
+                      <userLevel.icon size={16} />
                     </div>
                   </SpotlightCard>
                 );
