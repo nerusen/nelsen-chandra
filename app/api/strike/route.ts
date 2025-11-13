@@ -34,8 +34,8 @@ export const GET = async () => {
         .from("user_profiles")
         .upsert({
           user_email: session.user.email,
-          name: session.user.name,
-          image: session.user.image,
+          name: session.user.name || null,
+          image: session.user.image || null,
         });
 
       return NextResponse.json(newData, { status: 200 });
