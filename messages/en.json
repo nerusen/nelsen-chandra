@@ -251,6 +251,7 @@
     "upgrade_button": "Upgrade Strike",
     "restore_button": "Restore Strike",
     "reset_button": "Reset Progress",
+    "refresh_button": "Refresh Data",
     "leaderboard_button": "Leaderboard",
     "guide_button": "Guide",
     "restores_left": "Restores left",
