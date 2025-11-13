@@ -3,11 +3,14 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { GiBullseye, GiAncientSword, GiAllForOne, GiBatBlade, GiBoltShield, GiBurningSkull, GiAngelWings, GiAngelOutfit, GiLaurelCrown, GiHolyGrail, GiUpgrade, GiCycle, GiOpenBook } from "react-icons/gi";
+import { GiBullseye, GiAncientSword, GiAllForOne, GiBatBlade, GiBoltShield, GiBurningSkull, GiAngelWings, GiAngelOutfit, GiLaurelCrown, GiHolyGrail, GiUpgrade, GiCycle, GiOpenBook, GiBurningEmbers as StrikeIcon } from "react-icons/gi";
+import { useTranslations } from "next-intl";
 
 import Card from "@/common/components/elements/Card";
 import Breakline from "@/common/components/elements/Breakline";
 import SpotlightCard from "@/common/components/elements/SpotlightCard";
+import SectionHeading from "@/common/components/elements/SectionHeading";
+import SectionSubHeading from "@/common/components/elements/SectionSubHeading";
 
 interface UserStrike {
   id: string;
@@ -52,6 +55,7 @@ const getLevelFromStreak = (streak: number) => {
 const StrikeGame = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const t = useTranslations("StrikeGamePage");
   const [userStrike, setUserStrike] = useState<UserStrike | null>(null);
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
   const [showPopup, setShowPopup] = useState<string | null>(null);
@@ -99,10 +103,16 @@ const StrikeGame = () => {
         body: JSON.stringify({ action: "upgrade" }),
       });
       if (res.ok) {
-        await fetchUserStrike();
+        const data = await res.json();
+        setUserStrike(data);
+        setNewStrikeName(data.strike_name);
+      } else {
+        const errorData = await res.json();
+        alert(errorData.message || "Failed to upgrade strike");
       }
     } catch (error) {
       console.error("Error upgrading strike:", error);
+      alert("Error upgrading strike");
     }
   };
 
@@ -114,10 +124,16 @@ const StrikeGame = () => {
         body: JSON.stringify({ action: "restore" }),
       });
       if (res.ok) {
-        await fetchUserStrike();
+        const data = await res.json();
+        setUserStrike(data);
+        setNewStrikeName(data.strike_name);
+      } else {
+        const errorData = await res.json();
+        alert(errorData.message || "Failed to restore strike");
       }
     } catch (error) {
       console.error("Error restoring strike:", error);
+      alert("Error restoring strike");
     }
   };
 
@@ -129,10 +145,16 @@ const StrikeGame = () => {
         body: JSON.stringify({ action: "reset" }),
       });
       if (res.ok) {
-        await fetchUserStrike();
+        const data = await res.json();
+        setUserStrike(data);
+        setNewStrikeName(data.strike_name);
+      } else {
+        const errorData = await res.json();
+        alert(errorData.message || "Failed to reset progress");
       }
     } catch (error) {
       console.error("Error resetting progress:", error);
+      alert("Error resetting progress");
     }
   };
 
@@ -144,11 +166,16 @@ const StrikeGame = () => {
         body: JSON.stringify({ strike_name: newStrikeName }),
       });
       if (res.ok) {
-        await fetchUserStrike();
+        const data = await res.json();
+        setUserStrike(data);
         setShowPopup(null);
+      } else {
+        const errorData = await res.json();
+        alert(errorData.message || "Failed to update strike name");
       }
     } catch (error) {
       console.error("Error updating strike name:", error);
+      alert("Error updating strike name");
     }
   };
 
@@ -169,9 +196,9 @@ const StrikeGame = () => {
     return (
       <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h2 className="text-2xl font-medium">Login Required</h2>
+          <h2 className="text-2xl font-medium">{t("login_required")}</h2>
           <p className="mb-6 border-b border-dashed border-neutral-600 pb-6 pt-2 text-neutral-600 dark:text-neutral-400 md:mb-0 md:border-b-0 md:pb-0">
-            Please login to access the Strike Game and track your daily streaks.
+            {t("login_description")}
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -179,7 +206,7 @@ const StrikeGame = () => {
             href="/login"
             className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
           >
-            <span className="inline">Login to Start Playing</span>
+            <span className="inline">{t("login_button")}</span>
           </a>
         </div>
       </div>
@@ -190,9 +217,18 @@ const StrikeGame = () => {
   const displayLevel = userStrike && userStrike.current_streak === 0 ? levelData[0] : currentLevel;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
+      <div className="space-y-3">
+        <SectionHeading title={t("title")} icon={<StrikeIcon size={24} />} />
+        <SectionSubHeading>
+          <p>{t("sub_title")}</p>
+        </SectionSubHeading>
+      </div>
+
+      <Breakline className="my-8" />
+
       {/* Profile Bubble */}
-      <Card className="p-4">
+      <SpotlightCard className="p-6">
         <div className="flex items-center space-x-3">
           <img
             src={session.user?.image || "/default-avatar.png"}
@@ -204,74 +240,76 @@ const StrikeGame = () => {
             <p className="text-sm text-neutral-600 dark:text-neutral-400">{session.user?.email}</p>
           </div>
         </div>
-      </Card>
+      </SpotlightCard>
 
       {/* Buttons */}
       <div className="flex justify-between">
         <button
           onClick={handleResetProgress}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
         >
-          Reset Progress
+          <span className="inline">{t("reset_button")}</span>
         </button>
         <button
           onClick={() => setShowPopup("leaderboard")}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2"
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
         >
           <GiHolyGrail />
-          <span>Leaderboard</span>
+          <span className="inline">{t("leaderboard_button")}</span>
         </button>
       </div>
 
       {/* GIF Display */}
-      <Card className="p-4 text-center">
+      <SpotlightCard className="p-6 text-center">
         <img
           src={`/images/strike/level-${displayLevel.level}.gif`}
           alt={`Level ${displayLevel.level}`}
-          className="w-48 h-48 mx-auto"
+          className="w-64 h-64 mx-auto"
         />
-      </Card>
+      </SpotlightCard>
 
       {/* Strike Upgrade Button */}
       <div className="text-center">
         <button
           onClick={handleStrikeUpgrade}
-          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center space-x-2 mx-auto"
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
         >
           <GiUpgrade />
-          <span>Strike Upgrade</span>
+          <span className="inline">{t("upgrade_button")}</span>
         </button>
         {userStrike && (
-          <p className="mt-2 text-sm">Restores left: {3 - userStrike.restore_count}/3</p>
+          <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+            {t("restores_left")}: {3 - userStrike.restore_count}/3
+          </p>
         )}
         {userStrike && userStrike.current_streak === 0 && (
           <button
             onClick={handleRestoreStrike}
-            className="mt-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 flex items-center space-x-2"
+            className="mt-2 group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
           >
             <GiCycle />
-            <span>Restore Strike</span>
+            <span className="inline">{t("restore_button")}</span>
           </button>
         )}
       </div>
 
       {/* User Info Bubbles */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <SpotlightCard className="p-4 cursor-pointer" onClick={() => setShowPopup("strike_name")}>
-          <h4 className="font-medium">Strike Name</h4>
-          <p className="text-sm">{userStrike?.strike_name}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <SpotlightCard className="p-6 cursor-pointer" onClick={() => setShowPopup("strike_name")}>
+          <h4 className="font-medium">{t("strike_name_title")}</h4>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">{userStrike?.strike_name}</p>
         </SpotlightCard>
-        <SpotlightCard className="p-4 cursor-pointer" onClick={() => setShowPopup("user_rank")}>
-          <h4 className="font-medium">User Rank</h4>
-          <p className="text-sm">{currentLevel.name}</p>
+        <SpotlightCard className="p-6 cursor-pointer" onClick={() => setShowPopup("user_rank")}>
+          <h4 className="font-medium">{t("user_rank_title")}</h4>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">{currentLevel.name}</p>
         </SpotlightCard>
-        <SpotlightCard className="p-4 cursor-pointer" onClick={() => setShowPopup("user_name")}>
-          <h4 className="font-medium">User Name</h4>
-          <p className="text-sm">{session.user?.name}</p>
+        <SpotlightCard className="p-6 cursor-pointer" onClick={() => setShowPopup("user_name")}>
+          <h4 className="font-medium">{t("user_name_title")}</h4>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">{session.user?.name}</p>
         </SpotlightCard>
-        <SpotlightCard className="p-4 cursor-pointer" onClick={() => setShowPopup("user_leaderboard")}>
-          <h4 className="font-medium">Leaderboard</h4>
-          <p className="text-sm">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
+        <SpotlightCard className="p-6 cursor-pointer" onClick={() => setShowPopup("user_leaderboard")}>
+          <h4 className="font-medium">{t("leaderboard_title")}</h4>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
         </SpotlightCard>
       </div>
 
@@ -279,18 +317,18 @@ const StrikeGame = () => {
       <div className="text-center">
         <button
           onClick={() => setShowPopup("guide")}
-          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center space-x-2 mx-auto"
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
         >
           <GiOpenBook />
-          <span>Guide</span>
+          <span className="inline">{t("guide_button")}</span>
         </button>
       </div>
 
       {/* Popups */}
       {showPopup === "strike_name" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <Card className="p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold mb-4">Change Strike Name</h3>
+          <SpotlightCard className="p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold mb-4">{t("change_strike_name")}</h3>
             <input
               type="text"
               value={newStrikeName}
@@ -298,50 +336,50 @@ const StrikeGame = () => {
               className="w-full p-2 border rounded mb-4"
             />
             <div className="flex space-x-2">
-              <button onClick={handleUpdateStrikeName} className="px-4 py-2 bg-green-600 text-white rounded">Save</button>
-              <button onClick={() => setShowPopup(null)} className="px-4 py-2 bg-gray-600 text-white rounded">Cancel</button>
+              <button onClick={handleUpdateStrikeName} className="px-4 py-2 bg-green-600 text-white rounded">{t("save_button")}</button>
+              <button onClick={() => setShowPopup(null)} className="px-4 py-2 bg-gray-600 text-white rounded">{t("cancel_button")}</button>
             </div>
-          </Card>
+          </SpotlightCard>
         </div>
       )}
 
       {showPopup === "user_rank" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <Card className="p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold mb-4">User Rank</h3>
+          <SpotlightCard className="p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold mb-4">{t("user_rank_popup")}</h3>
             <div className="flex items-center space-x-2">
               <currentLevel.icon size={24} />
               <span>{currentLevel.name}</span>
             </div>
-            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">Close</button>
-          </Card>
+            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
+          </SpotlightCard>
         </div>
       )}
 
       {showPopup === "user_name" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <Card className="p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold mb-4">User Name</h3>
+          <SpotlightCard className="p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold mb-4">{t("user_name_popup")}</h3>
             <p>{session.user?.name}</p>
-            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">Close</button>
-          </Card>
+            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
+          </SpotlightCard>
         </div>
       )}
 
       {showPopup === "user_leaderboard" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <Card className="p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold mb-4">Your Leaderboard Position</h3>
+          <SpotlightCard className="p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold mb-4">{t("leaderboard_position_popup")}</h3>
             <p>#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
-            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">Close</button>
-          </Card>
+            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
+          </SpotlightCard>
         </div>
       )}
 
       {showPopup === "leaderboard" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
-          <Card className="p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <h3 className="text-lg font-bold mb-4">Leaderboard</h3>
+          <SpotlightCard className="p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <h3 className="text-lg font-bold mb-4">{t("leaderboard_popup")}</h3>
             <div className="space-y-2">
               {leaderboard.map((user, index) => {
                 const userLevel = getLevelFromStreak(user.max_streak);
@@ -364,24 +402,24 @@ const StrikeGame = () => {
                 );
               })}
             </div>
-            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">Close</button>
-          </Card>
+            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
+          </SpotlightCard>
         </div>
       )}
 
       {showPopup === "guide" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
-          <Card className="p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto">
-            <h3 className="text-lg font-bold mb-4">Guide</h3>
+          <SpotlightCard className="p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto">
+            <h3 className="text-lg font-bold mb-4">{t("guide_popup")}</h3>
             <div className="space-y-4">
               <div>
-                <h4 className="font-semibold mb-2">Ranks</h4>
+                <h4 className="font-semibold mb-2">{t("ranks_section")}</h4>
                 <table className="w-full border-collapse border border-gray-300">
                   <thead>
                     <tr>
-                      <th className="border border-gray-300 p-2">Rank</th>
-                      <th className="border border-gray-300 p-2">Badge</th>
-                      <th className="border border-gray-300 p-2">Description</th>
+                      <th className="border border-gray-300 p-2">{t("rank_header")}</th>
+                      <th className="border border-gray-300 p-2">{t("badge_header")}</th>
+                      <th className="border border-gray-300 p-2">{t("description_header")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -389,20 +427,20 @@ const StrikeGame = () => {
                       <tr key={level.level}>
                         <td className="border border-gray-300 p-2">{level.name}</td>
                         <td className="border border-gray-300 p-2"><level.icon size={20} /></td>
-                        <td className="border border-gray-300 p-2">Achieved at {level.level} streak</td>
+                        <td className="border border-gray-300 p-2">{t("achieved_at")} {level.level} {t("streak")}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">Levels</h4>
+                <h4 className="font-semibold mb-2">{t("levels_section")}</h4>
                 <table className="w-full border-collapse border border-gray-300">
                   <thead>
                     <tr>
-                      <th className="border border-gray-300 p-2">Level</th>
-                      <th className="border border-gray-300 p-2">Strike</th>
-                      <th className="border border-gray-300 p-2">Description</th>
+                      <th className="border border-gray-300 p-2">{t("level_header")}</th>
+                      <th className="border border-gray-300 p-2">{t("strike_header")}</th>
+                      <th className="border border-gray-300 p-2">{t("description_header")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -412,15 +450,15 @@ const StrikeGame = () => {
                         <td className="border border-gray-300 p-2">
                           <img src={`/images/strike/level-${level.level}.gif`} alt={`Level ${level.level}`} className="w-12 h-12" />
                         </td>
-                        <td className="border border-gray-300 p-2">{level.name} level</td>
+                        <td className="border border-gray-300 p-2">{level.name} {t("level")}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
             </div>
-            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">Close</button>
-          </Card>
+            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
+          </SpotlightCard>
         </div>
       )}
     </div>
