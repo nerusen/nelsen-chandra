@@ -217,15 +217,13 @@ const StrikeGame = () => {
   const displayLevel = userStrike && userStrike.current_streak === 0 ? levelData[0] : currentLevel;
 
   return (
-    <div className="space-y-5">
-      <div className="space-y-3">
-        <SectionHeading title={t("title")} icon={<StrikeIcon size={24} />} />
+    <section className="space-y-6">
+      <div className="space-y-2">
+        <SectionHeading title={t("title")} icon={<StrikeIcon />} />
         <SectionSubHeading>
           <p>{t("sub_title")}</p>
         </SectionSubHeading>
       </div>
-
-      <Breakline className="my-8" />
 
       {/* Profile Bubble */}
       <SpotlightCard className="p-6">
@@ -242,8 +240,62 @@ const StrikeGame = () => {
         </div>
       </SpotlightCard>
 
-      {/* Buttons */}
-      <div className="flex justify-between">
+      {/* GIF Display */}
+      <SpotlightCard className="p-6 text-center">
+        <img
+          src={`/images/strike/level-${displayLevel.level}.gif`}
+          alt={`Level ${displayLevel.level}`}
+          className="w-48 h-48 mx-auto"
+        />
+      </SpotlightCard>
+
+      {/* Strike Upgrade Button */}
+      <div className="text-center space-y-2">
+        <button
+          onClick={handleStrikeUpgrade}
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
+        >
+          <GiUpgrade />
+          <span className="inline">{t("upgrade_button")}</span>
+        </button>
+        {userStrike && (
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            {t("restores_left")}: {3 - userStrike.restore_count}/3
+          </p>
+        )}
+        {userStrike && userStrike.current_streak === 0 && (
+          <button
+            onClick={handleRestoreStrike}
+            className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
+          >
+            <GiCycle />
+            <span className="inline">{t("restore_button")}</span>
+          </button>
+        )}
+      </div>
+
+      {/* User Info Bubbles */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("strike_name")}>
+          <h4 className="font-medium text-sm">{t("strike_name_title")}</h4>
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{userStrike?.strike_name}</p>
+        </SpotlightCard>
+        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_rank")}>
+          <h4 className="font-medium text-sm">{t("user_rank_title")}</h4>
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{currentLevel.name}</p>
+        </SpotlightCard>
+        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_name")}>
+          <h4 className="font-medium text-sm">{t("user_name_title")}</h4>
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{session.user?.name}</p>
+        </SpotlightCard>
+        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_leaderboard")}>
+          <h4 className="font-medium text-sm">{t("leaderboard_title")}</h4>
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
+        </SpotlightCard>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row justify-center gap-4">
         <button
           onClick={handleResetProgress}
           className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
@@ -257,67 +309,9 @@ const StrikeGame = () => {
           <GiHolyGrail />
           <span className="inline">{t("leaderboard_button")}</span>
         </button>
-      </div>
-
-      {/* GIF Display */}
-      <SpotlightCard className="p-6 text-center">
-        <img
-          src={`/images/strike/level-${displayLevel.level}.gif`}
-          alt={`Level ${displayLevel.level}`}
-          className="w-64 h-64 mx-auto"
-        />
-      </SpotlightCard>
-
-      {/* Strike Upgrade Button */}
-      <div className="text-center">
-        <button
-          onClick={handleStrikeUpgrade}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
-        >
-          <GiUpgrade />
-          <span className="inline">{t("upgrade_button")}</span>
-        </button>
-        {userStrike && (
-          <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-            {t("restores_left")}: {3 - userStrike.restore_count}/3
-          </p>
-        )}
-        {userStrike && userStrike.current_streak === 0 && (
-          <button
-            onClick={handleRestoreStrike}
-            className="mt-2 group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
-          >
-            <GiCycle />
-            <span className="inline">{t("restore_button")}</span>
-          </button>
-        )}
-      </div>
-
-      {/* User Info Bubbles */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <SpotlightCard className="p-6 cursor-pointer" onClick={() => setShowPopup("strike_name")}>
-          <h4 className="font-medium">{t("strike_name_title")}</h4>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">{userStrike?.strike_name}</p>
-        </SpotlightCard>
-        <SpotlightCard className="p-6 cursor-pointer" onClick={() => setShowPopup("user_rank")}>
-          <h4 className="font-medium">{t("user_rank_title")}</h4>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">{currentLevel.name}</p>
-        </SpotlightCard>
-        <SpotlightCard className="p-6 cursor-pointer" onClick={() => setShowPopup("user_name")}>
-          <h4 className="font-medium">{t("user_name_title")}</h4>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">{session.user?.name}</p>
-        </SpotlightCard>
-        <SpotlightCard className="p-6 cursor-pointer" onClick={() => setShowPopup("user_leaderboard")}>
-          <h4 className="font-medium">{t("leaderboard_title")}</h4>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
-        </SpotlightCard>
-      </div>
-
-      {/* Guide Button */}
-      <div className="text-center">
         <button
           onClick={() => setShowPopup("guide")}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
+          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
         >
           <GiOpenBook />
           <span className="inline">{t("guide_button")}</span>
