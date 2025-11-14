@@ -272,7 +272,7 @@ const StrikeGame = () => {
       <SectionSubHeading>
         <p>{t("sub_title")}</p>
       </SectionSubHeading>
-      <Breakline />
+      <Breakline className="my-8" />
 
       {/* Profile Bubble */}
       <SpotlightCard className="p-6">
