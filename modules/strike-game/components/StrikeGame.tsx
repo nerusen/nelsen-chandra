@@ -351,7 +351,7 @@ const StrikeGame = () => {
       <div className="text-center space-y-2">
         <button
           onClick={handleStrikeUpgrade}
-          disabled={isUpgrading || (userStrike && userStrike.last_strike_date === new Date().toISOString().split('T')[0])}
+          disabled={isUpgrading || !!(userStrike && userStrike.last_strike_date === new Date().toISOString().split('T')[0])}
           className={`group flex w-fit items-center gap-2 rounded-lg border px-3 py-2 text-sm transition-all duration-300 mx-auto ${
             isUpgrading
               ? 'border-yellow-400 bg-yellow-100 text-yellow-800 animate-pulse scale-110 shadow-lg shadow-yellow-200/50'
