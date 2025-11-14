@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 
 import Container from "@/common/components/elements/Container";
-import PageHeading from "@/common/components/elements/PageHeading";
 import { METADATA } from "@/common/constants/metadata";
 import StrikeGame from "@/modules/strike-game";
 
@@ -16,9 +15,7 @@ export const metadata: Metadata = {
 const StrikeGamePage = () => {
   return (
     <Container data-aos="fade-up">
-      <PageHeading title="Strike Game" description="Build your daily strike streak and climb the ranks!">
-        <StrikeGame />
-      </PageHeading>
+      <StrikeGame />
     </Container>
   );
 };
