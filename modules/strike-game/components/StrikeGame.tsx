@@ -308,7 +308,16 @@ const StrikeGame = () => {
       </div>
 
       {/* GIF Display */}
-      <SpotlightCard className="p-6 text-center">
+      <SpotlightCard className={`p-6 text-center relative overflow-hidden transition-all duration-500 ${
+        isUpgrading
+          ? 'bg-gradient-to-r from-yellow-50 via-yellow-100 to-yellow-50 dark:from-yellow-900/20 dark:via-yellow-800/30 dark:to-yellow-900/20 shadow-lg shadow-yellow-200/50 dark:shadow-yellow-900/30'
+          : ''
+      }`}>
+        {/* Animated Border */}
+        {isUpgrading && (
+          <div className="absolute inset-0 rounded-lg border-2 border-transparent bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 bg-[length:400%_400%] animate-[border-flow_2s_ease-in-out_infinite] pointer-events-none"></div>
+        )}
+
         <img
           src={`/images/strike/level-${displayLevel.level}.gif`}
           alt={`Level ${displayLevel.level}`}
