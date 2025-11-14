@@ -464,8 +464,8 @@ const StrikeGame = () => {
                     key={user.user_email}
                     className={`relative p-3 rounded-xl transition-all duration-300 hover:scale-[1.02] ${
                       isTop3 && top3Styles
-                        ? `${top3Styles.bg} ${top3Styles.border} ${top3Styles.shadow} shadow-lg`
-                        : 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 shadow-md hover:shadow-lg'
+                        ? `${top3Styles.bg} ${top3Styles.shadow} shadow-lg`
+                        : 'bg-white dark:bg-neutral-900 shadow-md hover:shadow-lg'
                     }`}
                   >
                     {isTop3 && top3Styles && (
