@@ -426,47 +426,57 @@ const StrikeGame = () => {
               {leaderboard.slice(0, 10).map((user, index) => {
                 const userLevel = getLevelFromStreak(user.current_streak);
                 const isTop3 = index < 3;
-                const top3Styles = isTop3 ? {
+
+                const getTop3Styles = (position: number) => ({
                   0: {
                     border: 'border-2 border-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500',
                     bg: 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20',
                     crown: '👑',
-                    shadow: 'shadow-yellow-200/50 dark:shadow-yellow-900/30'
+                    shadow: 'shadow-yellow-200/50 dark:shadow-yellow-900/30',
+                    rankBg: 'bg-gradient-to-r from-yellow-400 to-amber-500 text-white shadow-lg',
+                    ringColor: 'ring-white/50 dark:ring-neutral-800/50',
+                    pulseColor: 'bg-gradient-to-r from-yellow-400 to-amber-500'
                   },
                   1: {
                     border: 'border-2 border-gradient-to-r from-gray-400 via-gray-500 to-slate-500',
                     bg: 'bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-900/20 dark:to-slate-900/20',
                     crown: '🥈',
-                    shadow: 'shadow-gray-200/50 dark:shadow-gray-900/30'
+                    shadow: 'shadow-gray-200/50 dark:shadow-gray-900/30',
+                    rankBg: 'bg-gradient-to-r from-gray-400 to-slate-500 text-white shadow-lg',
+                    ringColor: 'ring-white/50 dark:ring-neutral-800/50',
+                    pulseColor: 'bg-gradient-to-r from-gray-400 to-slate-500'
                   },
                   2: {
                     border: 'border-2 border-gradient-to-r from-orange-400 via-orange-500 to-red-500',
                     bg: 'bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20',
                     crown: '🥉',
-                    shadow: 'shadow-orange-200/50 dark:shadow-orange-900/30'
+                    shadow: 'shadow-orange-200/50 dark:shadow-orange-900/30',
+                    rankBg: 'bg-gradient-to-r from-orange-400 to-red-500 text-white shadow-lg',
+                    ringColor: 'ring-white/50 dark:ring-neutral-800/50',
+                    pulseColor: 'bg-gradient-to-r from-orange-400 to-red-500'
                   }
-                }[index] : null;
+                }[position]);
+
+                const top3Styles = isTop3 ? getTop3Styles(index) : null;
 
                 return (
                   <div
                     key={user.user_email}
                     className={`relative p-3 rounded-xl transition-all duration-300 hover:scale-[1.02] ${
-                      isTop3
+                      isTop3 && top3Styles
                         ? `${top3Styles.bg} ${top3Styles.border} ${top3Styles.shadow} shadow-lg`
                         : 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 shadow-md hover:shadow-lg'
                     }`}
                   >
-                    {isTop3 && (
+                    {isTop3 && top3Styles && (
                       <div className="absolute -top-2 -right-2 text-2xl animate-bounce">
                         {top3Styles.crown}
                       </div>
                     )}
                     <div className="flex items-center space-x-3">
                       <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${
-                        isTop3
-                          ? index === 0 ? 'bg-gradient-to-r from-yellow-400 to-amber-500 text-white shadow-lg'
-                          : index === 1 ? 'bg-gradient-to-r from-gray-400 to-slate-500 text-white shadow-lg'
-                          : 'bg-gradient-to-r from-orange-400 to-red-500 text-white shadow-lg'
+                        isTop3 && top3Styles
+                          ? top3Styles.rankBg
                           : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
                       }`}>
                         #{index + 1}
@@ -477,12 +487,8 @@ const StrikeGame = () => {
                           alt={user.name}
                           className={`w-10 h-10 rounded-full object-cover ${isTop3 ? 'shadow-lg' : ''}`}
                         />
-                        {isTop3 && (
-                          <div className={`absolute -inset-1 rounded-full ${
-                            index === 0 ? 'bg-gradient-to-r from-yellow-400 to-amber-500'
-                            : index === 1 ? 'bg-gradient-to-r from-gray-400 to-slate-500'
-                            : 'bg-gradient-to-r from-orange-400 to-red-500'
-                          } opacity-20 animate-pulse`}></div>
+                        {isTop3 && top3Styles && (
+                          <div className={`absolute -inset-1 rounded-full ${top3Styles.pulseColor} opacity-20 animate-pulse`}></div>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -502,12 +508,8 @@ const StrikeGame = () => {
                           alt={`Level ${userLevel.level}`}
                           className={`w-12 h-12 rounded-lg object-cover ${isTop3 ? 'shadow-lg' : ''}`}
                         />
-                        {isTop3 && (
-                          <div className={`absolute -inset-1 rounded-lg ${
-                            index === 0 ? 'bg-gradient-to-r from-yellow-400 to-amber-500'
-                            : index === 1 ? 'bg-gradient-to-r from-gray-400 to-slate-500'
-                            : 'bg-gradient-to-r from-orange-400 to-red-500'
-                          } opacity-20 animate-pulse`}></div>
+                        {isTop3 && top3Styles && (
+                          <div className={`absolute -inset-1 rounded-lg ${top3Styles.pulseColor} opacity-20 animate-pulse`}></div>
                         )}
                       </div>
                     </div>
