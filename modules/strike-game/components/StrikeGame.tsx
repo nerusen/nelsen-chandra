@@ -422,28 +422,96 @@ const StrikeGame = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto animate-in fade-in duration-300">
           <SpotlightCard className="p-4 max-w-sm w-full max-h-[60vh] overflow-y-auto animate-in zoom-in-95 duration-300">
             <h3 className="text-base font-bold mb-3">{t("leaderboard_popup")}</h3>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {leaderboard.slice(0, 10).map((user, index) => {
                 const userLevel = getLevelFromStreak(user.current_streak);
                 const isTop3 = index < 3;
+                const top3Styles = isTop3 ? {
+                  0: {
+                    border: 'border-2 border-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500',
+                    bg: 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20',
+                    crown: '👑',
+                    shadow: 'shadow-yellow-200/50 dark:shadow-yellow-900/30'
+                  },
+                  1: {
+                    border: 'border-2 border-gradient-to-r from-gray-400 via-gray-500 to-slate-500',
+                    bg: 'bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-900/20 dark:to-slate-900/20',
+                    crown: '🥈',
+                    shadow: 'shadow-gray-200/50 dark:shadow-gray-900/30'
+                  },
+                  2: {
+                    border: 'border-2 border-gradient-to-r from-orange-400 via-orange-500 to-red-500',
+                    bg: 'bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20',
+                    crown: '🥉',
+                    shadow: 'shadow-orange-200/50 dark:shadow-orange-900/30'
+                  }
+                }[index] : null;
+
                 return (
-                  <SpotlightCard
+                  <div
                     key={user.user_email}
-                    className={`p-2 ${isTop3 ? (index === 0 ? 'bg-yellow-100 dark:bg-yellow-900' : index === 1 ? 'bg-gray-100 dark:bg-gray-800' : 'bg-orange-100 dark:bg-orange-900') : ''}`}
+                    className={`relative p-3 rounded-xl transition-all duration-300 hover:scale-[1.02] ${
+                      isTop3
+                        ? `${top3Styles.bg} ${top3Styles.border} ${top3Styles.shadow} shadow-lg`
+                        : 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 shadow-md hover:shadow-lg'
+                    }`}
                   >
-                    <div className="flex items-center space-x-2">
-                      <span className="font-bold text-xs">#{index + 1}</span>
-                      <img src={user.image} alt={user.name} className="w-6 h-6 rounded-full" />
+                    {isTop3 && (
+                      <div className="absolute -top-2 -right-2 text-2xl animate-bounce">
+                        {top3Styles.crown}
+                      </div>
+                    )}
+                    <div className="flex items-center space-x-3">
+                      <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${
+                        isTop3
+                          ? index === 0 ? 'bg-gradient-to-r from-yellow-400 to-amber-500 text-white shadow-lg'
+                          : index === 1 ? 'bg-gradient-to-r from-gray-400 to-slate-500 text-white shadow-lg'
+                          : 'bg-gradient-to-r from-orange-400 to-red-500 text-white shadow-lg'
+                          : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
+                      }`}>
+                        #{index + 1}
+                      </div>
+                      <div className={`relative ${isTop3 ? 'ring-2 ring-white/50 dark:ring-neutral-800/50' : ''} rounded-full`}>
+                        <img
+                          src={user.image}
+                          alt={user.name}
+                          className={`w-10 h-10 rounded-full object-cover ${isTop3 ? 'shadow-lg' : ''}`}
+                        />
+                        {isTop3 && (
+                          <div className={`absolute -inset-1 rounded-full ${
+                            index === 0 ? 'bg-gradient-to-r from-yellow-400 to-amber-500'
+                            : index === 1 ? 'bg-gradient-to-r from-gray-400 to-slate-500'
+                            : 'bg-gradient-to-r from-orange-400 to-red-500'
+                          } opacity-20 animate-pulse`}></div>
+                        )}
+                      </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-xs truncate">{user.strike_name} - {user.name}</p>
-                        <div className="flex items-center space-x-1">
-                          <span className="text-xs text-neutral-600 dark:text-neutral-400">{user.current_streak}</span>
-                          <userLevel.icon size={10} />
+                        <p className={`font-semibold text-sm truncate ${isTop3 ? 'text-neutral-900 dark:text-neutral-100' : 'text-neutral-800 dark:text-neutral-200'}`}>
+                          {user.strike_name} - {user.name}
+                        </p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <span className={`text-xs font-medium ${isTop3 ? 'text-neutral-700 dark:text-neutral-300' : 'text-neutral-600 dark:text-neutral-400'}`}>
+                            {user.current_streak} days
+                          </span>
+                          <userLevel.icon size={12} className={isTop3 ? 'text-neutral-600 dark:text-neutral-400' : 'text-neutral-500 dark:text-neutral-500'} />
                         </div>
                       </div>
-                      <img src={`/images/strike/level-${userLevel.level}.gif`} alt={`Level ${userLevel.level}`} className="w-8 h-8" />
+                      <div className={`relative ${isTop3 ? 'ring-2 ring-white/30 dark:ring-neutral-700/50 rounded-lg' : ''}`}>
+                        <img
+                          src={`/images/strike/level-${userLevel.level}.gif`}
+                          alt={`Level ${userLevel.level}`}
+                          className={`w-12 h-12 rounded-lg object-cover ${isTop3 ? 'shadow-lg' : ''}`}
+                        />
+                        {isTop3 && (
+                          <div className={`absolute -inset-1 rounded-lg ${
+                            index === 0 ? 'bg-gradient-to-r from-yellow-400 to-amber-500'
+                            : index === 1 ? 'bg-gradient-to-r from-gray-400 to-slate-500'
+                            : 'bg-gradient-to-r from-orange-400 to-red-500'
+                          } opacity-20 animate-pulse`}></div>
+                        )}
+                      </div>
                     </div>
-                  </SpotlightCard>
+                  </div>
                 );
               })}
             </div>
