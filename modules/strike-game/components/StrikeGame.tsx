@@ -347,29 +347,34 @@ const StrikeGame = () => {
       </div>
 
       {/* User Info Bubbles */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("strike_name")}>
-          <h4 className="font-medium text-sm">{t("strike_name_title")}</h4>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{userStrike?.strike_name}</p>
-        </SpotlightCard>
-        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_rank")}>
-          <h4 className="font-medium text-sm">{t("user_rank_title")}</h4>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{currentLevel.name}</p>
-        </SpotlightCard>
+      <div className="space-y-4">
+        {/* Current Strike - Full Width */}
         <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_level")}>
           <h4 className="font-medium text-sm">{t("user_level_title")}</h4>
           <p className={`text-xs mt-1 transition-colors duration-500 ${isUpgrading ? 'text-yellow-600 dark:text-yellow-400' : 'text-neutral-600 dark:text-neutral-400'}`}>
             {userStrike?.current_streak} {t("days")}
           </p>
         </SpotlightCard>
-        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_name")}>
-          <h4 className="font-medium text-sm">{t("user_name_title")}</h4>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{session.user?.name}</p>
-        </SpotlightCard>
-        <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_leaderboard")}>
-          <h4 className="font-medium text-sm">{t("leaderboard_title")}</h4>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
-        </SpotlightCard>
+
+        {/* Other Info Bubbles */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("strike_name")}>
+            <h4 className="font-medium text-sm">{t("strike_name_title")}</h4>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{userStrike?.strike_name}</p>
+          </SpotlightCard>
+          <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_rank")}>
+            <h4 className="font-medium text-sm">{t("user_rank_title")}</h4>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{currentLevel.name}</p>
+          </SpotlightCard>
+          <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_name")}>
+            <h4 className="font-medium text-sm">{t("user_name_title")}</h4>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{session.user?.name}</p>
+          </SpotlightCard>
+          <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_leaderboard")}>
+            <h4 className="font-medium text-sm">{t("leaderboard_title")}</h4>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
+          </SpotlightCard>
+        </div>
       </div>
 
       {/* Settings Button */}
@@ -421,9 +426,9 @@ const StrikeGame = () => {
             </div>
             <button
               onClick={() => setShowPopup(null)}
-              className="mt-3 w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="mt-3 w-full group flex items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
             >
-              {t("close_button")}
+              <span className="inline">{t("close_button")}</span>
             </button>
           </SpotlightCard>
         </div>
@@ -436,9 +441,9 @@ const StrikeGame = () => {
             <p className="text-sm">{session.user?.name}</p>
             <button
               onClick={() => setShowPopup(null)}
-              className="mt-3 w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="mt-3 w-full group flex items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
             >
-              {t("close_button")}
+              <span className="inline">{t("close_button")}</span>
             </button>
           </SpotlightCard>
         </div>
@@ -451,9 +456,9 @@ const StrikeGame = () => {
             <p className="text-sm">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
             <button
               onClick={() => setShowPopup(null)}
-              className="mt-3 w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="mt-3 w-full group flex items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
             >
-              {t("close_button")}
+              <span className="inline">{t("close_button")}</span>
             </button>
           </SpotlightCard>
         </div>
@@ -466,9 +471,9 @@ const StrikeGame = () => {
             <p className="text-sm">{userStrike?.current_streak} {t("days")}</p>
             <button
               onClick={() => setShowPopup(null)}
-              className="mt-3 w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="mt-3 w-full group flex items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
             >
-              {t("close_button")}
+              <span className="inline">{t("close_button")}</span>
             </button>
           </SpotlightCard>
         </div>
