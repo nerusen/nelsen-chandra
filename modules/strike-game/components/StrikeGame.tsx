@@ -378,13 +378,15 @@ const StrikeGame = () => {
       </div>
 
       {/* Settings Button */}
-      <div className="flex justify-center">
-        <button
-          onClick={() => setShowPopup("settings")}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
-        >
-          <span className="inline">{t("settings_button")}</span>
-        </button>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="col-span-2 flex justify-center">
+          <button
+            onClick={() => setShowPopup("settings")}
+            className="group flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+          >
+            <span className="inline">{t("settings_button")}</span>
+          </button>
+        </div>
       </div>
 
       {/* Popups */}
