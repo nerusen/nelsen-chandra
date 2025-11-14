@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GiBullseye, GiAncientSword, GiAllForOne, GiBatBlade, GiBoltShield, GiBurningSkull, GiAngelWings, GiAngelOutfit, GiLaurelCrown, GiHolyGrail, GiUpgrade, GiCycle, GiOpenBook, GiBurningEmbers as StrikeIcon, GiDna2 as WarningIcon } from "react-icons/gi";
 import { useTranslations } from "next-intl";
+import { motion, AnimatePresence } from "framer-motion";
+import { IoClose as CloseIcon } from "react-icons/io5";
 
 import Card from "@/common/components/elements/Card";
 import Breakline from "@/common/components/elements/Breakline";
@@ -61,6 +63,8 @@ const StrikeGame = () => {
   const [showPopup, setShowPopup] = useState<string | null>(null);
   const [newStrikeName, setNewStrikeName] = useState("");
   const [guideTab, setGuideTab] = useState<"ranks" | "levels">("ranks");
+  const [isUpgrading, setIsUpgrading] = useState(false);
+  const [showUpgradeNotification, setShowUpgradeNotification] = useState(false);
 
   useEffect(() => {
     if (status === "loading") return;
@@ -97,6 +101,7 @@ const StrikeGame = () => {
   };
 
   const handleStrikeUpgrade = async () => {
+    setIsUpgrading(true);
     try {
       const res = await fetch("/api/strike", {
         method: "POST",
@@ -107,13 +112,21 @@ const StrikeGame = () => {
         const data = await res.json();
         setUserStrike(data);
         setNewStrikeName(data.strike_name);
+        // Show success notification
+        setShowUpgradeNotification(true);
+        // Reset animation state after a delay
+        setTimeout(() => setIsUpgrading(false), 1000);
+        // Auto-hide notification after 3 seconds
+        setTimeout(() => setShowUpgradeNotification(false), 3000);
       } else {
         const errorData = await res.json();
         alert(errorData.message || "Failed to upgrade strike");
+        setIsUpgrading(false);
       }
     } catch (error) {
       console.error("Error upgrading strike:", error);
       alert("Error upgrading strike");
+      setIsUpgrading(false);
     }
   };
 
@@ -219,6 +232,42 @@ const StrikeGame = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 space-y-6">
+      {/* Upgrade Success Notification */}
+      <AnimatePresence>
+        {showUpgradeNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.8 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="fixed top-6 right-6 z-50 rounded-lg border backdrop-blur-md px-4 py-3 shadow-lg bg-neutral-100/95 border-neutral-300 dark:bg-neutral-800/95 dark:border-neutral-700"
+          >
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0">
+                <div className="rounded-full bg-emerald-500/20 p-2">
+                  <GiUpgrade size={20} className="text-emerald-600 dark:text-emerald-400" />
+                </div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">
+                  Upgrade Successful!
+                </h3>
+                <p className="text-sm text-neutral-600 dark:text-neutral-300 mt-1">
+                  Your strike has been upgraded successfully.
+                </p>
+              </div>
+              <button
+                onClick={() => setShowUpgradeNotification(false)}
+                className="flex-shrink-0 p-1 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+                aria-label="Close notification"
+              >
+                <CloseIcon size={16} className="text-neutral-500 dark:text-neutral-400" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <SectionHeading title={t("title")} />
       <SectionSubHeading>
         <p>{t("sub_title")}</p>
@@ -263,7 +312,7 @@ const StrikeGame = () => {
         <img
           src={`/images/strike/level-${displayLevel.level}.gif`}
           alt={`Level ${displayLevel.level}`}
-          className="w-48 h-48 mx-auto"
+          className={`w-48 h-48 mx-auto transition-transform duration-500 ${isUpgrading ? 'scale-110' : 'scale-100'}`}
         />
       </SpotlightCard>
 
@@ -271,9 +320,14 @@ const StrikeGame = () => {
       <div className="text-center space-y-2">
         <button
           onClick={handleStrikeUpgrade}
-          className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 mx-auto"
+          disabled={isUpgrading}
+          className={`group flex w-fit items-center gap-2 rounded-lg border px-3 py-2 text-sm transition-all duration-300 mx-auto ${
+            isUpgrading
+              ? 'border-yellow-400 bg-yellow-100 text-yellow-800 animate-pulse scale-110 shadow-lg shadow-yellow-200/50'
+              : 'border-neutral-400 bg-neutral-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 hover:scale-105'
+          }`}
         >
-          <GiUpgrade />
+          <GiUpgrade className={isUpgrading ? 'animate-spin' : ''} />
           <span className="inline">{t("upgrade_button")}</span>
         </button>
         {userStrike && (
@@ -304,7 +358,9 @@ const StrikeGame = () => {
         </SpotlightCard>
         <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_level")}>
           <h4 className="font-medium text-sm">{t("user_level_title")}</h4>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{userStrike?.current_streak} {t("days")}</p>
+          <p className={`text-xs mt-1 transition-colors duration-500 ${isUpgrading ? 'text-yellow-600 dark:text-yellow-400' : 'text-neutral-600 dark:text-neutral-400'}`}>
+            {userStrike?.current_streak} {t("days")}
+          </p>
         </SpotlightCard>
         <SpotlightCard className="p-4 cursor-pointer text-center" onClick={() => setShowPopup("user_name")}>
           <h4 className="font-medium text-sm">{t("user_name_title")}</h4>
