@@ -481,15 +481,12 @@ const StrikeGame = () => {
                       }`}>
                         #{index + 1}
                       </div>
-                      <div className={`relative ${isTop3 ? 'ring-2 ring-white/50 dark:ring-neutral-800/50' : ''} rounded-full`}>
+                      <div className="relative rounded-full">
                         <img
                           src={user.image}
                           alt={user.name}
                           className={`w-10 h-10 rounded-full object-cover ${isTop3 ? 'shadow-lg' : ''}`}
                         />
-                        {isTop3 && top3Styles && (
-                          <div className={`absolute -inset-1 rounded-full ${top3Styles.pulseColor} opacity-20 animate-pulse`}></div>
-                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className={`font-semibold text-sm truncate ${isTop3 ? 'text-neutral-900 dark:text-neutral-100' : 'text-neutral-800 dark:text-neutral-200'}`}>
