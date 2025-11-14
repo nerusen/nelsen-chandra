@@ -65,6 +65,7 @@ const StrikeGame = () => {
   const [guideTab, setGuideTab] = useState<"ranks" | "levels">("ranks");
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [showUpgradeNotification, setShowUpgradeNotification] = useState(false);
+  const [timeUntilNextUpgrade, setTimeUntilNextUpgrade] = useState<string>("");
 
   useEffect(() => {
     if (status === "loading") return;
@@ -74,6 +75,27 @@ const StrikeGame = () => {
     fetchUserStrike();
     fetchLeaderboard();
   }, [session, status]);
+
+  // Update time until next upgrade every second
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const nextMidnight = new Date(now);
+      nextMidnight.setHours(24, 0, 0, 0);
+
+      const timeDiff = nextMidnight.getTime() - now.getTime();
+      const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+      setTimeUntilNextUpgrade(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const fetchUserStrike = async () => {
     try {
@@ -315,7 +337,7 @@ const StrikeGame = () => {
       }`}>
         {/* Animated Border */}
         {isUpgrading && (
-          <div className="absolute inset-0 rounded-lg border-2 border-transparent bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 bg-[length:400%_400%] animate-[border-flow_2s_ease-in-out_infinite] pointer-events-none"></div>
+          <div className="absolute inset-0 rounded-lg border-2 border-transparent bg-gradient-to-r from-yellow-400/50 via-yellow-500/50 to-yellow-400/50 bg-[length:400%_400%] animate-[border-flow_2s_ease-in-out_infinite] pointer-events-none"></div>
         )}
 
         <img
@@ -329,15 +351,22 @@ const StrikeGame = () => {
       <div className="text-center space-y-2">
         <button
           onClick={handleStrikeUpgrade}
-          disabled={isUpgrading}
+          disabled={isUpgrading || (userStrike && userStrike.last_strike_date === new Date().toISOString().split('T')[0])}
           className={`group flex w-fit items-center gap-2 rounded-lg border px-3 py-2 text-sm transition-all duration-300 mx-auto ${
             isUpgrading
               ? 'border-yellow-400 bg-yellow-100 text-yellow-800 animate-pulse scale-110 shadow-lg shadow-yellow-200/50'
-              : 'border-neutral-400 bg-neutral-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 hover:scale-105'
+              : (userStrike && userStrike.last_strike_date === new Date().toISOString().split('T')[0])
+                ? 'border-neutral-600 bg-neutral-200 text-neutral-500 cursor-not-allowed dark:border-neutral-500 dark:bg-neutral-700 dark:text-neutral-400'
+                : 'border-neutral-400 bg-neutral-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 hover:scale-105'
           }`}
         >
           <GiUpgrade className={isUpgrading ? 'animate-spin' : ''} />
-          <span className="inline">{t("upgrade_button")}</span>
+          <span className="inline">
+            {userStrike && userStrike.last_strike_date === new Date().toISOString().split('T')[0]
+              ? `Available after ${timeUntilNextUpgrade}`
+              : t("upgrade_button")
+            }
+          </span>
         </button>
         {userStrike && (
           <p className="text-sm text-neutral-600 dark:text-neutral-400">
