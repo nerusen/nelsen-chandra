@@ -328,69 +328,99 @@ const StrikeGame = () => {
 
       {/* Popups */}
       {showPopup === "strike_name" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <SpotlightCard className="p-4 max-w-sm w-full">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
+          <SpotlightCard className="p-4 max-w-sm w-full animate-in zoom-in-95 duration-300">
             <h3 className="text-base font-bold mb-3">{t("change_strike_name")}</h3>
             <input
               type="text"
               value={newStrikeName}
               onChange={(e) => setNewStrikeName(e.target.value)}
-              className="w-full p-2 border rounded mb-3 text-sm"
+              className="w-full p-3 border border-neutral-300 dark:border-neutral-600 rounded-lg mb-4 text-sm bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
             />
-            <div className="flex space-x-2">
-              <button onClick={handleUpdateStrikeName} className="px-3 py-1 bg-green-600 text-white rounded text-sm">{t("save_button")}</button>
-              <button onClick={() => setShowPopup(null)} className="px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("cancel_button")}</button>
+            <div className="flex space-x-3">
+              <button
+                onClick={handleUpdateStrikeName}
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                {t("save_button")}
+              </button>
+              <button
+                onClick={() => setShowPopup(null)}
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                {t("cancel_button")}
+              </button>
             </div>
           </SpotlightCard>
         </div>
       )}
 
       {showPopup === "user_rank" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <SpotlightCard className="p-4 max-w-sm w-full">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
+          <SpotlightCard className="p-4 max-w-sm w-full animate-in zoom-in-95 duration-300">
             <h3 className="text-base font-bold mb-3">{t("user_rank_popup")}</h3>
             <div className="flex items-center space-x-2">
               <currentLevel.icon size={20} />
               <span className="text-sm">{currentLevel.name}</span>
             </div>
-            <button onClick={() => setShowPopup(null)} className="mt-3 px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
+            <button
+              onClick={() => setShowPopup(null)}
+              className="mt-3 w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              {t("close_button")}
+            </button>
           </SpotlightCard>
         </div>
       )}
 
       {showPopup === "user_name" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <SpotlightCard className="p-4 max-w-sm w-full">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
+          <SpotlightCard className="p-4 max-w-sm w-full animate-in zoom-in-95 duration-300">
             <h3 className="text-base font-bold mb-3">{t("user_name_popup")}</h3>
             <p className="text-sm">{session.user?.name}</p>
-            <button onClick={() => setShowPopup(null)} className="mt-3 px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
+            <button
+              onClick={() => setShowPopup(null)}
+              className="mt-3 w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              {t("close_button")}
+            </button>
           </SpotlightCard>
         </div>
       )}
 
       {showPopup === "user_leaderboard" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <SpotlightCard className="p-4 max-w-sm w-full">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
+          <SpotlightCard className="p-4 max-w-sm w-full animate-in zoom-in-95 duration-300">
             <h3 className="text-base font-bold mb-3">{t("leaderboard_position_popup")}</h3>
             <p className="text-sm">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
-            <button onClick={() => setShowPopup(null)} className="mt-3 px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
+            <button
+              onClick={() => setShowPopup(null)}
+              className="mt-3 w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              {t("close_button")}
+            </button>
           </SpotlightCard>
         </div>
       )}
 
       {showPopup === "user_level" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <SpotlightCard className="p-4 max-w-sm w-full">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
+          <SpotlightCard className="p-4 max-w-sm w-full animate-in zoom-in-95 duration-300">
             <h3 className="text-base font-bold mb-3">{t("user_level_popup")}</h3>
             <p className="text-sm">{userStrike?.current_streak} {t("days")}</p>
-            <button onClick={() => setShowPopup(null)} className="mt-3 px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
+            <button
+              onClick={() => setShowPopup(null)}
+              className="mt-3 w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              {t("close_button")}
+            </button>
           </SpotlightCard>
         </div>
       )}
 
       {showPopup === "leaderboard" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
-          <SpotlightCard className="p-4 max-w-sm w-full max-h-[60vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto animate-in fade-in duration-300">
+          <SpotlightCard className="p-4 max-w-sm w-full max-h-[60vh] overflow-y-auto animate-in zoom-in-95 duration-300">
             <h3 className="text-base font-bold mb-3">{t("leaderboard_popup")}</h3>
             <div className="space-y-2">
               {leaderboard.slice(0, 10).map((user, index) => {
@@ -417,14 +447,19 @@ const StrikeGame = () => {
                 );
               })}
             </div>
-            <button onClick={() => setShowPopup(null)} className="mt-3 px-3 py-1 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
+            <button
+              onClick={() => setShowPopup(null)}
+              className="mt-3 w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              {t("close_button")}
+            </button>
           </SpotlightCard>
         </div>
       )}
 
       {showPopup === "settings" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <SpotlightCard className="p-6 max-w-md w-full">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
+          <SpotlightCard className="p-6 max-w-md w-full animate-in zoom-in-95 duration-300">
             <h3 className="text-lg font-bold mb-4 text-center">{t("settings_popup_title")}</h3>
             <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6 text-center">{t("settings_popup_description")}</p>
 
@@ -439,7 +474,7 @@ const StrikeGame = () => {
                     fetchLeaderboard();
                     setShowPopup(null);
                   }}
-                  className="group flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+                  className="group flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-4 py-2 text-sm transition-all duration-200 hover:text-neutral-800 hover:scale-105 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200 shadow-lg hover:shadow-xl"
                 >
                   <GiCycle />
                   <span className="inline">{t("refresh_button")}</span>
@@ -452,21 +487,26 @@ const StrikeGame = () => {
                 <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">{t("reset_description")}</p>
                 <button
                   onClick={() => setShowPopup("reset_confirm")}
-                  className="group flex w-full items-center justify-center gap-2 rounded-lg border border-red-400 bg-red-50 px-3 py-2 text-sm transition duration-100 hover:bg-red-100 dark:border-red-600 dark:bg-red-900 dark:hover:bg-red-800 text-red-700 dark:text-red-300"
+                  className="group flex w-full items-center justify-center gap-2 rounded-lg border border-red-400 bg-red-50 px-4 py-2 text-sm transition-all duration-200 hover:bg-red-100 hover:scale-105 dark:border-red-600 dark:bg-red-900 dark:hover:bg-red-800 text-red-700 dark:text-red-300 shadow-lg hover:shadow-xl"
                 >
                   <span className="inline">{t("reset_button")}</span>
                 </button>
               </div>
             </div>
 
-            <button onClick={() => setShowPopup(null)} className="mt-6 w-full px-4 py-2 bg-gray-600 text-white rounded text-sm">{t("close_button")}</button>
+            <button
+              onClick={() => setShowPopup(null)}
+              className="mt-6 w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              {t("close_button")}
+            </button>
           </SpotlightCard>
         </div>
       )}
 
       {showPopup === "reset_confirm" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <SpotlightCard className="p-6 max-w-sm w-full text-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
+          <SpotlightCard className="p-6 max-w-sm w-full text-center animate-in zoom-in-95 duration-300">
             <div className="flex items-center justify-center mb-4">
               <WarningIcon size={48} className="text-red-500" />
             </div>
@@ -477,7 +517,7 @@ const StrikeGame = () => {
             <div className="flex space-x-3 justify-center">
               <button
                 onClick={() => setShowPopup(null)}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition duration-100"
+                className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 {t("cancel_button")}
               </button>
@@ -486,9 +526,9 @@ const StrikeGame = () => {
                   handleResetProgress();
                   setShowPopup(null);
                 }}
-                className="group flex w-fit items-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
+                className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
-                <span className="inline">{t("confirm_button")}</span>
+                {t("confirm_button")}
               </button>
             </div>
           </SpotlightCard>
@@ -496,28 +536,28 @@ const StrikeGame = () => {
       )}
 
       {showPopup === "guide" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
-          <SpotlightCard className="p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto animate-in fade-in duration-300">
+          <SpotlightCard className="p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto animate-in zoom-in-95 duration-300">
             <h3 className="text-lg font-bold mb-4">{t("guide_popup")}</h3>
 
             {/* Tab Buttons */}
             <div className="flex space-x-2 mb-4">
               <button
                 onClick={() => setGuideTab("ranks")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition duration-100 ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 ${
                   guideTab === "ranks"
-                    ? "bg-neutral-800 text-white dark:bg-neutral-200 dark:text-black"
-                    : "bg-neutral-100 text-neutral-700 border border-neutral-300 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-600 dark:hover:bg-neutral-700"
+                    ? "bg-gradient-to-r from-neutral-800 to-neutral-900 text-white shadow-lg"
+                    : "bg-gradient-to-r from-neutral-100 to-neutral-200 text-neutral-700 border border-neutral-300 hover:from-neutral-200 hover:to-neutral-300 dark:from-neutral-800 dark:to-neutral-900 dark:text-neutral-300 dark:border-neutral-600 dark:hover:from-neutral-700 dark:hover:to-neutral-800 shadow-md hover:shadow-lg"
                 }`}
               >
                 {t("ranks_section")}
               </button>
               <button
                 onClick={() => setGuideTab("levels")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition duration-100 ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 ${
                   guideTab === "levels"
-                    ? "bg-neutral-800 text-white dark:bg-neutral-200 dark:text-black"
-                    : "bg-neutral-100 text-neutral-700 border border-neutral-300 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-600 dark:hover:bg-neutral-700"
+                    ? "bg-gradient-to-r from-neutral-800 to-neutral-900 text-white shadow-lg"
+                    : "bg-gradient-to-r from-neutral-100 to-neutral-200 text-neutral-700 border border-neutral-300 hover:from-neutral-200 hover:to-neutral-300 dark:from-neutral-800 dark:to-neutral-900 dark:text-neutral-300 dark:border-neutral-600 dark:hover:from-neutral-700 dark:hover:to-neutral-800 shadow-md hover:shadow-lg"
                 }`}
               >
                 {t("levels_section")}
@@ -526,54 +566,73 @@ const StrikeGame = () => {
 
             {/* Tab Content */}
             {guideTab === "ranks" && (
-              <div>
-                <table className="w-full border-collapse border border-gray-300">
-                  <thead>
-                    <tr>
-                      <th className="border border-gray-300 p-2">{t("rank_header")}</th>
-                      <th className="border border-gray-300 p-2">{t("badge_header")}</th>
-                      <th className="border border-gray-300 p-2">{t("description_header")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {levelData.map((level) => (
-                      <tr key={level.level}>
-                        <td className="border border-gray-300 p-2">{level.name}</td>
-                        <td className="border border-gray-300 p-2"><level.icon size={20} /></td>
-                        <td className="border border-gray-300 p-2">{t("achieved_at")} {level.level} {t("streak")}</td>
+              <div className="animate-in slide-in-from-left-5 duration-300">
+                <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg overflow-hidden border border-neutral-200 dark:border-neutral-700">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-neutral-200 dark:border-neutral-700">
+                        <th className="px-6 py-4 text-left font-semibold text-neutral-900 dark:text-neutral-100">{t("rank_header")}</th>
+                        <th className="px-6 py-4 text-center font-semibold text-neutral-900 dark:text-neutral-100">{t("badge_header")}</th>
+                        <th className="px-6 py-4 text-left font-semibold text-neutral-900 dark:text-neutral-100">{t("description_header")}</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {levelData.map((level, index) => (
+                        <tr key={level.level} className="group hover:bg-gradient-to-r hover:from-neutral-50 hover:to-neutral-100 dark:hover:from-neutral-800 dark:hover:to-neutral-700 transition-all duration-200 border-b border-neutral-100 dark:border-neutral-800 last:border-b-0">
+                          <td className="px-6 py-4 font-medium text-neutral-900 dark:text-neutral-100">{level.name}</td>
+                          <td className="px-6 py-4 text-center">
+                            <div className="flex justify-center">
+                              <level.icon size={24} className="text-neutral-700 dark:text-neutral-300 group-hover:scale-110 transition-transform duration-200" />
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-neutral-600 dark:text-neutral-400">{t("achieved_at")} {level.level} {t("streak")}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
 
             {guideTab === "levels" && (
-              <div>
-                <table className="w-full border-collapse border border-gray-300">
-                  <thead>
-                    <tr>
-                      <th className="border border-gray-300 p-2">{t("level_header")}</th>
-                      <th className="border border-gray-300 p-2">{t("strike_header")}</th>
-                      <th className="border border-gray-300 p-2">{t("description_header")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {levelData.map((level) => (
-                      <tr key={level.level}>
-                        <td className="border border-gray-300 p-2">{level.level}</td>
-                        <td className="border border-gray-300 p-2">
-                          <img src={`/images/strike/level-${level.level}.gif`} alt={`Level ${level.level}`} className="w-12 h-12" />
-                        </td>
-                        <td className="border border-gray-300 p-2">{level.name} {t("level")}</td>
+              <div className="animate-in slide-in-from-right-5 duration-300">
+                <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg overflow-hidden border border-neutral-200 dark:border-neutral-700">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-b border-neutral-200 dark:border-neutral-700">
+                        <th className="px-6 py-4 text-left font-semibold text-neutral-900 dark:text-neutral-100">{t("level_header")}</th>
+                        <th className="px-6 py-4 text-center font-semibold text-neutral-900 dark:text-neutral-100">{t("strike_header")}</th>
+                        <th className="px-6 py-4 text-left font-semibold text-neutral-900 dark:text-neutral-100">{t("description_header")}</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {levelData.map((level, index) => (
+                        <tr key={level.level} className="group hover:bg-gradient-to-r hover:from-neutral-50 hover:to-neutral-100 dark:hover:from-neutral-800 dark:hover:to-neutral-700 transition-all duration-200 border-b border-neutral-100 dark:border-neutral-800 last:border-b-0">
+                          <td className="px-6 py-4 font-medium text-neutral-900 dark:text-neutral-100">{level.level}</td>
+                          <td className="px-6 py-4 text-center">
+                            <div className="flex justify-center">
+                              <img
+                                src={`/images/strike/level-${level.level}.gif`}
+                                alt={`Level ${level.level}`}
+                                className="w-14 h-14 rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-200"
+                              />
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-neutral-600 dark:text-neutral-400">{level.name} {t("level")}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
 
-            <button onClick={() => setShowPopup(null)} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">{t("close_button")}</button>
+            <button
+              onClick={() => setShowPopup(null)}
+              className="mt-4 w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              {t("close_button")}
+            </button>
           </SpotlightCard>
         </div>
       )}
