@@ -1,1 +1,3 @@
-export { default } from "./components/StrikeGame";
+import StrikeGame from "./components/StrikeGame";
+
+export default StrikeGame;
