@@ -468,11 +468,6 @@ const StrikeGame = () => {
                         : 'bg-white dark:bg-neutral-900 shadow-md hover:shadow-lg'
                     }`}
                   >
-                    {isTop3 && top3Styles && (
-                      <div className="absolute -top-2 -right-2 text-2xl animate-bounce">
-                        {top3Styles.crown}
-                      </div>
-                    )}
                     <div className="flex items-center space-x-3">
                       <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${
                         isTop3 && top3Styles
