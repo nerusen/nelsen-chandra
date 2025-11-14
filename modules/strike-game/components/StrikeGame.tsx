@@ -310,7 +310,7 @@ const StrikeGame = () => {
       {/* GIF Display */}
       <SpotlightCard className={`p-6 text-center relative overflow-hidden transition-all duration-500 ${
         isUpgrading
-          ? 'border-yellow-400 bg-yellow-100 text-yellow-800 animate-pulse scale-110 shadow-lg shadow-yellow-200/50'
+          ? '!border-yellow-400 !bg-yellow-100 !text-yellow-800 animate-pulse scale-110 shadow-lg shadow-yellow-200/50'
           : ''
       }`}>
         {/* Animated Border */}
