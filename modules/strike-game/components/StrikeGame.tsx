@@ -310,7 +310,7 @@ const StrikeGame = () => {
       {/* GIF Display */}
       <SpotlightCard className={`p-6 text-center relative overflow-hidden transition-all duration-500 ${
         isUpgrading
-          ? 'bg-yellow-100 dark:bg-yellow-900/20 shadow-lg shadow-yellow-200/50 dark:shadow-yellow-900/30 animate-pulse'
+          ? 'border-yellow-400 bg-yellow-100 text-yellow-800 animate-pulse scale-110 shadow-lg shadow-yellow-200/50'
           : ''
       }`}>
         {/* Animated Border */}
@@ -321,7 +321,7 @@ const StrikeGame = () => {
         <img
           src={`/images/strike/level-${displayLevel.level}.gif`}
           alt={`Level ${displayLevel.level}`}
-          className={`w-48 h-48 mx-auto transition-transform duration-500 ${isUpgrading ? 'scale-110' : 'scale-100'}`}
+          className={`w-48 h-48 mx-auto transition-all duration-500 ${isUpgrading ? 'scale-110 grayscale' : 'scale-100'}`}
         />
       </SpotlightCard>
 
