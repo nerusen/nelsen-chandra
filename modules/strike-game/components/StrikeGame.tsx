@@ -429,8 +429,8 @@ const StrikeGame = () => {
 
       {/* Popups */}
       {showPopup === "strike_name" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
-          <SpotlightCard className="p-4 max-w-sm w-full animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-500">
+          <SpotlightCard className="p-4 max-w-sm w-full animate-in slide-in-from-bottom-4 zoom-in-95 duration-500 ease-out">
             <h3 className="text-base font-bold mb-3">{t("change_strike_name")}</h3>
             <input
               type="text"
@@ -441,15 +441,15 @@ const StrikeGame = () => {
             <div className="flex space-x-3">
               <button
                 onClick={handleUpdateStrikeName}
-                className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="flex-1 group flex items-center justify-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-4 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
               >
-                {t("save_button")}
+                <span className="inline">{t("save_button")}</span>
               </button>
               <button
                 onClick={() => setShowPopup(null)}
-                className="flex-1 px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="flex-1 group flex items-center justify-center gap-2 rounded-lg border border-neutral-400 bg-neutral-100 px-4 py-2 text-sm transition duration-100 hover:text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:text-neutral-200"
               >
-                {t("cancel_button")}
+                <span className="inline">{t("cancel_button")}</span>
               </button>
             </div>
           </SpotlightCard>
@@ -457,8 +457,8 @@ const StrikeGame = () => {
       )}
 
       {showPopup === "user_rank" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
-          <SpotlightCard className="p-4 max-w-sm w-full animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-500">
+          <SpotlightCard className="p-4 max-w-sm w-full animate-in slide-in-from-bottom-4 zoom-in-95 duration-500 ease-out">
             <h3 className="text-base font-bold mb-3">{t("user_rank_popup")}</h3>
             <div className="flex items-center space-x-2">
               <currentLevel.icon size={20} />
@@ -475,8 +475,8 @@ const StrikeGame = () => {
       )}
 
       {showPopup === "user_name" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
-          <SpotlightCard className="p-4 max-w-sm w-full animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-500">
+          <SpotlightCard className="p-4 max-w-sm w-full animate-in slide-in-from-bottom-4 zoom-in-95 duration-500 ease-out">
             <h3 className="text-base font-bold mb-3">{t("user_name_popup")}</h3>
             <p className="text-sm">{session.user?.name}</p>
             <button
@@ -490,8 +490,8 @@ const StrikeGame = () => {
       )}
 
       {showPopup === "user_leaderboard" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
-          <SpotlightCard className="p-4 max-w-sm w-full animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-500">
+          <SpotlightCard className="p-4 max-w-sm w-full animate-in slide-in-from-bottom-4 zoom-in-95 duration-500 ease-out">
             <h3 className="text-base font-bold mb-3">{t("leaderboard_position_popup")}</h3>
             <p className="text-sm">#{leaderboard.findIndex(u => u.user_email === session.user?.email) + 1}</p>
             <button
@@ -505,8 +505,8 @@ const StrikeGame = () => {
       )}
 
       {showPopup === "user_level" && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
-          <SpotlightCard className="p-4 max-w-sm w-full animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-500">
+          <SpotlightCard className="p-4 max-w-sm w-full animate-in slide-in-from-bottom-4 zoom-in-95 duration-500 ease-out">
             <h3 className="text-base font-bold mb-3">{t("user_level_popup")}</h3>
             <p className="text-sm">{userStrike?.current_streak} {t("days")}</p>
             <button
@@ -563,11 +563,7 @@ const StrikeGame = () => {
                 return (
                   <div
                     key={user.user_email}
-                    className={`relative p-3 rounded-xl transition-all duration-300 hover:scale-[1.02] ${
-                      isTop3 && top3Styles
-                        ? `${top3Styles.bg} ${top3Styles.shadow} shadow-lg`
-                        : 'bg-white dark:bg-neutral-900 shadow-md hover:shadow-lg'
-                    }`}
+                    className="relative p-3 rounded-xl transition-all duration-300 hover:scale-[1.02] bg-white dark:bg-neutral-900 shadow-md hover:shadow-lg"
                   >
                     <div className="flex items-center space-x-3">
                       <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${
@@ -581,25 +577,25 @@ const StrikeGame = () => {
                         <img
                           src={user.image}
                           alt={user.name}
-                          className={`w-10 h-10 rounded-full object-cover ${isTop3 ? 'shadow-lg' : ''}`}
+                          className="w-10 h-10 rounded-full object-cover"
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className={`font-semibold text-sm truncate ${isTop3 ? 'text-neutral-900 dark:text-neutral-100' : 'text-neutral-800 dark:text-neutral-200'}`}>
+                        <p className="font-semibold text-sm truncate text-neutral-800 dark:text-neutral-200">
                           {user.strike_name} - {user.name}
                         </p>
                         <div className="flex items-center space-x-2 mt-1">
-                          <span className={`text-xs font-medium ${isTop3 ? 'text-neutral-700 dark:text-neutral-300' : 'text-neutral-600 dark:text-neutral-400'}`}>
+                          <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
                             {user.current_streak} days
                           </span>
-                          <userLevel.icon size={12} className={isTop3 ? 'text-neutral-600 dark:text-neutral-400' : 'text-neutral-500 dark:text-neutral-500'} />
+                          <userLevel.icon size={12} className="text-neutral-500 dark:text-neutral-500" />
                         </div>
                       </div>
                       <div className={`relative ${isTop3 ? 'ring-2 ring-white/30 dark:ring-neutral-700/50 rounded-lg' : ''}`}>
                         <img
                           src={`/images/strike/level-${userLevel.level}.gif`}
                           alt={`Level ${userLevel.level}`}
-                          className={`w-12 h-12 rounded-lg object-cover ${isTop3 ? 'shadow-lg' : ''}`}
+                          className="w-12 h-12 rounded-lg object-cover"
                         />
                         {isTop3 && top3Styles && (
                           <div className={`absolute -inset-1 rounded-lg ${top3Styles.pulseColor} opacity-20 animate-pulse`}></div>
